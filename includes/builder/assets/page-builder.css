@@ -36,6 +36,12 @@
 #fxb .fxb-icon{
 	box-sizing: content-box;
 }
+.fxb-link{
+	cursor: pointer;
+}
+.fxb-grab{
+	cursor: grab;
+}
 
 
 /* Menu
@@ -69,6 +75,16 @@
 }
 .fxb-row-menu:after{
 	content:".";display:block;height:0;clear:both;visibility:hidden;
+}
+.fxb-row-menu .fxb-link:hover{
+	color: #fff;
+}
+/* State */
+.fxb-row[data-state="close"] .fxb-row-content{
+	display: none;
+}
+.fxb-row[data-state="close"] .fxb-toggle-row:before{
+	content: "\f140";
 }
 
 /* Columns
