@@ -40,11 +40,7 @@ function page_builder( $post ){
 
 	<div id="fxb">
 
-		<?php
-		/* ROW #1
-		stack: r2l, l2r (default)
-		*/
-		?>
+		<?php /* ROW #1 */ ?>
 		<div class="fxb-row fxb-clear" data-id="123456789" data-col-num="1" data-col="1" data-stack="l2r">
 
 			<?php row_menu(); ?>

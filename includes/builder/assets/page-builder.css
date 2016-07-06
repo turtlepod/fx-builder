@@ -42,17 +42,19 @@
 ------------------------------------------ */
 #fxb-menu{
 	margin-top: 20px;
-	padding: 20px;
+	padding: 0 10px;
 	background: #fff;
 	border: 1px solid #e5e5e5;
 	
 }
+
 
 /* Page Builder
 ------------------------------------------ */
 #fxb{
 	margin-top: 20px;
 }
+
 
 /* Rows
 ------------------------------------------ */
