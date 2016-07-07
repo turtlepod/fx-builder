@@ -1,0 +1,11 @@
+DATA TO SAVE:
+===============
+
+"fxb-row-order"
+just comma separated value
+---------------
+
+"fxb_row"
+array with rows id as key
+"fxb_row[1213141]"
+---------------
