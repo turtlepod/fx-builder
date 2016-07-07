@@ -23,7 +23,7 @@ jQuery(document).ready(function($){
 
 		/* Make it sortable */
 		var row_ids = [new_id];
-		var old_ids = $( 'input[name="fxb-row-order"]' ).val();
+		var old_ids = $( 'input[name="fxb_row_order"]' ).val();
 		if( '' !== old_ids ){
 			old_ids = old_ids.split(',');
 			row_ids = $.merge( row_ids, old_ids );

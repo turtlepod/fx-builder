@@ -1,6 +1,11 @@
 DATA TO SAVE:
 ===============
 
+"fxb-db-version"
+database version
+---------------
+
+
 "fxb-row-order"
 just comma separated value
 ---------------

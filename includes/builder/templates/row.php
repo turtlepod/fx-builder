@@ -24,7 +24,7 @@ namespace fx_builder\builder;
 		<div class="fxb-row-menu fxb-clear">
 			<div class="fxb-left">
 				<span class="fxb-icon fxb-grab fxb-row-handle dashicons dashicons-sort"></span>
-				<span class="fxb-icon fxb-row-order">{{data.order}}</span>
+				<span class="fxb-icon fxb_row_order">{{data.order}}</span>
 			</div><!-- .fxb-left -->
 			<div class="fxb-right">
 				<span data-target=".fxb-row-settings" class="fxb-icon fxb-link fxb-settings dashicons dashicons-admin-generic"></span>

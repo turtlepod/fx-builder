@@ -24,6 +24,7 @@ add_action( 'edit_form_after_editor', __NAMESPACE__ . '\page_builder', 10, 2 );
  * @since 1.0.0
  */
 function page_builder( $post ){
+	$post_id = $post->ID;
 	/* TEMP: Only in page post type */
 	if( 'page' !== $post->post_type ){ return; }
 ?>
@@ -36,11 +37,67 @@ function page_builder( $post ){
 	<div id="fxb">
 	</div><!-- #fxb -->
 
-	<input type="hidden" name="fxb-row-order" value="" autocomplete="off"/>
-	<input type="hidden" name="fxb-db-version" value="1.0.0" autocomplete="off"/>
+	<input type="hidden" name="fxb_row_order" value="<?php echo esc_attr( get_post_meta( $post_id, 'fxb_row_order', true ) ); ?>" autocomplete="off"/>
+	<input type="hidden" name="fxb_db_version" value="1.0.0" autocomplete="off"/>
 <?php
 	/* Load underscore template */
 	require_once( PATH . 'templates/row.php' );
+
+	/* Create Nonce */
+	wp_nonce_field( __FILE__ , 'fxb_nonce' );
+
+	/* Load initial rows */
+	$rows_data = get_post_meta( $post_id, 'fxb_row', true );
+	$order     = get_post_meta( $post_id, 'fxb_row_order', true );
+	$rows      = explode( ',', $order );
+	?>
+	<script type="text/javascript">
+		jQuery( document ).ready( function() {
+			var row_template = wp.template( 'fxb-row' );
+			<?php foreach( $rows as $row_id ){ ?>
+				<?php if( isset( $rows_data[$row_id]['setting'] ) ){ ?>
+
+					jQuery( '#fxb' ).append( row_template( <?php echo wp_json_encode( $rows_data[$row_id]['setting'] ); ?> ) );
+
+				<?php } ?>
+			<?php } // end foreach ?>
+		} );
+	</script>
+	<?php
+}
+
+/* Save Data
+------------------------------------------ */
+add_action( 'save_post', __NAMESPACE__ . '\save_builder_data', 10, 2 );
+
+/**
+ * Save Page Builder Data
+ * @since 1.0.0
+ */
+function save_builder_data( $post_id, $post ){
+	$request = stripslashes_deep( $_POST );
+	$nonce_id = 'fxb_nonce';
+	if ( ! isset( $request[$nonce_id] ) || ! wp_verify_nonce( $request[$nonce_id], __FILE__ ) ){
+		return false;
+	}
+	if( defined('DOING_AUTOSAVE' ) && DOING_AUTOSAVE ){
+		return false;
+	}
+	$post_type = get_post_type_object( $post->post_type );
+	if ( !current_user_can( $post_type->cap->edit_post, $post_id ) ){
+		return false;
+	}
+
+	/* Save Datas */
+	if( isset( $request['fxb_db_version'] ) ){
+		update_post_meta( $post_id, 'fxb_db_version', $request['fxb_db_version'] );
+	}
+	if( isset( $request['fxb_row_order'] ) ){
+		update_post_meta( $post_id, 'fxb_row_order', $request['fxb_row_order'] );
+	}
+	if( isset( $request['fxb_row'] ) ){
+		update_post_meta( $post_id, 'fxb_row', $request['fxb_row'] );
+	}
 }
 
 
