@@ -39,9 +39,12 @@ function page_builder( $post ){
 
 	<input type="hidden" name="fxb_row_order" value="<?php echo esc_attr( get_post_meta( $post_id, 'fxb_row_order', true ) ); ?>" autocomplete="off"/>
 	<input type="hidden" name="fxb_db_version" value="1.0.0" autocomplete="off"/>
+
 <?php
+
 	/* Load underscore template */
 	require_once( PATH . 'templates/row.php' );
+	require_once( PATH . 'templates/item.php' );
 
 	/* Create Nonce */
 	wp_nonce_field( __FILE__ , 'fxb_nonce' );
@@ -110,16 +113,25 @@ function save_builder_data( $post_id, $post ){
 function render_column( $args = array() ){
 	$args_default = array(
 		'title'     => '',
+		'column'    => '',
 	);
 	$args = wp_parse_args( $args, $args_default );
+	$col_id = 'col_' . $args['column'];
 ?>
-	<div class="fxb-col fxb-clear">
+	<div class="fxb-col fxb-clear" data-col_id="<?php echo $col_id; ?>" data-row_id="{{data.id}}">
+
+		<?php /* Hidden input */ ?>
+		<input type="hidden" data-id="item_order" name="fxb_row[{{data.id}}][<?php echo $col_id; ?>][order]" value="" autocomplete="off"/>
+
+		<?php /* Column Title */ ?>
 		<h3 class="fxb-col-title"><span><?php echo $args['title']; ?></span></h3>
-		<div class="fxb-col-content">
-		</div><!-- .fxb-col-content -->
+
+		<div class="fxb-col-content"></div><!-- .fxb-col-content -->
+
 		<div class="fxb-add-item fxb-link">
 			<span><?php _e( 'Add Item', 'fx-builder' );?></span>
 		</div><!-- .fxb-add-item -->
+
 	</div><!-- .fxb-col -->
 <?php
 }

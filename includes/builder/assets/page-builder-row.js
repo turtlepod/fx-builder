@@ -3,7 +3,6 @@
  */
 jQuery(document).ready(function($){
 
-
 	/* ADD ROW
 	------------------------------------------ */
 	var row_template = wp.template( 'fxb-row' );
@@ -50,6 +49,7 @@ jQuery(document).ready(function($){
 		e.preventDefault();
 		var row = $( this ).parents( '.fxb-row' );
 		var row_state = row.data( 'state' );
+		/* Toggle state */
 		if( 'open' == row_state ){
 			row.data( 'state', 'close' ); // set data
 			var row_state = row.data( 'state' ); // get data
@@ -108,7 +108,6 @@ jQuery(document).ready(function($){
 
 	/* ROW SETTINGS: Change Stack/Collapse Order
 	------------------------------------------ */
-
 	$( document.body ).on( 'change', 'select[data-setting="stack"]', function(e){
 		e.preventDefault();
 
@@ -137,15 +136,5 @@ jQuery(document).ready(function($){
 	});
 
 
-	/* IFRAME STUFF
-	------------------------------------------ */
-
-	/* Get iframe CSS */
-	var fxB_iframeCSS = $.fn.fxB_getIframeCSS();
-
-	/* For each item textarea, load iframe content. */
-	$( '.fxb-item-textarea' ).each( function( index ) {
-		$( this ).fxB_loadIframe( fxB_iframeCSS );
-	});
 
 });

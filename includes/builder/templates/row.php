@@ -14,11 +14,6 @@ namespace fx_builder\builder;
 		<input type="hidden" data-setting="state" name="fxb_row[{{data.id}}][setting][state]" value="{{data.state}}" autocomplete="off"/>
 		<input type="hidden" data-setting="col_num" name="fxb_row[{{data.id}}][setting][col_num]" value="{{data.col_num}}" autocomplete="off"/>
 
-		<?php /* ITEMS ORDER */ ?>
-		<input type="hidden" data-id="col1" name="fxb_row[{{data.id}}][col1][order]" value="" autocomplete="off"/>
-		<input type="hidden" data-id="col2" name="fxb_row[{{data.id}}][col2][order]" value="" autocomplete="off"/>
-		<input type="hidden" data-id="col3" name="fxb_row[{{data.id}}][col3][order]" value="" autocomplete="off"/>
-		<input type="hidden" data-id="col4" name="fxb_row[{{data.id}}][col4][order]" value="" autocomplete="off"/>
 
 		<?php /* ROW MENU */ ?>
 		<div class="fxb-row-menu fxb-clear">
@@ -91,19 +86,23 @@ namespace fx_builder\builder;
 		<div class="fxb-row-content fxb-clear">
 
 			<?php render_column( array(
-				'title' => __( '1st Column', 'fx-builder' ),
+				'title'  => __( '1st Column', 'fx-builder' ),
+				'column' => 1,
 			) ); ?>
 
 			<?php render_column( array(
-				'title' => __( '2nd Column', 'fx-builder' ),
+				'title'  => __( '2nd Column', 'fx-builder' ),
+				'column' => 2,
 			) ); ?>
 
 			<?php render_column( array(
-				'title' => __( '3rd Column', 'fx-builder' ),
+				'title'  => __( '3rd Column', 'fx-builder' ),
+				'column' => 3,
 			) ); ?>
 
 			<?php render_column( array(
-				'title' => __( '4th Column', 'fx-builder' ),
+				'title'  => __( '4th Column', 'fx-builder' ),
+				'column' => 4,
 			) ); ?>
 
 		</div><!-- .fxb-row-content -->

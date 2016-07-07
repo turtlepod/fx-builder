@@ -73,9 +73,6 @@
 	background: #23282D;
 	color: #bbb;
 }
-.fxb-row-menu:after{
-	content:".";display:block;height:0;clear:both;visibility:hidden;
-}
 .fxb-row-menu .fxb-link:hover{
 	color: #fff;
 }
@@ -192,6 +189,16 @@
 
 /* Items
 ------------------------------------------ */
+/* Container */
+.fxb-col-content{
+	padding: 10px 0;
+}
+.fxb-item.ui-sortable-placeholder{
+	border: 1px dashed #ccc;
+	visibility: visible !important;
+	background: transparent;
+}
+/* Item */
 .fxb-item{
 	border: 1px solid #d9d9d9;
 	background: #fff;
@@ -203,6 +210,16 @@
 }
 .fxb-item-menu .fxb-icon{
 	border-color: #d9d9d9;
+}
+.fxb-item-menu .fxb-link:hover{
+	color: #444;
+}
+/* State */
+.fxb-item[data-state="close"] .fxb-item-content{
+	display: none;
+}
+.fxb-item[data-state="close"] .fxb-toggle-item:before{
+	content: "\f140";
 }
 .fxb-item-content{
 	padding: 10px 20px;
@@ -314,6 +331,27 @@
 .fxb-modal-field-select select{
 	float: right;
 }
+
+
+
+
+
+
+
+/* TEMP
+------------------------------------------ */
+.redd{
+  background: red !important;
+}
+
+
+
+
+
+
+
+
+
 
 
 
