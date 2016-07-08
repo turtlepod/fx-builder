@@ -47,10 +47,14 @@ namespace fx_builder\builder;
 			</div><!-- .fxb-right -->
 		</div><!-- .fxb-item-menu -->
 
-		<div class="fxb-item-content">
-			<iframe id="{{data.item_id}}" class="fxb-item-iframe" height="100" width="100%" scrolling="no"></iframe>
-			<textarea class="fxb-item-textarea"><?php echo esc_textarea( wpautop( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a tortor quam.' ) ); ?></textarea>
-			
+		<div class="fxb-item-content fxb-clear">
+
+			<a href="#" class="fxb-item-iframe-overlay"></a>
+
+			<iframe class="fxb-item-iframe" height="100" width="100%" scrolling="no"></iframe>
+
+			<textarea class="fxb-item-textarea" data-item_field="item_content" name="fxb_items[{{data.item_id}}][content]" >{{{data.content}}}</textarea>
+
 		</div><!-- .fxb-item-content -->
 
 	</div><!-- .fxb-item -->

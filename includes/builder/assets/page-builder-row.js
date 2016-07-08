@@ -159,7 +159,6 @@ jQuery(document).ready(function($){
 	 * 
 	 ************************************
 	 */
-
 	/* == Open settings == */
 	$( document.body ).on( 'click', '.fxb-settings', function(e){
 		e.preventDefault();
@@ -172,7 +171,7 @@ jQuery(document).ready(function($){
 	} );
 
 	/* == Close Settings == */
-	$( document.body ).on( 'click', '.fxb-modal-close', function(e){
+	$( document.body ).on( 'click', '.fxb-row-settings .fxb-modal-close', function(e){
 		e.preventDefault();
 
 		/* Hide Settings Modal */

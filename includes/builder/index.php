@@ -17,6 +17,9 @@ define( __NAMESPACE__ . '\VERSION', FX_BUILDER_VERSION );
 /* Load FIles
 ------------------------------------------ */
 
+/* Functions */
+require_once( PATH . 'functions.php' );
+
 /* The Page Builder */
 require_once( PATH . 'page-builder.php' );
 

@@ -94,6 +94,11 @@
 		var content = iframe.siblings( '.fxb-item-textarea' ).val();
 		iframe.contents().find('head').html( head );
 		iframe.contents().find('body').html( content );
+
+		/* 
+		 * Firefox Hack
+		 * @link http://stackoverflow.com/a/24686535
+		 */
 		$( iframe ).on('load', function() {
 			$( this ).contents().find('head').html( head );
 			$( this ).contents().find('body').html( content );
@@ -241,6 +246,57 @@ jQuery(document).ready(function($){
 			$.fn.fxB_updateItemsIndex( col );
 		},
 	});
+
+
+	/**
+	 * OPEN EDITOR
+	 * 
+	 ************************************
+	 */
+	$( document.body ).on( 'click', '.fxb-item-iframe-overlay', function(e){
+		e.preventDefault();
+
+		/* Textarea source */
+		var target_textarea = $( this ).siblings( '.fxb-item-textarea' );
+
+		/* Add active class */
+		target_textarea.addClass( 'fxb_editing_active' );
+
+		/* Set it to tinyMCE content */
+		tinyMCE.get( 'fxb_editor' ).setContent( target_textarea.val() );
+
+		/* Show Editor Modal & Modal Overlay */
+		$( '.fxb-editor' ).show();
+		$( '.fxb-modal-overlay' ).show();
+	});
+
+	/**
+	 * CLOSE EDITOR
+	 * 
+	 ************************************
+	 */
+	$( document.body ).on( 'click', '.fxb-editor .fxb-modal-close', function(e){
+		e.preventDefault();
+
+		/* Force tinyMCE to save the data to their textarea */
+		tinyMCE.get( 'fxb_editor' ).save();
+
+		/* Get the value saved in textarea */
+		var editor_val = $('#fxb_editor').val();
+
+		/* Item Textarea */
+		var item_textarea = $( '.fxb_editing_active' );
+
+		/* Add content back to textarea and item iframe */
+		item_textarea.val( editor_val );
+		item_textarea.siblings( '.fxb-item-iframe' ).fxB_loadIfameContent( iframe_css );
+		item_textarea.removeClass( 'fxb_editing_active' );
+
+		/* Hide Settings Modal & Overlay */
+		$( this ).parents( '.fxb-modal' ).hide();
+		$( '.fxb-modal-overlay' ).hide();
+	} );
+
 
 });
 

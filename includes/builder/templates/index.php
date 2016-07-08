@@ -7,10 +7,7 @@ namespace fx_builder\builder;
 /* Load Helper Function
 ------------------------------------------ */
 
-/* General Utility */
-require_once( PATH . 'templates/utility.php' );
-
-/* Row Utility */
+/* Row Utility Functions */
 require_once( PATH . 'templates/utility-row.php' );
 
 

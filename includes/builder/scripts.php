@@ -25,11 +25,10 @@ function scripts( $hook_suffix ){
 		/* Enqueue CSS */
 		wp_enqueue_style( 'fx-builder', URI . 'assets/page-builder.css', array(), VERSION );
 
-		/* Enqueue JS */
-		//wp_enqueue_script( 'fx-builder-app', URI . 'assets/page-builder-app.js', array( 'jquery', 'jquery-ui-sortable', 'wp-util' ), VERSION, false );
-
+		/* Enqueue JS: ROW */
 		wp_enqueue_script( 'fx-builder-row', URI . 'assets/page-builder-row.js', array( 'jquery', 'jquery-ui-sortable', 'wp-util' ), VERSION, true );
 
+		/* Enqueue JS: ITEM */
 		wp_enqueue_script( 'fx-builder-item', URI . 'assets/page-builder-item.js', array( 'jquery', 'jquery-ui-sortable', 'wp-util' ), VERSION, true );
 	}
 }

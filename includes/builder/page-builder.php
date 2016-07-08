@@ -35,8 +35,26 @@ function page_builder( $post ){
 	<input type="hidden" name="fxb_db_version" value="1.0.0" autocomplete="off"/>
 	<?php wp_nonce_field( __FILE__ , 'fxb_nonce' ); // create nonce ?>
 
-<?php
+	<?php /* Load Custom Editor */ ?>
 
+	<?php render_settings( array(
+		'id'        => 'fxb-editor', // data-target
+		'title'     => __( 'Edit Content', 'fx-builder' ),
+		'width'     => '800px',
+		'callback'  => function(){
+
+			wp_editor( '', 'fxb_editor', array(
+				'tinymce'       => array(
+					'wp_autoresize_on' => false,
+					'resize'           => false,
+				),
+				'editor_height' => 300,
+			) );
+		},
+	));?>
+
+
+<?php
 	/* Load underscore template */
 	require_once( PATH . 'templates/index.php' );
 }
