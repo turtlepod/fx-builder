@@ -6,13 +6,6 @@
 namespace fx_builder\builder;
 
 
-/* PARTS
------------------------------------------- */
-
-/* Column Parts */
-require_once( PATH . 'parts-item.php' );
-
-
 /* Add Page Builder Editor
 ------------------------------------------ */
 
@@ -37,36 +30,14 @@ function page_builder( $post ){
 	<div id="fxb">
 	</div><!-- #fxb -->
 
-	<input type="hidden" name="fxb_row_order" value="<?php echo esc_attr( get_post_meta( $post_id, 'fxb_row_order', true ) ); ?>" autocomplete="off"/>
+	<input type="hidden" name="fxb_row_ids" value="<?php echo esc_attr( get_post_meta( $post_id, 'fxb_row_ids', true ) ); ?>" autocomplete="off"/>
 	<input type="hidden" name="fxb_db_version" value="1.0.0" autocomplete="off"/>
+	<?php wp_nonce_field( __FILE__ , 'fxb_nonce' ); // create nonce ?>
 
 <?php
 
 	/* Load underscore template */
-	require_once( PATH . 'templates/row.php' );
-	require_once( PATH . 'templates/item.php' );
-
-	/* Create Nonce */
-	wp_nonce_field( __FILE__ , 'fxb_nonce' );
-
-	/* Load initial rows */
-	$rows_data = get_post_meta( $post_id, 'fxb_row', true );
-	$order     = get_post_meta( $post_id, 'fxb_row_order', true );
-	$rows      = explode( ',', $order );
-	?>
-	<script type="text/javascript">
-		jQuery( document ).ready( function() {
-			var row_template = wp.template( 'fxb-row' );
-			<?php foreach( $rows as $row_id ){ ?>
-				<?php if( isset( $rows_data[$row_id]['setting'] ) ){ ?>
-
-					jQuery( '#fxb' ).append( row_template( <?php echo wp_json_encode( $rows_data[$row_id]['setting'] ); ?> ) );
-
-				<?php } ?>
-			<?php } // end foreach ?>
-		} );
-	</script>
-	<?php
+	require_once( PATH . 'templates/index.php' );
 }
 
 /* Save Data
@@ -93,76 +64,50 @@ function save_builder_data( $post_id, $post ){
 
 	/* Save Datas */
 	if( isset( $request['fxb_db_version'] ) ){
-		update_post_meta( $post_id, 'fxb_db_version', $request['fxb_db_version'] );
+		if( $request['fxb_db_version'] ){
+			update_post_meta( $post_id, 'fxb_db_version', $request['fxb_db_version'] );
+		}
+		else{
+			delete_post_meta( $post_id, 'fxb_db_version' );
+		}
 	}
-	if( isset( $request['fxb_row_order'] ) ){
-		update_post_meta( $post_id, 'fxb_row_order', $request['fxb_row_order'] );
+	else{
+		delete_post_meta( $post_id, 'fxb_db_version' );
 	}
-	if( isset( $request['fxb_row'] ) ){
-		update_post_meta( $post_id, 'fxb_row', $request['fxb_row'] );
+	if( isset( $request['fxb_row_ids'] ) ){
+		if( $request['fxb_row_ids'] ){
+			update_post_meta( $post_id, 'fxb_row_ids', $request['fxb_row_ids'] );
+		}
+		else{
+			delete_post_meta( $post_id, 'fxb_row_ids' );
+		}
+	}
+	else{
+		delete_post_meta( $post_id, 'fxb_row_ids' );
+	}
+	if( isset( $request['fxb_rows'] ) ){
+		if( $request['fxb_rows'] ){
+			update_post_meta( $post_id, 'fxb_rows', $request['fxb_rows'] );
+		}
+		else{
+			delete_post_meta( $post_id, 'fxb_rows' );
+		}
+	}
+	else{
+		delete_post_meta( $post_id, 'fxb_rows' );
+	}
+	if( isset( $request['fxb_items'] ) ){
+		if( $request['fxb_items'] ){
+			update_post_meta( $post_id, 'fxb_items', $request['fxb_items'] );
+		}
+		else{
+			delete_post_meta( $post_id, 'fxb_items' );
+		}
+	}
+	else{
+		delete_post_meta( $post_id, 'fxb_items' );
 	}
 }
 
 
-/* Utility
------------------------------------------- */
-
-/**
- * Render (empty) Column
- */
-function render_column( $args = array() ){
-	$args_default = array(
-		'title'     => '',
-		'column'    => '',
-	);
-	$args = wp_parse_args( $args, $args_default );
-	$col_id = 'col_' . $args['column'];
-?>
-	<div class="fxb-col fxb-clear" data-col_id="<?php echo $col_id; ?>" data-row_id="{{data.id}}">
-
-		<?php /* Hidden input */ ?>
-		<input type="hidden" data-id="item_order" name="fxb_row[{{data.id}}][<?php echo $col_id; ?>][order]" value="" autocomplete="off"/>
-
-		<?php /* Column Title */ ?>
-		<h3 class="fxb-col-title"><span><?php echo $args['title']; ?></span></h3>
-
-		<div class="fxb-col-content"></div><!-- .fxb-col-content -->
-
-		<div class="fxb-add-item fxb-link">
-			<span><?php _e( 'Add Item', 'fx-builder' );?></span>
-		</div><!-- .fxb-add-item -->
-
-	</div><!-- .fxb-col -->
-<?php
-}
-
-
-/**
- * Render Modal Box Settings HTML
- * @since 1.0.0
- */
-function render_settings( $args = array() ){
-	$args_default = array(
-		'id'        => '',
-		'title'     => '',
-		'callback'  => '__return_false',
-		'width'     => '500px',
-		'height'    => 'auto',
-	);
-	$args = wp_parse_args( $args, $args_default );
-?>
-	<div class="<?php echo sanitize_title( $args['id'] ); ?> fxb-modal" style="display:none;width:<?php echo esc_attr( $args['width'] ); ?>;height:<?php echo esc_attr( $args['height'] );?>;">
-		<div class="fxb-modal-container">
-			<div class="fxb-modal-title"><?php echo $args['title']; ?><span class="fxb-modal-close">Done</span></div><!-- .fxb-modal-title -->
-
-			<div class="fxb-modal-content">
-				<?php if ( is_callable( $args['callback'] ) ){
-					call_user_func( $args['callback'] );
-				} ?>
-			</div><!-- .fxb-modal-content -->
-
-		</div><!-- .fxb-modal-container -->
-	</div><!-- .fxb-modal -->
-<?php
-}
 

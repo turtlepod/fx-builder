@@ -109,47 +109,47 @@
 .fxb-row[data-col_num="3"] .fxb-col:nth-child(4){
 	display: none;
 }
-/* Col Stack */
-.fxb-row[data-stack="r2l"] .fxb-col{
+/* Col Order: r2l*/
+.fxb-row[data-col_order="r2l"] .fxb-col{
 	float: right;
 }
-/* Col Width */
-.fxb-row[data-col="1"] .fxb-col{
+/* Col Width Based on Layout */
+.fxb-row[data-layout="1"] .fxb-col{
 	width: 100%;
 }
-.fxb-row[data-col="12_12"] .fxb-col{
+.fxb-row[data-layout="12_12"] .fxb-col{
 	width: 50%;
 }
-.fxb-row[data-col="13_23"] .fxb-col:nth-child(1){
+.fxb-row[data-layout="13_23"] .fxb-col:nth-child(1){
 	width: 33.33%;
 }
-.fxb-row[data-col="13_23"] .fxb-col:nth-child(2){
+.fxb-row[data-layout="13_23"] .fxb-col:nth-child(2){
 	width: 66.66%;
 }
-	/* Stack: R2L */
-	.fxb-row[data-col="13_23"][data-stack="r2l"] .fxb-col:nth-child(1){
+	/* Col Order: R2L */
+	.fxb-row[data-layout="13_23"][data-col_order="r2l"] .fxb-col:nth-child(1){
 		width: 66.66%;
 	}
-	.fxb-row[data-col="13_23"][data-stack="r2l"] .fxb-col:nth-child(2){
+	.fxb-row[data-layout="13_23"][data-col_order="r2l"] .fxb-col:nth-child(2){
 		width: 33.33%;
 	}
-.fxb-row[data-col="23_13"] .fxb-col:nth-child(1){
+.fxb-row[data-layout="23_13"] .fxb-col:nth-child(1){
 	width: 66.66%;
 }
-.fxb-row[data-col="23_13"] .fxb-col:nth-child(2){
+.fxb-row[data-layout="23_13"] .fxb-col:nth-child(2){
 	width: 33.33%;
 }
-	/* Stack: R2L */
-	.fxb-row[data-col="23_13"][data-stack="r2l"] .fxb-col:nth-child(1){
+	/* Col Order: R2L */
+	.fxb-row[data-layout="23_13"][data-col_order="r2l"] .fxb-col:nth-child(1){
 		width: 33.33%;
 	}
-	.fxb-row[data-col="23_13"][data-stack="r2l"] .fxb-col:nth-child(2){
+	.fxb-row[data-layout="23_13"][data-col_order="r2l"] .fxb-col:nth-child(2){
 		width: 66.66%;
 	}
-.fxb-row[data-col="13_13_13"] .fxb-col{
+.fxb-row[data-layout="13_13_13"] .fxb-col{
 	width: 33.33%;
 }
-.fxb-row[data-col="14_14_14_14"] .fxb-col{
+.fxb-row[data-layout="14_14_14_14"] .fxb-col{
 	width: 25%;
 }
 
@@ -215,10 +215,10 @@
 	color: #444;
 }
 /* State */
-.fxb-item[data-state="close"] .fxb-item-content{
+.fxb-item[data-item_state="close"] .fxb-item-content{
 	display: none;
 }
-.fxb-item[data-state="close"] .fxb-toggle-item:before{
+.fxb-item[data-item_state="close"] .fxb-toggle-item:before{
 	content: "\f140";
 }
 .fxb-item-content{
@@ -331,19 +331,6 @@
 .fxb-modal-field-select select{
 	float: right;
 }
-
-
-
-
-
-
-
-/* TEMP
------------------------------------------- */
-.redd{
-  background: red !important;
-}
-
 
 
 

@@ -1,140 +1,247 @@
 /**
- * Render Page Builder
- */
+ * F(X) BUILDER JS: ROWS
+*************************************/
+
+ 
+/* Functions
+------------------------------------------ */
+;(function($){
+
+	/**
+	 * UPDATE ROWS INDEX
+	 *
+	 * Even though sortable provide row ids, it's best to parse each row using each() because:
+	 * - There's only one rows level.
+	 * - we need to update html element in each row.
+	 *
+	 * This function should be loaded on:
+	 * - Add new row
+	 * - Delete row
+	 * - Sort row
+	 *
+	 ************************************
+	 */
+	$.fn.fxB_updateRowsIndex = function() {
+
+		/* Var Row IDs */
+		var row_ids = [];
+
+		/* Update each rows attr */
+		$( '#fxb > .fxb-row' ).each( function(i){
+
+			/* Var */
+			var num = i + 1;
+			var row_id = $( this ).data( 'id' );
+
+			/* Set data */
+			$( this ).data( 'index', num ); // set index
+			var row_index = $( this ).data( 'index' ); // get index
+
+			/* Update Row */
+			$( this ).attr( 'data-index', row_index ); // set data attr
+			$( this ).find( '.fxb_row_index' ).text( row_index ); // display text
+			$( this ).find( 'input[data-row_field="index"]' ).val( row_index ); // change input
+
+			/* Get ID */
+			row_ids.push( row_id );
+		});
+
+		/* Update Hidden Input */
+		$( 'input[name="fxb_row_ids"]' ).val( row_ids.join() );
+	};
+
+})(jQuery);
+
+
+/* Document Ready
+------------------------------------------ */
 jQuery(document).ready(function($){
 
-	/* ADD ROW
-	------------------------------------------ */
-	var row_template = wp.template( 'fxb-row' );
+	/**
+	 * VAR
+	 * 
+	 ************************************
+	 */
+	var row_template = wp.template( 'fxb-row' ); // load #tmpl-fxb-row
+
+
+	/**
+	 * ADD NEW ROW
+	 *
+	 * Add new row when click new row button.
+	 * 
+	 ************************************
+	 */
 	$( document.body ).on( 'click', '.fxb-add-row', function(e){
 		e.preventDefault();
 
-		/* Add Row */
-		var new_id = new Date().getTime();
+		/* Var */
+		var row_id = new Date().getTime(); // time stamp when crating row
+
+		/* Add template to container */
 		$( '#fxb' ).prepend( row_template( {
-			id       : new_id,
-			col      : '1',
-			col_num  : '1',
-			stack    : '',
-			order    : '1',
-			state    : 'open',
+			id          : row_id,
+			index       : '1',
+			state       : 'open',
+			layout      : '1',
+			col_num     : '1',
+			col_order   : '',
+			col_1       : '',
+			col_2       : '',
+			col_3       : '',
+			col_4       : '',
 		} ) );
 
-		/* Make it sortable */
-		var row_ids = [new_id];
-		var old_ids = $( 'input[name="fxb_row_order"]' ).val();
-		if( '' !== old_ids ){
-			old_ids = old_ids.split(',');
-			row_ids = $.merge( row_ids, old_ids );
-		}
-		$.fn.fxB_updateRowsOrder( row_ids );
+		/* Update Index */
+		$.fn.fxB_updateRowsIndex();
+
+		/* Make New Column Sortable */
+		$.fn.fxB_sortItems();
 
 	} );
 
 
-	/* REMOVE ROW
-	------------------------------------------ */
+	/**
+	 * REMOVE ROW
+	 *
+	 * Delete row when click new row button.
+	 * With confirmation message.
+	 * 
+	 ************************************
+	 */
 	$( document.body ).on( 'click', '.fxb-remove-row', function(e){
 		e.preventDefault();
-		var confirm_remove_row = confirm( $( this ).data( 'confirm' ) );
-		if ( true ===  confirm_remove_row ){
+
+		/* Confirm delete */
+		var confirm_delete = confirm( $( this ).data( 'confirm' ) );
+		if ( true ===  confirm_delete ){
+
+			/* Remove Row */
 			$( this ).parents( '.fxb-row' ).remove();
+
+			/* Update Index */
+			$.fn.fxB_updateRowsIndex();
 		}
 	} );
 
 
-	/* TOGGLE ROW
-	------------------------------------------ */
+	/**
+	 * TOGGLE ROW STATE
+	 *
+	 * Open/Close Row using toggle arrow icon.
+	 * 
+	 ************************************
+	 */
 	$( document.body ).on( 'click', '.fxb-toggle-row', function(e){
 		e.preventDefault();
+
+		/* Var */
 		var row = $( this ).parents( '.fxb-row' );
-		var row_state = row.data( 'state' );
-		/* Toggle state */
+		var row_state = row.data( 'state' ); // old
+
+		/* Toggle state data */
 		if( 'open' == row_state ){
 			row.data( 'state', 'close' ); // set data
-			var row_state = row.data( 'state' ); // get data
-			row.attr( 'data-state', row_state ); // change attr for styling
-			row.find( 'input[data-setting="state"]' ).val( row_state ); // change hidden input
 		}
 		else{
 			row.data( 'state', 'open' );
-			var row_state = row.data( 'state' );
-			row.attr( 'data-state', row_state );
-			row.find( 'input[data-setting="state"]' ).val( row_state );
 		}
+
+		/* Update state */
+		var row_state = row.data( 'state' ); // get new state data
+		row.attr( 'data-state', row_state ); // change attr for styling
+		row.find( 'input[data-row_field="state"]' ).val( row_state ); // change hidden input
 	} );
 
 
-	/* ROW SETTING
-	------------------------------------------ */
+	/**
+	 * OPEN/CLOSE ROW SETTINGS
+	 * 
+	 ************************************
+	 */
 
-	/* Open settings */
+	/* == Open settings == */
 	$( document.body ).on( 'click', '.fxb-settings', function(e){
 		e.preventDefault();
-		var target = $( this ).data( 'target' );
+
+		/* Show settings target */
+		$( this ).siblings( $( this ).data( 'target' ) ).show();
+
+		/* Show overlay background */
 		$( '.fxb-modal-overlay' ).show();
-		$( this ).siblings( target ).show();
 	} );
 
-	/* Close Settings */
+	/* == Close Settings == */
 	$( document.body ).on( 'click', '.fxb-modal-close', function(e){
 		e.preventDefault();
+
+		/* Hide Settings Modal */
 		$( this ).parents( '.fxb-modal' ).hide();
+
+		/* Hide overlay background */
 		$( '.fxb-modal-overlay' ).hide();
 	} );
 
 
-	/* ROW SETTINGS: Change Layout
-	------------------------------------------ */
-
-	$( document.body ).on( 'change', 'select[data-setting="col"]', function(e){
-		e.preventDefault();
+	/**
+	 * ROW SETTINGS: CHANGE LAYOUT
+	 * 
+	 ************************************
+	 */
+	$( document.body ).on( 'change', 'select[data-row_field="layout"]', function(e){
 
 		/* Get selected value */
-		var selected_col = $( this ).val();
-		var selected_col_num = $( 'option:selected', this ).attr( 'data-col_num' );
+		var new_layout = $( this ).val();
+		var new_col_num = $( 'option:selected', this ).attr( 'data-col_num' );
+		console.log( new_layout );
+
+		/* Get current row */
+		var row = $( this ).parents( '.fxb-row' );
 
 		/* Update Row Data */
-		var row = $( this ).parents( '.fxb-row' );
-		row.data( 'col', selected_col );
-		row.attr( 'data-col', row.data( 'col' ) );
-		row.data( 'col_num', selected_col_num );
+		row.data( 'layout', new_layout ); // set layout
+		row.attr( 'data-layout', row.data( 'layout' ) ); // update data attr
+		row.data( 'col_num', new_col_num );
 		row.attr( 'data-col_num', row.data( 'col_num' ) );
 
 		/* Update hidden Input */
-		row.find( 'input[data-setting="col_num"]' ).val( row.data( 'col_num' ) );
+		row.find( 'input[data-row_field="col_num"]' ).val( row.data( 'col_num' ) );
 	} );
 
 
-	/* ROW SETTINGS: Change Stack/Collapse Order
-	------------------------------------------ */
-	$( document.body ).on( 'change', 'select[data-setting="stack"]', function(e){
-		e.preventDefault();
+	/**
+	 * ROW SETTINGS: CHANGE COLUMNS COLLAPSE ORDER
+	 * 
+	 ************************************
+	 */
+	$( document.body ).on( 'change', 'select[data-row_field="col_order"]', function(e){
 
 		/* Get selected value */
 		var selected = $( this ).val();
 
-		/* Update Row Data */
+		/* Get current row */
 		var row = $( this ).parents( '.fxb-row' );
-		row.data( 'stack', selected );
-		row.attr( 'data-stack', row.data( 'stack' ) );
+
+		/* Update Row Data */
+		row.data( 'col_order', selected );
+		row.attr( 'data-col_order', row.data( 'col_order' ) );
 	} );
 
 
-	/* SORT ROW
-	------------------------------------------ */
+	/**
+	 * SORT ROW
+	 * 
+	 * Make row sortable.
+	 * 
+	 ************************************
+	 */
 	$( '#fxb' ).sortable({
 		handle  : '.fxb-row-handle',
 		cursor  : 'grabbing',
 		axis    : 'y',
 		stop    : function( e, ui ) {
-
-			/* Update row attr order */
-			var row_ids = $( this ).sortable( 'toArray', {attribute: 'data-id'} );
-			$.fn.fxB_updateRowsOrder( row_ids );
+			$.fn.fxB_updateRowsIndex();
 		},
 	});
-
-
 
 });

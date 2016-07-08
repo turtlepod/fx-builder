@@ -1,111 +1,202 @@
 /**
- * Render Page Builder
- */
-jQuery(document).ready(function($){
+ * F(X) BUILDER JS: ITEMS
+*************************************/
 
-	/* ADD ITEM
-	------------------------------------------ */
-	var item_template = wp.template( 'fxb-item' );
-	$( document.body ).on( 'click', '.fxb-add-item', function(e){
-		e.preventDefault();
+ 
+/* Functions
+------------------------------------------ */
+;(function($){
 
-		var target_container = $( this ).siblings( '.fxb-col-content' );
-		var new_id = new Date().getTime();
+	/**
+	 * UPDATE ITEMS INDEX
+	 ************************************
+	 */
+	$.fn.fxB_updateItemsIndex = function( col ) {
 
-		$( target_container ).prepend( item_template( {
-			item_id  : new_id,
-			state    : 'open',
-		} ) );
+		/* Var Row IDs */
+		var row_id         = col.parents( '.fxb-row' ).data( 'id' );
+		var col_index      = col.data( 'col_index' );
+		var items_input    = col.find( 'input[data-row_field="' + col_index + '"]' );
+		var item_ids       = [];
 
-		/* Add new ID to hidden input */
-		var input = $( this ).siblings( 'input[data-id="item_order"]' );
-		var item_ids = [new_id];
-		var old_ids = input.val();
-		if( '' !== old_ids ){
-			old_ids = old_ids.split( ',' ); // make it array
-			item_ids = $.merge( item_ids, old_ids );
-		}
-		input.val( item_ids.join() );
+		/* Update each rows attr */
+		$( col ).find( '.fxb-col-content > .fxb-item' ).each( function(i){
 
-		/* Make it sortable */
-		fxb_make_item_sortable();
-	} );
+			/* Var */
+			var num = i + 1;
+			var item_id = $( this ).data( 'item_id' );
 
+			/* Set data */
+			$( this ).data( 'item_index', num ); // set index
+			var item_index = $( this ).data( 'item_index' ); // get index
 
-	/* REMOVE ITEM
-	------------------------------------------ */
-	$( document.body ).on( 'click', '.fxb-remove-item', function(e){
-		e.preventDefault();
-		var confirm_remove_item = confirm( $( this ).data( 'confirm' ) );
-		if ( true ===  confirm_remove_item ){
+			/* Update Item Index */
+			$( this ).attr( 'data-item_index', item_index ); // set data attr
+			$( this ).find( '.fxb_item_index' ).text( item_index ); // display text
+			$( this ).find( 'input[data-item_field="item_index"]' ).val( item_index ); // change input
 
-			/* Get current col */
-			var this_col = $( this ).parents( '.fxb-col' );
+			/* Update Row ID and Col Index */
+			$( this ).data( 'row_id', row_id );
+			$( this ).find( 'input[data-item_field="row_id"]' ).val( row_id );
+			$( this ).data( 'col_index', col_index );
+			$( this ).find( 'input[data-item_field="col_index"]' ).val( col_index );
 
-			/* Remove item */
-			$( this ).parents( '.fxb-item' ).remove();
+			/* Get ID */
+			item_ids.push( item_id );
+		});
+		console.log( item_ids );
 
-			/* Generate new list */
-			var items = [];
-			this_col.find( '.fxb-item' ).each( function(i){
-				items[i] = $( this ).data( 'item_id' );
-			});
+		/* Update Hidden Input */
+		items_input.val( item_ids.join() );
+	};
 
-			/* Update Input */
-			var input = this_col.find( 'input[data-id="item_order"]' );
-			input.val( items.join() )
-		}
-	} );
+	/**
+	 * MAKE ITEMS SORTABLE
+	 ************************************
+	 */
+	$.fn.fxB_sortItems = function( col ) {
 
-
-	/* TOGGLE ITEM
-	------------------------------------------ */
-	$( document.body ).on( 'click', '.fxb-toggle-item', function(e){
-		e.preventDefault();
-		var item = $( this ).parents( '.fxb-item' );
-		var item_state = item.data( 'state' );
-		/* Toggle State */
-		if( 'open' == item_state ){
-			item.data( 'state', 'close' ); // set data
-			var item_state = item.data( 'state' ); // get data
-			item.attr( 'data-state', item_state ); // change attr for styling
-			item.find( 'input[data-setting="state"]' ).val( item_state ); // change hidden input
-		}
-		else{
-			item.data( 'state', 'open' );
-			var item_state = item.data( 'state' );
-			item.attr( 'data-state', item_state );
-			item.find( 'input[data-setting="state"]' ).val( item_state );
-		}
-	} );
-
-
-	/* SORT ITEM
-	------------------------------------------ */
-	function fxb_make_item_sortable(){
 		$( '.fxb-col-content' ).sortable({
 			handle      : '.fxb-item-handle',
 			cursor      : 'grabbing',
 			connectWith : ".fxb-col-content",
 			update      : function( e, ui ) {
-				var item_ids = $( this ).sortable( 'toArray', {attribute: 'data-item_id'} );
-				var input = $( this ).parents( '.fxb-col' ).find( 'input[data-id="item_order"]' );
-				
-				/* Update hidden input */
-				input.val( item_ids.join() );
+
+				/* Var */
+				var col = $( this ).parents( '.fxb-col' );
+
+				/* Update Index */
+				$.fn.fxB_updateItemsIndex( col );
 			},
 		});
-	}
-	fxb_make_item_sortable();
+	};
 
 
+})(jQuery);
 
 
+/* Document Ready
+------------------------------------------ */
+jQuery(document).ready(function($){
+
+	/**
+	 * MAKE SORTABLE ON PAGE LOAD
+	 * 
+	 ************************************
+	 */
+	$.fn.fxB_sortItems();
+
+	/**
+	 * VAR
+	 * 
+	 ************************************
+	 */
+	var item_template = wp.template( 'fxb-item' );
 
 
+	/**
+	 * ADD NEW ITEM
+	 *
+	 * Add new item in the column when click new item (+) button.
+	 * 
+	 ************************************
+	 */
+	$( document.body ).on( 'click', '.fxb-add-item', function(e){
+		e.preventDefault();
+
+		/* Vars */
+		var items_container = $( this ).siblings( '.fxb-col-content' );
+		var item_id         = new Date().getTime();
+		var col             = $( this ).parents( '.fxb-col' );
+
+		/* Add template to container */
+		$( items_container ).prepend( item_template( {
+			item_id     : item_id,
+			item_index  : '1',
+			item_state  : 'open',
+			item_type   : 'text',
+		} ) );
+
+		/* Update Index */
+		$.fn.fxB_updateItemsIndex( col );
+
+		/* Make Sortable */
+		$.fn.fxB_sortItems();
+	} );
 
 
+	/**
+	 * REMOVE ITEM
+	 *
+	 ************************************
+	 */
+	$( document.body ).on( 'click', '.fxb-remove-item', function(e){
+		e.preventDefault();
 
+		/* Confirm delete */
+		var confirm_delete = confirm( $( this ).data( 'confirm' ) );
+		if ( true ===  confirm_delete ){
+
+			/* Vars */
+			var item = $( this ).parents( '.fxb-item' );
+			var col  = $( this ).parents( '.fxb-col' );
+
+			/* Remove item */
+			item.remove();
+
+			/* Update Index */
+			$.fn.fxB_updateItemsIndex( col );
+		}
+	} );
+
+
+	/**
+	 * TOGGLE ITEM STATE
+	 *
+	 * Open/Close item using toggle arrow icon.
+	 * 
+	 ************************************
+	 */
+	$( document.body ).on( 'click', '.fxb-toggle-item', function(e){
+		e.preventDefault();
+
+		/* Var */
+		var item = $( this ).parents( '.fxb-item' );
+		var item_state = item.data( 'item_state' );
+
+		/* Toggle State */
+		if( 'open' == item_state ){
+			item.data( 'item_state', 'close' ); // set data
+		}
+		else{
+			item.data( 'item_state', 'open' );
+		}
+
+		/* Update state */
+		var item_state = item.data( 'item_state' ); // get data
+		item.attr( 'data-item_state', item_state ); // change attr for styling
+		item.find( 'input[data-item_field="item_state"]' ).val( item_state ); // change hidden input
+	} );
+
+
+	/**
+	 * SORT ITEM
+	 * 
+	 ************************************
+	 */
+	$( '.fxb-col-content' ).sortable({
+		handle      : '.fxb-item-handle',
+		cursor      : 'grabbing',
+		connectWith : ".fxb-col-content",
+		update      : function( e, ui ) {
+
+			/* Var */
+			var col = $( this ).parents( '.fxb-col' );
+
+			/* Update Index */
+			$.fn.fxB_updateItemsIndex( col );
+		},
+	});
 
 
 

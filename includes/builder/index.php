@@ -28,7 +28,7 @@ require_once( PATH . 'scripts.php' );
 ------------------------------------------ */
 
 /* Init */
-//add_action( 'init', __NAMESPACE__ . '\init' );
+add_action( 'init', __NAMESPACE__ . '\init' );
 
 /**
  * Init Hook to Setup All
