@@ -21,6 +21,7 @@ function page_builder( $post ){
 	/* TEMP: Only in page post type */
 	if( 'page' !== $post->post_type ){ return; }
 ?>
+
 	<div class="fxb-modal-overlay" style="display:none;"></div>
 
 	<div id="fxb-menu">

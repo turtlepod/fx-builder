@@ -26,11 +26,11 @@ function scripts( $hook_suffix ){
 		wp_enqueue_style( 'fx-builder', URI . 'assets/page-builder.css', array(), VERSION );
 
 		/* Enqueue JS */
-		wp_enqueue_script( 'fx-builder-app', URI . 'assets/page-builder-app.js', array( 'jquery', 'jquery-ui-sortable', 'wp-util' ), VERSION, false );
+		//wp_enqueue_script( 'fx-builder-app', URI . 'assets/page-builder-app.js', array( 'jquery', 'jquery-ui-sortable', 'wp-util' ), VERSION, false );
 
-		wp_enqueue_script( 'fx-builder-row', URI . 'assets/page-builder-row.js', array( 'jquery', 'jquery-ui-sortable', 'fx-builder-app', 'wp-util' ), VERSION, true );
+		wp_enqueue_script( 'fx-builder-row', URI . 'assets/page-builder-row.js', array( 'jquery', 'jquery-ui-sortable', 'wp-util' ), VERSION, true );
 
-		wp_enqueue_script( 'fx-builder-item', URI . 'assets/page-builder-item.js', array( 'jquery', 'jquery-ui-sortable', 'fx-builder-app', 'wp-util' ), VERSION, true );
+		wp_enqueue_script( 'fx-builder-item', URI . 'assets/page-builder-item.js', array( 'jquery', 'jquery-ui-sortable', 'wp-util' ), VERSION, true );
 	}
 }
 

@@ -48,7 +48,9 @@ namespace fx_builder\builder;
 		</div><!-- .fxb-item-menu -->
 
 		<div class="fxb-item-content">
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a tortor quam.</p>
+			<iframe id="{{data.item_id}}" class="fxb-item-iframe" height="100" width="100%" scrolling="no"></iframe>
+			<textarea class="fxb-item-textarea"><?php echo esc_textarea( wpautop( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a tortor quam.' ) ); ?></textarea>
+			
 		</div><!-- .fxb-item-content -->
 
 	</div><!-- .fxb-item -->

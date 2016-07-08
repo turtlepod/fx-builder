@@ -25,8 +25,8 @@ function print_script_init(){
 
 	/* Items data */
 	$items_data  = get_post_meta( $post_id, 'fxb_items', true );
-	ccdd( $rows_data, '$rows_data' );
-	ccdd( $items_data, '$items_data' );
+	//ccdd( $rows_data, '$rows_data' );
+	//ccdd( $items_data, '$items_data' );
 ?>
 
 	<script type="text/javascript">
@@ -47,7 +47,6 @@ function print_script_init(){
 					<?php } ?>
 				<?php } // end foreach ?>
 			<?php } ?>
-
 		} );
 	</script>
 

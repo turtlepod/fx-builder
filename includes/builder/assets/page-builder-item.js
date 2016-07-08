@@ -44,7 +44,6 @@
 			/* Get ID */
 			item_ids.push( item_id );
 		});
-		console.log( item_ids );
 
 		/* Update Hidden Input */
 		items_input.val( item_ids.join() );
@@ -72,6 +71,36 @@
 	};
 
 
+	/**
+	 * Get Iframe CSS
+	 */
+	$.fn.fxB_getIframeCSS = function() {
+		var iframe_styles = tinyMCEPreInit.mceInit.content.content_css;
+		var iframe_css = '';
+		/* Loop each styles and create link el. */
+		if( typeof iframe_styles !== 'undefined' ){
+			iframe_styles.split(',').forEach( function( item ){
+				iframe_css += '<link type="text/css" rel="stylesheet" href="' + item + '" />';
+			});
+		}
+		return iframe_css;
+	};
+
+	/**
+	 * Load Iframe
+	 */
+	$.fn.fxB_loadIfameContent = function( head ){
+		var iframe = this;
+		var content = iframe.siblings( '.fxb-item-textarea' ).val();
+		iframe.contents().find('head').html( head );
+		iframe.contents().find('body').html( content );
+		$( iframe ).on('load', function() {
+			$( this ).contents().find('head').html( head );
+			$( this ).contents().find('body').html( content );
+		});
+	};
+
+
 })(jQuery);
 
 
@@ -80,18 +109,30 @@
 jQuery(document).ready(function($){
 
 	/**
+	 * VAR
+	 * 
+	 ************************************
+	 */
+	var item_template = wp.template( 'fxb-item' );
+	var iframe_css = $.fn.fxB_getIframeCSS();
+
+	/**
 	 * MAKE SORTABLE ON PAGE LOAD
 	 * 
 	 ************************************
 	 */
 	$.fn.fxB_sortItems();
 
+
 	/**
-	 * VAR
+	 * PREPARE IFRAME ON PAGE LOAD
 	 * 
 	 ************************************
 	 */
-	var item_template = wp.template( 'fxb-item' );
+	$( '.fxb-item-iframe' ).each( function(i){
+		$( this ).fxB_loadIfameContent( iframe_css );
+	} );
+
 
 
 	/**
@@ -119,6 +160,9 @@ jQuery(document).ready(function($){
 
 		/* Update Index */
 		$.fn.fxB_updateItemsIndex( col );
+
+		/* Load Iframe */
+		$( '.fxb-item[data-item_id="' + item_id + '"] .fxb-item-iframe' ).fxB_loadIfameContent( iframe_css );
 
 		/* Make Sortable */
 		$.fn.fxB_sortItems();
@@ -198,18 +242,6 @@ jQuery(document).ready(function($){
 		},
 	});
 
-
-
-
-	/* IFRAME STUFF
-	------------------------------------------ */
-	/* Get iframe CSS */
-	//var fxB_iframeCSS = $.fn.fxB_getIframeCSS();
-
-	/* For each item textarea, load iframe content. */
-	//$( '.fxb-item-textarea' ).each( function( index ) {
-	//	$( this ).fxB_loadIframe( fxB_iframeCSS );
-	//});
 });
 
 
