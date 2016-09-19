@@ -211,9 +211,10 @@ class Builder{
 	 */
 	public function scripts( $hook_suffix ){
 		global $post_type;
+		if( ! post_type_supports( $post_type, 'fx_builder' ) ){ return; }
 
 		/* In Page Edit Screen */
-		if( 'page' == $post_type && in_array( $hook_suffix, array( 'post.php', 'post-new.php' ) ) ){
+		if( in_array( $hook_suffix, array( 'post.php', 'post-new.php' ) ) ){
 
 			/* Enqueue CSS */
 			wp_enqueue_style( 'fx-builder', URI . 'assets/page-builder.css', array(), VERSION );
