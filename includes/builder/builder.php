@@ -29,6 +29,9 @@ class Builder{
 		/* Add it after editor in edit screen */
 		add_action( 'edit_form_after_editor', array( $this, 'form' ) );
 
+		/* Load Underscore Templates + Print Scripts */
+		add_action( 'admin_footer', array( $this, 'load_templates' ) );
+
 		/* Save Builder Data */
 		add_action( 'save_post', array( $this, 'save' ), 10, 2 );
 
@@ -45,57 +48,57 @@ class Builder{
 		$post_id = $post->ID;
 		?>
 
-			<div id="fxb-wrapper">
+		<div id="fxb-wrapper">
 
-				<div class="fxb-modal-overlay" style="display:none;"></div>
+			<div class="fxb-modal-overlay" style="display:none;"></div>
 
-				<div id="fxb-menu">
-					<p><a href="#" class="button button-primary fxb-add-row"><?php _e( 'Add Row', 'fx-builder' ); ?></a></p>
-				</div><!-- #fxb-menu -->
+			<div id="fxb-menu">
+				<p><a href="#" class="button button-primary fxb-add-row"><?php _e( 'Add Row', 'fx-builder' ); ?></a></p>
+			</div><!-- #fxb-menu -->
 
-				<div id="fxb">
-				</div><!-- #fxb -->
+			<div id="fxb">
+			</div><!-- #fxb -->
 
-				<input type="hidden" name="fxb_row_ids" value="<?php echo esc_attr( get_post_meta( $post_id, 'fxb_row_ids', true ) ); ?>" autocomplete="off"/>
-				<input type="hidden" name="fxb_db_version" value="1.0.0" autocomplete="off"/>
-				<?php wp_nonce_field( __FILE__ , 'fxb_nonce' ); // create nonce ?>
+			<input type="hidden" name="fxb_row_ids" value="<?php echo esc_attr( get_post_meta( $post_id, 'fxb_row_ids', true ) ); ?>" autocomplete="off"/>
+			<input type="hidden" name="fxb_db_version" value="<?php echo esc_attr( VERSION ); ?>" autocomplete="off"/>
+			<?php wp_nonce_field( __FILE__ , 'fxb_nonce' ); // create nonce ?>
 
-				<?php /* Load Custom Editor */ ?>
+			<?php /* Load Custom Editor */ ?>
 
-				<?php Functions::render_settings( array(
-					'id'        => 'fxb-editor', // data-target
-					'title'     => __( 'Edit Content', 'fx-builder' ),
-					'width'     => '800px',
-					'callback'  => function(){
+			<?php Functions::render_settings( array(
+				'id'        => 'fxb-editor', // data-target
+				'title'     => __( 'Edit Content', 'fx-builder' ),
+				'width'     => '800px',
+				'callback'  => function(){
 
-						wp_editor( '', 'fxb_editor', array(
-							'tinymce'       => array(
-								'wp_autoresize_on' => false,
-								'resize'           => false,
-							),
-							'editor_height' => 300,
-						) );
-					},
-				));?>
+					wp_editor( '', 'fxb_editor', array(
+						'tinymce'       => array(
+							'wp_autoresize_on' => false,
+							'resize'           => false,
+						),
+						'editor_height' => 300,
+					) );
+				},
+			));?>
 
-
-				<?php require_once( PATH . 'templates/tmpl-row.php' ); /* Row Template */ ?>
-
-				<?php require_once( PATH . 'templates/tmpl-item.php' ); /* Item Template */ ?>
-
-			</div><!-- #fxb-wrapper -->
+		</div><!-- #fxb-wrapper -->
 		<?php
-
-		/* Print Admin Footer Script */
-		add_action( 'admin_footer', array( $this, 'admin_footer' ) );
 	}
 
 
 	/**
 	 * Admin Footer Scripts
 	 */
-	public function admin_footer(){
+	public function load_templates(){
+		global $post_type;
+		if( ! post_type_supports( $post_type, 'fx_builder' ) ){ return; }
 		$post_id = get_the_ID();
+
+		/* Row Template */
+		require_once( PATH . 'templates/tmpl-row.php' );
+
+		/* Item Template */
+		require_once( PATH . 'templates/tmpl-item.php' );
 
 		/* Rows data */
 		$rows_data   = get_post_meta( $post_id, 'fxb_rows', true );
@@ -147,7 +150,7 @@ class Builder{
 			return false;
 		}
 
-		/* Save Datas */
+		/* DB Version */
 		if( isset( $request['fxb_db_version'] ) ){
 			if( $request['fxb_db_version'] ){
 				update_post_meta( $post_id, 'fxb_db_version', $request['fxb_db_version'] );
@@ -159,6 +162,9 @@ class Builder{
 		else{
 			delete_post_meta( $post_id, 'fxb_db_version' );
 		}
+
+
+		/* Row IDs */
 		if( isset( $request['fxb_row_ids'] ) ){
 			if( $request['fxb_row_ids'] ){
 				update_post_meta( $post_id, 'fxb_row_ids', $request['fxb_row_ids'] );
@@ -170,6 +176,8 @@ class Builder{
 		else{
 			delete_post_meta( $post_id, 'fxb_row_ids' );
 		}
+
+		/* Rows Datas */
 		if( isset( $request['fxb_rows'] ) ){
 			if( $request['fxb_rows'] ){
 				update_post_meta( $post_id, 'fxb_rows', $request['fxb_rows'] );
@@ -181,6 +189,8 @@ class Builder{
 		else{
 			delete_post_meta( $post_id, 'fxb_rows' );
 		}
+
+		/*  Items Datas */
 		if( isset( $request['fxb_items'] ) ){
 			if( $request['fxb_items'] ){
 				update_post_meta( $post_id, 'fxb_items', $request['fxb_items'] );
