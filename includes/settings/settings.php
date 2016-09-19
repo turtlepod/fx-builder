@@ -1,7 +1,7 @@
 <?php
 namespace fx_builder\settings;
 if ( ! defined( 'WPINC' ) ) { die; }
-//Settings::get_instance();
+Settings::get_instance();
 
 /**
  * Settings
@@ -24,19 +24,15 @@ class Settings{
 	public function __construct() {
 
 		/* Vars */
-		$this->settings_slug = 'fx-base';
-		$this->hook_suffix   = 'fx_base_page_fx-base';
+		$this->settings_slug = 'fx-builder';
+		$this->hook_suffix   = '';
 		$this->options_group = 'fx-base';
-		$this->option_name   = 'fx-base';
 
 		/* Create Settings Page */
 		add_action( 'admin_menu', array( $this, 'create_settings_page' ) );
 
 		/* Register Settings and Fields */
-		add_action( 'admin_init', array( $this, 'register_settings' ) );
-
-		/* Settings Scripts */
-		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
+		add_action( 'admin_init', array( $this, 'register_settings' ), 1 );
 	}
 
 
@@ -47,10 +43,9 @@ class Settings{
 	public function create_settings_page(){
 
 		/* Create Settings Sub-Menu */
-		add_submenu_page(
-			$parent_slug = 'edit.php?post_type=fx_base', // e.g "options-general.php"
-			$page_title  = __( 'f(x) Base', 'fx-base' ),
-			$menu_title  = __( 'f(x) Settings', 'fx-base' ),
+		$this->hook_suffix = add_options_page(
+			$page_title  = __( 'Page Builder Settings', 'fx-builder' ),
+			$menu_title  = __( 'Page Builder', 'fx-builder' ),
 			$capability  = 'manage_options',
 			$menu_slug   = $this->settings_slug,
 			$function    = array( $this, 'settings_page' )
@@ -64,9 +59,8 @@ class Settings{
 	public function settings_page(){
 		?>
 		<div class="wrap">
-			<h1><?php _e( 'f(x) Base', 'fx-base' ); ?></h1>
+			<h1><?php _e( 'Page Builder Settings', 'fx-builder' ); ?></h1>
 			<form method="post" action="options.php">
-				<?php settings_errors(); ?>
 				<?php do_settings_sections( $this->settings_slug ); ?>
 				<?php settings_fields( $this->options_group ); ?>
 				<?php submit_button(); ?>
@@ -82,71 +76,78 @@ class Settings{
 	 */
 	public function register_settings(){
 
-		/* Register settings */
+		/* Disable WP Editor: array of post type to disable wp editor */
 		register_setting(
 			$option_group      = $this->options_group,
-			$option_name       = $this->option_name,
-			$sanitize_callback = array( $this, 'sanitize' )
+			$option_name       = 'fx-builder_disable-wp-editor',
+			$sanitize_callback = function( $data ){
+				$data = is_array( $data ) ? $data : array();
+				$post_types = array();
+				foreach( $data as $post_type ){
+					if( post_type_exists( $post_type ) && post_type_supports( $post_type, 'editor' ) ){
+						$post_types[] = $post_type;
+					}
+				}
+				return $post_types;
+			}
+		);
+
+		/* Disable Page Builder */
+		register_setting(
+			$option_group      = $this->options_group,
+			$option_name       = 'fx-builder_enable-page-builder',
+			$sanitize_callback = function( $data ){
+				$data = is_array( $data ) ? $data : array();
+				$post_types = array();
+				foreach( $data as $post_type ){
+					if( post_type_exists( $post_type ) && post_type_supports( $post_type, 'editor' ) ){
+						$post_types[] = $post_type;
+					}
+				}
+				return $post_types;
+			}
 		);
 
 		/* Create settings section */
 		add_settings_section(
-			$section_id        = 'fx_base_section1',
-			$section_title     = __( 'Section #1', 'fx-base' ),
+			$section_id        = 'fxb_settings',
+			$section_title     = '',
 			$callback_function = '__return_false',
 			$settings_slug     = $this->settings_slug
 		);
 
-		/* Create Setting Field: Boxes, Buttons, Columns */
-		add_settings_field(
-			$field_id          = 'fx_base_settings_field1',
-			$field_title       = __( 'Field #1', 'fx-base' ),
-			$callback_function = array( $this, 'settings_field1' ),
-			$settings_slug     = $this->settings_slug,
-			$section_id        = 'fx_base_section1'
-		);
+		/* Get All Public Post Types */
+		$post_types = get_post_types( $args = array( 'public' => true ) , 'objects' );
 
-	}
+		/* Create Options For Each Post Types */
+		foreach( $post_types as $post_type ){
 
-	/**
-	 * Settings Field Callback
-	 * @since 1.0.0
-	 */
-	public function settings_field1(){
-		?>
-		<p>
-			<input type="text" name="fx-base" value="<?php echo sanitize_text_field( get_option( $this->option_name ) ); ?>">
-		</p>
-		<p class="description">
-			<?php _e( 'Hi there!', 'fx-base' ); ?>
-		</p>
-		<?php
-	}
+			/* Only if post type supports "editor" */
+			if( post_type_supports( $post_type->name, 'editor' ) ){
 
-
-	/**
-	 * Sanitize Options
-	 * @since 1.0.0
-	 */
-	public function sanitize( $data ){
-		return sanitize_text_field( $data );
-	}
-
-
-	/**
-	 * Settings Scripts
-	 * @since 1.0.0
-	 */
-	public function scripts( $hook_suffix ){
-
-		/* Only load in settings page. */
-		if ( $this->hook_suffix == $hook_suffix ){
-
-			/* CSS */
-			wp_enqueue_style( "{$this->settings_slug}_settings", URI . 'assets/settings.css', array(), VERSION );
-
-			/* JS */
-			wp_enqueue_script( "{$this->settings_slug}_settings", URI . 'assets/settings.js', array( 'jquery' ), VERSION, true );
+				/* Create Setting Field */
+				add_settings_field(
+					$field_id          = $post_type->name,
+					$field_title       = $post_type->label,
+					$callback_function = function() use( $post_type ){
+						?>
+						<p>
+							<label>
+								<input type="checkbox" value="<?php echo esc_attr( $post_type->name );?>" name="fx-builder_disable-wp-editor[]" <?php checked( in_array( $post_type->name, (array)get_option( 'fx-builder_disable-wp-editor' ) ) ); ?>> <?php _e( 'Disable WP Editor', 'fx-builder' ); ?>
+							</label>
+						</p>
+						<p>
+							<label>
+								<input type="checkbox" value="<?php echo esc_attr( $post_type->name );?>" name="fx-builder_enable-page-builder[]" <?php checked( in_array( $post_type->name, (array)get_option( 'fx-builder_enable-page-builder' ) ) ); ?>> <?php _e( 'Enable Page Builder', 'fx-builder' ); ?>
+							</label>
+						</p>
+						<?php
+					},
+					$settings_slug     = $this->settings_slug,
+					$section_id        = 'fxb_settings'
+				);
+			}
 		}
+
 	}
 }

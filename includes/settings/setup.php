@@ -17,8 +17,5 @@ define( __NAMESPACE__ . '\VERSION', $version );
 /* Load Files
 ------------------------------------------ */
 
-/* Functions */
-require_once( PATH . 'functions.php' );
-
 /* Settings */
 require_once( PATH . 'settings.php' );
