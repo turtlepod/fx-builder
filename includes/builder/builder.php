@@ -1,6 +1,8 @@
 <?php
 namespace fx_builder\builder;
 if ( ! defined( 'WPINC' ) ) { die; }
+
+/* Load Class */
 Builder::get_instance();
 
 /**
@@ -23,6 +25,9 @@ class Builder{
 	 */
 	public function __construct() {
 
+		/* Init */
+		add_action( 'init', array( $this, 'init' ) );
+
 		/* Add it after editor in edit screen */
 		add_action( 'edit_form_after_editor', array( $this, 'form' ) );
 
@@ -31,6 +36,13 @@ class Builder{
 
 		/* Scripts */
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ), 99 );
+	}
+
+	/**
+	 * Init: Remove editor if set.
+	 */
+	public function init(){
+		//remove_post_type_support( 'page', 'editor' );
 	}
 
 

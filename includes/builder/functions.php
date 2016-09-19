@@ -20,7 +20,7 @@ class Functions{
 			'height'    => 'auto',
 		);
 		$args = wp_parse_args( $args, $args_default );
-	?>
+		?>
 		<div class="<?php echo sanitize_title( $args['id'] ); ?> fxb-modal" style="display:none;width:<?php echo esc_attr( $args['width'] ); ?>;height:<?php echo esc_attr( $args['height'] );?>;">
 			<div class="fxb-modal-container">
 				<div class="fxb-modal-title"><?php echo $args['title']; ?><span class="fxb-modal-close"><?php _e( 'Done', 'fx-builder' ); ?></span></div><!-- .fxb-modal-title -->
@@ -33,16 +33,16 @@ class Functions{
 
 			</div><!-- .fxb-modal-container -->
 		</div><!-- .fxb-modal -->
-	<?php
+		<?php
 	}
 
 
 	/**
 	 * Row Settings (Modal Box)
-	 * This is loaded in underscore template
+	 * This is loaded in underscore template in each row
 	**/
 	public static function row_settings(){
-	?>
+		?>
 		<div class="fxb-modal-field fxb-modal-field-select">
 
 			<label for="fxb_rows[{{data.id}}][layout]">
@@ -85,7 +85,7 @@ class Functions{
 			</select>
 
 		</div><!-- .fxb-modal-field -->
-	<?php
+		<?php
 	}
 
 
@@ -102,7 +102,7 @@ class Functions{
 
 		/* Var */
 		$field = "col_{$index}";
-	?>
+		?>
 		<div class="fxb-col fxb-clear" data-col_index="<?php echo esc_attr( $field ); ?>">
 
 			<?php /* Hidden input */ ?>
@@ -118,7 +118,7 @@ class Functions{
 			</div><!-- .fxb-add-item -->
 
 		</div><!-- .fxb-col -->
-	<?php
+		<?php
 	}
 
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Setup Builder
+ * Setup Settings NameSpace
  * @since 1.0.0
 **/
 namespace fx_builder\settings;
@@ -17,6 +17,8 @@ define( __NAMESPACE__ . '\VERSION', $version );
 /* Load Files
 ------------------------------------------ */
 
-/* Load Settings */
-require_once( PATH . 'settings.php' );
+/* Functions */
+require_once( PATH . 'functions.php' );
 
+/* Settings */
+require_once( PATH . 'settings.php' );

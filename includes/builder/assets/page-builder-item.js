@@ -91,9 +91,11 @@
 	 */
 	$.fn.fxB_loadIfameContent = function( head ){
 		var iframe = this;
+		var editor_body_class = tinyMCEPreInit.mceInit.content.body_class;
+		var body_class = 'fxb_editor wp-editor';
 		var content = iframe.siblings( '.fxb-item-textarea' ).val();
 		iframe.contents().find('head').html( head );
-		iframe.contents().find('body').html( content );
+		iframe.contents().find('body').attr( 'id', 'tinymce' ).addClass( editor_body_class ).addClass( body_class ).html( content );
 
 		/* 
 		 * Firefox Hack
@@ -101,7 +103,7 @@
 		 */
 		$( iframe ).on('load', function() {
 			$( this ).contents().find('head').html( head );
-			$( this ).contents().find('body').html( content );
+			$( this ).contents().find('body').attr( 'id', 'tinymce' ).addClass( editor_body_class ).addClass( body_class ).html( content );
 		});
 	};
 

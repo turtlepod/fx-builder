@@ -50,7 +50,7 @@ namespace fx_builder\builder;
 				<?php Functions::render_settings( array(
 					'id'        => 'fxb-row-settings', // data-target
 					'title'     => __( 'Row Settings', 'fx-builder' ),
-					'callback'  => __NAMESPACE__ . '\row_settings',
+					'callback'  => __NAMESPACE__ . '\Functions::row_settings',
 				));?>
 			</div><!-- .fxb-right -->
 		</div><!-- .fxb-row-menu -->
