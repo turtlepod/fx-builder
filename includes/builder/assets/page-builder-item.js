@@ -75,14 +75,12 @@
 	 * Get Iframe CSS
 	 */
 	$.fn.fxB_getIframeCSS = function() {
-		var iframe_styles = tinyMCEPreInit.mceInit.content.content_css;
 		var iframe_css = '';
+		var iframe_styles = tinyMCEPreInit.mceInit.fxb_editor.content_css;
 		/* Loop each styles and create link el. */
-		if( typeof iframe_styles !== 'undefined' ){
-			iframe_styles.split(',').forEach( function( item ){
-				iframe_css += '<link type="text/css" rel="stylesheet" href="' + item + '" />';
-			});
-		}
+		iframe_styles.split(',').forEach( function( item ){
+			iframe_css += '<link type="text/css" rel="stylesheet" href="' + item + '" />';
+		});
 		return iframe_css;
 	};
 
@@ -91,8 +89,8 @@
 	 */
 	$.fn.fxB_loadIfameContent = function( head ){
 		var iframe = this;
-		var editor_body_class = tinyMCEPreInit.mceInit.content.body_class;
-		var body_class = 'fxb_editor wp-editor';
+		var editor_body_class = tinyMCEPreInit.mceInit.fxb_editor.body_class;
+		var body_class = 'wp-editor';
 		var content = iframe.siblings( '.fxb-item-textarea' ).val();
 		iframe.contents().find('head').html( head );
 		iframe.contents().find('body').attr( 'id', 'tinymce' ).addClass( editor_body_class ).addClass( body_class ).html( content );
@@ -158,7 +156,7 @@ jQuery(document).ready(function($){
 		var col             = $( this ).parents( '.fxb-col' );
 
 		/* Add template to container */
-		$( items_container ).prepend( item_template( {
+		$( items_container ).append( item_template( {
 			item_id     : item_id,
 			item_index  : '1',
 			item_state  : 'open',
@@ -301,31 +299,4 @@ jQuery(document).ready(function($){
 
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

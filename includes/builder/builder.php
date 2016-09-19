@@ -1,5 +1,6 @@
 <?php
 namespace fx_builder\builder;
+use fx_builder\Functions as Fs;
 if ( ! defined( 'WPINC' ) ) { die; }
 
 /* Load Class */
@@ -25,8 +26,12 @@ class Builder{
 	 */
 	public function __construct() {
 
-		/* Init */
-		add_action( 'init', array( $this, 'init' ) );
+		/* Setup */
+		add_action( 'init', array( $this, 'enable_builder' ) );
+		add_action( 'admin_init', array( $this, 'disable_editor' ) );
+
+		/* Add Editor/Page Builder Tab */
+		add_action( 'edit_form_after_title', array( $this, 'editor_toggle' ) );
 
 		/* Add it after editor in edit screen */
 		add_action( 'edit_form_after_editor', array( $this, 'form' ) );
@@ -39,10 +44,46 @@ class Builder{
 	}
 
 	/**
-	 * Init: Remove editor if set.
+	 * Enable Page Builder
 	 */
-	public function init(){
-		//remove_post_type_support( 'page', 'editor' );
+	public function enable_builder(){
+		$enable_page_builder = Fs::sanitize_post_types( get_option( 'fx-builder_enable-page-builder' ) );
+		foreach( $enable_page_builder as $pt ){
+			add_post_type_support( $pt, 'fx_builder' );
+		}
+	}
+
+
+	/**
+	 * Disable WP Editor
+	 */
+	public function disable_editor(){
+		global $pagenow;
+		if( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ){
+			$disable_wp_editor   = Fs::sanitize_post_types( get_option( 'fx-builder_disable-wp-editor' ) );
+			foreach( $disable_wp_editor as $pt ){
+				remove_post_type_support( $pt, 'editor' );
+			}
+		}
+	}
+
+	/**
+	 * Editor Toggle
+	 */
+	public function editor_toggle( $post ){
+		/* If post type do not support both editor and fx_builder, no need for toggle */
+		if( ! post_type_supports( $post->post_type, 'editor' ) || ! post_type_supports( $post->post_type, 'fx_builder' ) ){
+			return false;
+		}
+		$post_id = $post->ID;
+		$editor_class = "nav-tab nav-tab-active";
+		$builder_class = "nav-tab";
+		?>
+		<h1 class="nav-tab-wrapper wp-clearfix fx-builder-editor-toggle-nav">
+			<a class="<?php echo esc_attr( $editor_class ); ?>" href="#editor">Editor</a>
+			<a class="<?php echo esc_attr( $builder_class ); ?>" href="#builder">Page Builder</a>
+		</h1>
+		<?php
 	}
 
 
@@ -50,48 +91,50 @@ class Builder{
 	 * Builder Form
 	 */
 	public function form( $post ){
+		if( ! post_type_supports( $post->post_type, 'fx_builder' ) ){ return; }
 		$post_id = $post->ID;
-		if( 'page' !== $post->post_type ){ return; }
 		?>
 
-			<div class="fxb-modal-overlay" style="display:none;"></div>
+			<div id="fxb-wrapper">
 
-			<div id="fxb-menu">
-				<p><a href="#" class="button button-primary fxb-add-row"><?php _e( 'Add Row', 'fx-builder' ); ?></a></p>
-			</div><!-- #fxb-menu -->
+				<div class="fxb-modal-overlay" style="display:none;"></div>
 
-			<div id="fxb">
-			</div><!-- #fxb -->
+				<div id="fxb-menu">
+					<p><a href="#" class="button button-primary fxb-add-row"><?php _e( 'Add Row', 'fx-builder' ); ?></a></p>
+				</div><!-- #fxb-menu -->
 
-			<input type="hidden" name="fxb_row_ids" value="<?php echo esc_attr( get_post_meta( $post_id, 'fxb_row_ids', true ) ); ?>" autocomplete="off"/>
-			<input type="hidden" name="fxb_db_version" value="1.0.0" autocomplete="off"/>
-			<?php wp_nonce_field( __FILE__ , 'fxb_nonce' ); // create nonce ?>
+				<div id="fxb">
+				</div><!-- #fxb -->
 
-			<?php /* Load Custom Editor */ ?>
+				<input type="hidden" name="fxb_row_ids" value="<?php echo esc_attr( get_post_meta( $post_id, 'fxb_row_ids', true ) ); ?>" autocomplete="off"/>
+				<input type="hidden" name="fxb_db_version" value="1.0.0" autocomplete="off"/>
+				<?php wp_nonce_field( __FILE__ , 'fxb_nonce' ); // create nonce ?>
 
-			<?php Functions::render_settings( array(
-				'id'        => 'fxb-editor', // data-target
-				'title'     => __( 'Edit Content', 'fx-builder' ),
-				'width'     => '800px',
-				'callback'  => function(){
+				<?php /* Load Custom Editor */ ?>
 
-					wp_editor( '', 'fxb_editor', array(
-						'tinymce'       => array(
-							'wp_autoresize_on' => false,
-							'resize'           => false,
-						),
-						'editor_height' => 300,
-					) );
-				},
-			));?>
+				<?php Functions::render_settings( array(
+					'id'        => 'fxb-editor', // data-target
+					'title'     => __( 'Edit Content', 'fx-builder' ),
+					'width'     => '800px',
+					'callback'  => function(){
+
+						wp_editor( '', 'fxb_editor', array(
+							'tinymce'       => array(
+								'wp_autoresize_on' => false,
+								'resize'           => false,
+							),
+							'editor_height' => 300,
+						) );
+					},
+				));?>
 
 
+				<?php require_once( PATH . 'templates/tmpl-row.php' ); /* Row Template */ ?>
+
+				<?php require_once( PATH . 'templates/tmpl-item.php' ); /* Item Template */ ?>
+
+			</div><!-- #fxb-wrapper -->
 		<?php
-		/* Row Template */
-		require_once( PATH . 'templates/tmpl-row.php' );
-
-		/* Item Template */
-		require_once( PATH . 'templates/tmpl-item.php' );
 
 		/* Print Admin Footer Script */
 		add_action( 'admin_footer', array( $this, 'admin_footer' ) );
@@ -112,8 +155,6 @@ class Builder{
 
 		/* Items data */
 		$items_data  = get_post_meta( $post_id, 'fxb_items', true );
-		//ccdd( $rows_data, '$rows_data' );
-		//ccdd( $items_data, '$items_data' );
 		?>
 		<script type="text/javascript">
 			jQuery( document ).ready( function( $ ) {

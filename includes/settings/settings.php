@@ -1,5 +1,6 @@
 <?php
 namespace fx_builder\settings;
+use fx_builder\Functions as Fs;
 if ( ! defined( 'WPINC' ) ) { die; }
 Settings::get_instance();
 
@@ -81,14 +82,7 @@ class Settings{
 			$option_group      = $this->options_group,
 			$option_name       = 'fx-builder_disable-wp-editor',
 			$sanitize_callback = function( $data ){
-				$data = is_array( $data ) ? $data : array();
-				$post_types = array();
-				foreach( $data as $post_type ){
-					if( post_type_exists( $post_type ) && post_type_supports( $post_type, 'editor' ) ){
-						$post_types[] = $post_type;
-					}
-				}
-				return $post_types;
+				return Fs::sanitize_post_types( $data );
 			}
 		);
 
@@ -97,14 +91,7 @@ class Settings{
 			$option_group      = $this->options_group,
 			$option_name       = 'fx-builder_enable-page-builder',
 			$sanitize_callback = function( $data ){
-				$data = is_array( $data ) ? $data : array();
-				$post_types = array();
-				foreach( $data as $post_type ){
-					if( post_type_exists( $post_type ) && post_type_supports( $post_type, 'editor' ) ){
-						$post_types[] = $post_type;
-					}
-				}
-				return $post_types;
+				return Fs::sanitize_post_types( $data );
 			}
 		);
 
@@ -138,7 +125,7 @@ class Settings{
 						</p>
 						<p>
 							<label>
-								<input type="checkbox" value="<?php echo esc_attr( $post_type->name );?>" name="fx-builder_enable-page-builder[]" <?php checked( in_array( $post_type->name, (array)get_option( 'fx-builder_enable-page-builder' ) ) ); ?>> <?php _e( 'Enable Page Builder', 'fx-builder' ); ?>
+								<input type="checkbox" value="<?php echo esc_attr( $post_type->name );?>" name="fx-builder_enable-page-builder[]" <?php checked( post_type_supports( $post_type->name, 'fx_builder' ) ); ?>> <?php _e( 'Enable Page Builder', 'fx-builder' ); ?>
 							</label>
 						</p>
 						<?php

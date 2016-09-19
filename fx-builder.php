@@ -2,8 +2,8 @@
 /**
  * Plugin Name: f(x) Builder
  * Plugin URI: http://genbumedia.com/plugins/fx-builder/
- * Description: A simple page builder plugin. The one you can actually use.
- * Version: 1.0.0.beta
+ * Description: A simple page builder plugin. The one you can actually use. (Alpha Version)
+ * Version: 1.0.0.alpha
  * Author: David Chandra Purnama
  * Author URI: http://shellcreeper.com/
  * License: GPLv2 or later
@@ -24,7 +24,7 @@ define( 'FX_BUILDER_URI', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'FX_BUILDER_PATH', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 define( 'FX_BUILDER_FILE', __FILE__ );
 define( 'FX_BUILDER_PLUGIN', plugin_basename( __FILE__ ) );
-define( 'FX_BUILDER_VERSION', '1.0.0.beta' );
+define( 'FX_BUILDER_VERSION', '1.0.0.alpha' );
 
 
 /* Init
