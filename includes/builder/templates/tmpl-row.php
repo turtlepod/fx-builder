@@ -47,7 +47,7 @@ namespace fx_builder\builder;
 				<span data-confirm="<?php _e( 'Delete row?', 'fx-builder' ); ?>" class="fxb-icon fxb-link fxb-remove-row dashicons dashicons-trash"></span>
 				<span class="fxb-icon fxb-link fxb-toggle-row dashicons dashicons-arrow-up"></span>
 				<?php /* SETTINGS */ ?>
-				<?php render_settings( array(
+				<?php Functions::render_settings( array(
 					'id'        => 'fxb-row-settings', // data-target
 					'title'     => __( 'Row Settings', 'fx-builder' ),
 					'callback'  => __NAMESPACE__ . '\row_settings',
@@ -58,22 +58,22 @@ namespace fx_builder\builder;
 		<?php /* ROW CONTENT */ ?>
 		<div class="fxb-row-content fxb-clear">
 
-			<?php render_column( array(
+			<?php Functions::render_column( array(
 				'title'  => __( '1st Column', 'fx-builder' ),
 				'index'  => 1,
 			) ); ?>
 
-			<?php render_column( array(
+			<?php Functions::render_column( array(
 				'title'  => __( '2nd Column', 'fx-builder' ),
 				'index'  => 2,
 			) ); ?>
 
-			<?php render_column( array(
+			<?php Functions::render_column( array(
 				'title'  => __( '3rd Column', 'fx-builder' ),
 				'index'  => 3,
 			) ); ?>
 
-			<?php render_column( array(
+			<?php Functions::render_column( array(
 				'title'  => __( '4th Column', 'fx-builder' ),
 				'index'  => 4,
 			) ); ?>
