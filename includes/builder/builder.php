@@ -26,13 +26,6 @@ class Builder{
 	 */
 	public function __construct() {
 
-		/* Setup */
-		add_action( 'init', array( $this, 'enable_builder' ) );
-		add_action( 'admin_init', array( $this, 'disable_editor' ) );
-
-		/* Add Editor/Page Builder Tab */
-		add_action( 'edit_form_after_title', array( $this, 'editor_toggle' ) );
-
 		/* Add it after editor in edit screen */
 		add_action( 'edit_form_after_editor', array( $this, 'form' ) );
 
@@ -41,49 +34,6 @@ class Builder{
 
 		/* Scripts */
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ), 99 );
-	}
-
-	/**
-	 * Enable Page Builder
-	 */
-	public function enable_builder(){
-		$enable_page_builder = Fs::sanitize_post_types( get_option( 'fx-builder_enable-page-builder' ) );
-		foreach( $enable_page_builder as $pt ){
-			add_post_type_support( $pt, 'fx_builder' );
-		}
-	}
-
-
-	/**
-	 * Disable WP Editor
-	 */
-	public function disable_editor(){
-		global $pagenow;
-		if( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ){
-			$disable_wp_editor   = Fs::sanitize_post_types( get_option( 'fx-builder_disable-wp-editor' ) );
-			foreach( $disable_wp_editor as $pt ){
-				remove_post_type_support( $pt, 'editor' );
-			}
-		}
-	}
-
-	/**
-	 * Editor Toggle
-	 */
-	public function editor_toggle( $post ){
-		/* If post type do not support both editor and fx_builder, no need for toggle */
-		if( ! post_type_supports( $post->post_type, 'editor' ) || ! post_type_supports( $post->post_type, 'fx_builder' ) ){
-			return false;
-		}
-		$post_id = $post->ID;
-		$editor_class = "nav-tab nav-tab-active";
-		$builder_class = "nav-tab";
-		?>
-		<h1 class="nav-tab-wrapper wp-clearfix fx-builder-editor-toggle-nav">
-			<a class="<?php echo esc_attr( $editor_class ); ?>" href="#editor">Editor</a>
-			<a class="<?php echo esc_attr( $builder_class ); ?>" href="#builder">Page Builder</a>
-		</h1>
-		<?php
 	}
 
 
