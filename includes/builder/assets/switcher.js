@@ -8,13 +8,13 @@ jQuery(document).ready(function($){
 		/* Clicking "Editor" */
 		if( 'editor' == this_data ){
 			$( 'html' ).removeClass( 'fx_builder_active' );
-			$( 'input[name="fx_builder_active"]' ).val( '' );
+			$( 'input[name="_fx_builder_active"]' ).val( '' );
 			$( this ).addClass( 'nav-tab-active' );
 			$( this ).siblings( '.nav-tab' ).removeClass( 'nav-tab-active' );
 		}
 		else if( 'builder' == this_data ){
 			$( 'html' ).addClass( 'fx_builder_active' );
-			$( 'input[name="fx_builder_active"]' ).val( '1' );
+			$( 'input[name="_fx_builder_active"]' ).val( '1' );
 			$( this ).addClass( 'nav-tab-active' );
 			$( this ).siblings( '.nav-tab' ).removeClass( 'nav-tab-active' );
 		}

@@ -49,7 +49,7 @@ class Functions{
 				<?php esc_html_e( 'Row Layout', 'fx-builder' ); ?>
 			</label>
 
-			<select id="fxb_rows[{{data.id}}][layout]" data-row_field="layout" name="fxb_rows[{{data.id}}][layout]" autocomplete="off">
+			<select id="fxb_rows[{{data.id}}][layout]" data-row_field="layout" name="_fxb_rows[{{data.id}}][layout]" autocomplete="off">
 
 				<option data-col_num="1" value="1" <# if( data.layout == '1' ){ print('selected="selected"') } #>><?php _e( '1 Column', 'fx-builder' ); ?></option>
 
@@ -106,7 +106,7 @@ class Functions{
 		<div class="fxb-col fxb-clear" data-col_index="<?php echo esc_attr( $field ); ?>">
 
 			<?php /* Hidden input */ ?>
-			<input type="hidden" data-id="item_ids" data-row_field="<?php echo esc_attr( $field ); ?>" name="fxb_rows[{{data.id}}][<?php echo esc_attr( $field ); ?>]" value="{{data.<?php echo esc_attr( $field ); ?>}}" autocomplete="off"/>
+			<input type="hidden" data-id="item_ids" data-row_field="<?php echo esc_attr( $field ); ?>" name="_fxb_rows[{{data.id}}][<?php echo esc_attr( $field ); ?>]" value="{{data.<?php echo esc_attr( $field ); ?>}}" autocomplete="off"/>
 
 			<?php /* Column Title */ ?>
 			<h3 class="fxb-col-title"><span><?php echo $title; ?></span></h3>

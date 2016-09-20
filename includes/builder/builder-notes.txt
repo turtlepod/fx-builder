@@ -1,0 +1,68 @@
+LIST OF ALL META KEY:
+======================
+
+"_fx_builder_active"
+	this is switcher status. "1" if active
+	null if not active.
+
+"_fxb_row_ids"
+	comma separated of row ids.
+	row ids is time stamp when a row created.
+
+"_fxb_db_version"
+	data base version.
+	this is simply using plugin version.
+
+"fxb_rows"
+	this is a multidimentional array with all rows data
+	the data will look like this
+	_fxb_rows = array(
+		{row id} => array(
+			'id'         => the time stamp when row created. 
+			'index'      => row index order
+			'state'      => open/close
+			'col_num'    => number of column active (1-4)
+			'layout'     => settings: layout (e.g 1/2 -1/2)
+			'col_order'  => collapse order "l2r" (left to right) or "r2l" (right to left)
+			'col_1'      => comma separated item ids in col 1
+			'col_2'      => comma separated item ids in col 2
+			'col_3'      => comma separated item ids in col 3
+			'col_4'      => comma separated item ids in col 4
+		)
+	)
+
+"_fxb_items"
+	this is a multidimentional array with all data of an item
+	the data will look like this:
+	_fxb_items = array(
+		{item_id} => array(
+			'item_id'      => {the time stamp when item created}
+			'item_index'   => the order of an item.
+			'item_state'   => "open" or "close"
+			'item_type'    => "text" (currently only have one type)
+			'row_id'       => the ID of the row
+			'col_index'    => 1-4. the column index. 1st - 4th.
+			'content'      => content of the item.
+		)
+		{other item id} => ....
+	)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

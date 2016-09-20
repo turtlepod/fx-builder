@@ -100,8 +100,8 @@
 		 * @link http://stackoverflow.com/a/24686535
 		 */
 		$( iframe ).on('load', function() {
-			$( this ).contents().find('head').html( head );
-			$( this ).contents().find('body').attr( 'id', 'tinymce' ).addClass( editor_body_class ).addClass( body_class ).html( content );
+			$( this ).contents().find( 'head' ).html( head );
+			$( this ).contents().find( 'body' ).attr( 'id', 'tinymce' ).addClass( editor_body_class ).addClass( body_class ).html( content );
 		});
 	};
 

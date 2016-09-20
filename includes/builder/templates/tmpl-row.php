@@ -28,13 +28,13 @@ namespace fx_builder\builder;
 	<div class="fxb-row fxb-clear" data-id="{{data.id}}" data-index="{{data.index}}"  data-state="{{data.state}}" data-col_num="{{data.col_num}}" data-layout="{{data.layout}}" data-col_order="{{data.col_order}}">
 
 		<?php /* HIDDEN FIELD */ ?>
-		<input type="hidden" data-row_field="id" name="fxb_rows[{{data.id}}][id]" value="{{data.id}}" autocomplete="off"/>
+		<input type="hidden" data-row_field="id" name="_fxb_rows[{{data.id}}][id]" value="{{data.id}}" autocomplete="off"/>
 
-		<input type="hidden" data-row_field="index" name="fxb_rows[{{data.id}}][index]" value="{{data.index}}" autocomplete="off"/>
+		<input type="hidden" data-row_field="index" name="_fxb_rows[{{data.id}}][index]" value="{{data.index}}" autocomplete="off"/>
 
-		<input type="hidden" data-row_field="state" name="fxb_rows[{{data.id}}][state]" value="{{data.state}}" autocomplete="off"/>
+		<input type="hidden" data-row_field="state" name="_fxb_rows[{{data.id}}][state]" value="{{data.state}}" autocomplete="off"/>
 
-		<input type="hidden" data-row_field="col_num" name="fxb_rows[{{data.id}}][col_num]" value="{{data.col_num}}" autocomplete="off"/>
+		<input type="hidden" data-row_field="col_num" name="_fxb_rows[{{data.id}}][col_num]" value="{{data.col_num}}" autocomplete="off"/>
 
 		<?php /* ROW MENU */ ?>
 		<div class="fxb-row-menu fxb-clear">

@@ -59,8 +59,8 @@ class Builder{
 			<div id="fxb">
 			</div><!-- #fxb -->
 
-			<input type="hidden" name="fxb_row_ids" value="<?php echo esc_attr( get_post_meta( $post_id, 'fxb_row_ids', true ) ); ?>" autocomplete="off"/>
-			<input type="hidden" name="fxb_db_version" value="<?php echo esc_attr( VERSION ); ?>" autocomplete="off"/>
+			<input type="hidden" name="_fxb_row_ids" value="<?php echo esc_attr( get_post_meta( $post_id, '_fxb_row_ids', true ) ); ?>" autocomplete="off"/>
+			<input type="hidden" name="_fxb_db_version" value="<?php echo esc_attr( VERSION ); ?>" autocomplete="off"/>
 			<?php wp_nonce_field( __FILE__ , 'fxb_nonce' ); // create nonce ?>
 
 			<?php /* Load Custom Editor */ ?>
@@ -101,13 +101,13 @@ class Builder{
 		require_once( PATH . 'templates/tmpl-item.php' );
 
 		/* Rows data */
-		$rows_data   = get_post_meta( $post_id, 'fxb_rows', true );
-		$row_ids     = get_post_meta( $post_id, 'fxb_row_ids', true );
+		$rows_data   = get_post_meta( $post_id, '_fxb_rows', true );
+		$row_ids     = get_post_meta( $post_id, '_fxb_row_ids', true );
 		if( ! $rows_data && $row_ids && is_array( $rows_data ) && is_array( $row_ids ) ){ return false; }
 		$rows        = explode( ',', $row_ids );
 
 		/* Items data */
-		$items_data  = get_post_meta( $post_id, 'fxb_items', true );
+		$items_data  = get_post_meta( $post_id, '_fxb_items', true );
 		?>
 		<script type="text/javascript">
 			jQuery( document ).ready( function( $ ) {
@@ -151,56 +151,56 @@ class Builder{
 		}
 
 		/* DB Version */
-		if( isset( $request['fxb_db_version'] ) ){
-			if( $request['fxb_db_version'] ){
-				update_post_meta( $post_id, 'fxb_db_version', $request['fxb_db_version'] );
+		if( isset( $request['_fxb_db_version'] ) ){
+			if( $request['_fxb_db_version'] ){
+				update_post_meta( $post_id, '_fxb_db_version', $request['_fxb_db_version'] );
 			}
 			else{
-				delete_post_meta( $post_id, 'fxb_db_version' );
+				delete_post_meta( $post_id, '_fxb_db_version' );
 			}
 		}
 		else{
-			delete_post_meta( $post_id, 'fxb_db_version' );
+			delete_post_meta( $post_id, '_fxb_db_version' );
 		}
 
 
 		/* Row IDs */
-		if( isset( $request['fxb_row_ids'] ) ){
-			if( $request['fxb_row_ids'] ){
-				update_post_meta( $post_id, 'fxb_row_ids', $request['fxb_row_ids'] );
+		if( isset( $request['_fxb_row_ids'] ) ){
+			if( $request['_fxb_row_ids'] ){
+				update_post_meta( $post_id, '_fxb_row_ids', $request['_fxb_row_ids'] );
 			}
 			else{
-				delete_post_meta( $post_id, 'fxb_row_ids' );
+				delete_post_meta( $post_id, '_fxb_row_ids' );
 			}
 		}
 		else{
-			delete_post_meta( $post_id, 'fxb_row_ids' );
+			delete_post_meta( $post_id, '_fxb_row_ids' );
 		}
 
 		/* Rows Datas */
-		if( isset( $request['fxb_rows'] ) ){
-			if( $request['fxb_rows'] ){
-				update_post_meta( $post_id, 'fxb_rows', $request['fxb_rows'] );
+		if( isset( $request['_fxb_rows'] ) ){
+			if( $request['_fxb_rows'] ){
+				update_post_meta( $post_id, '_fxb_rows', $request['_fxb_rows'] );
 			}
 			else{
-				delete_post_meta( $post_id, 'fxb_rows' );
+				delete_post_meta( $post_id, '_fxb_rows' );
 			}
 		}
 		else{
-			delete_post_meta( $post_id, 'fxb_rows' );
+			delete_post_meta( $post_id, '_fxb_rows' );
 		}
 
 		/*  Items Datas */
-		if( isset( $request['fxb_items'] ) ){
-			if( $request['fxb_items'] ){
-				update_post_meta( $post_id, 'fxb_items', $request['fxb_items'] );
+		if( isset( $request['_fxb_items'] ) ){
+			if( $request['_fxb_items'] ){
+				update_post_meta( $post_id, '_fxb_items', $request['_fxb_items'] );
 			}
 			else{
-				delete_post_meta( $post_id, 'fxb_items' );
+				delete_post_meta( $post_id, '_fxb_items' );
 			}
 		}
 		else{
-			delete_post_meta( $post_id, 'fxb_items' );
+			delete_post_meta( $post_id, '_fxb_items' );
 		}
 	}
 

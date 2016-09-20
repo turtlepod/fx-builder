@@ -47,7 +47,7 @@
 		});
 
 		/* Update Hidden Input */
-		$( 'input[name="fxb_row_ids"]' ).val( row_ids.join() );
+		$( 'input[name="_fxb_row_ids"]' ).val( row_ids.join() );
 	};
 
 })(jQuery);

@@ -82,7 +82,7 @@ class Switcher{
 		if( post_type_supports( $post_type, 'editor' ) && post_type_supports( $post_type, 'fx_builder' ) ){
 
 			/* If builder selected */
-			if( $active = get_post_meta( get_the_ID(), 'fx_builder_active', true ) ){
+			if( $active = get_post_meta( get_the_ID(), '_fx_builder_active', true ) ){
 				?>
 				<script type="text/javascript">
 				/* <![CDATA[ */
@@ -101,7 +101,7 @@ class Switcher{
 	public function editor_toggle( $post ){
 		$post_id = $post->ID;
 		if( post_type_supports( $post->post_type, 'editor' ) && post_type_supports( $post->post_type, 'fx_builder' ) ){
-			$active        = get_post_meta( $post_id, 'fx_builder_active', true );
+			$active        = get_post_meta( $post_id, '_fx_builder_active', true );
 			$active        = $active ? 1 : 0;
 			$editor_class  = $active ? "nav-tab" : "nav-tab nav-tab-active";
 			$builder_class = $active ? "nav-tab nav-tab-active" : "nav-tab";
@@ -109,7 +109,7 @@ class Switcher{
 			<h1 id="fxb-switcher" class="nav-tab-wrapper wp-clearfix">
 				<a data-fxb-switcher="editor" class="<?php echo esc_attr( $editor_class ); ?>" href="#"><?php _e( 'Editor', 'fx-builder' ); ?></a>
 				<a data-fxb-switcher="builder" class="<?php echo esc_attr( $builder_class ); ?>" href="#"><?php _e( 'Page Builder', 'fx-builder' ); ?></a>
-				<input type="hidden" name="fx_builder_active" value="<?php echo esc_attr( $active ); ?>">
+				<input type="hidden" name="_fx_builder_active" value="<?php echo esc_attr( $active ); ?>">
 				<?php wp_nonce_field( __FILE__ , 'fx_builder_switcher_nonce' ); ?>
 			</h1>
 			<?php
@@ -135,14 +135,17 @@ class Switcher{
 		}
 
 		/* Save Builder Tab */
-		if( isset( $request['fx_builder_active'] ) ){
-			$new_data = $request['fx_builder_active'] ? 1 : 0;
+		if( isset( $request['_fx_builder_active'] ) ){
+			$new_data = $request['_fx_builder_active'] ? 1 : 0;
 			if( $new_data ){
-				update_post_meta( $post_id, 'fx_builder_active', 1 );
+				update_post_meta( $post_id, '_fx_builder_active', 1 );
 			}
 			else{
-				delete_post_meta( $post_id, 'fx_builder_active' );
+				delete_post_meta( $post_id, '_fx_builder_active' );
 			}
+		}
+		else{
+			delete_post_meta( $post_id, '_fx_builder_active' );
 		}
 	}
 
