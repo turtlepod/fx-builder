@@ -1,6 +1,10 @@
 LIST OF ALL META KEY:
 ======================
 
+"_fxb_db_version"
+	data base version.
+	this is simply using plugin version.
+
 "_fx_builder_active"
 	this is switcher status. "1" if active
 	null if not active.
@@ -8,10 +12,6 @@ LIST OF ALL META KEY:
 "_fxb_row_ids"
 	comma separated of row ids.
 	row ids is time stamp when a row created.
-
-"_fxb_db_version"
-	data base version.
-	this is simply using plugin version.
 
 "fxb_rows"
 	this is a multidimentional array with all rows data
@@ -46,23 +46,5 @@ LIST OF ALL META KEY:
 		)
 		{other item id} => ....
 	)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

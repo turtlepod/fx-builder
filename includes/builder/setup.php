@@ -26,3 +26,6 @@ require_once( PATH . 'switcher.php' );
 /* The Page Builder */
 require_once( PATH . 'builder.php' );
 
+/* Front */
+require_once( PATH . 'front.php' );
+
