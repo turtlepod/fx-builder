@@ -350,14 +350,15 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
+/* Media Queries
+------------------------------------------ */
+@media screen and (max-width: 1200px) {
+	#post-body.columns-2 .fxb-col{
+		width: 100% !important;
+	}
+}
+@media screen and (max-width: 765px) {
+	#post-body.columns-1 .fxb-col{
+		width: 100% !important;
+	}
+}
