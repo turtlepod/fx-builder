@@ -31,7 +31,7 @@ class Switcher{
 		add_action( 'admin_init', array( $this, 'remove_wp_editor_support' ) );
 
 		/* Force Enable Rich Editing */
-		add_action( 'admin_init', array( $this, 'force_enable_rich_editing' ), 9 );
+		//add_action( 'admin_init', array( $this, 'force_enable_rich_editing' ), 9 );
 
 		/* Add HTML Class */
 		add_action( 'admin_head', array( $this, 'html_class_script' ) );

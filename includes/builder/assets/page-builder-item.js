@@ -75,6 +75,9 @@
 	 * Get Iframe CSS
 	 */
 	$.fn.fxB_getIframeCSS = function() {
+		if( typeof tinymce == 'undefined' ){
+			return '';
+		}
 		var iframe_css = '';
 		var iframe_styles = tinyMCEPreInit.mceInit.fxb_editor.content_css;
 		/* Loop each styles and create link el. */
@@ -89,6 +92,9 @@
 	 * Format Content
 	 */
 	$.fn.fxB_formatContent = function( raw_content ){
+		if( typeof tinymce == 'undefined' ){
+			return $.fn.fxB_wpautop( raw_content );
+		}
 		var content = "";
 		$.ajax({
 			type: "POST",
@@ -139,7 +145,13 @@
 	 */
 	$.fn.fxB_loadIfameContent = function( head ){
 		var iframe = this;
-		var editor_body_class = tinyMCEPreInit.mceInit.fxb_editor.body_class;
+		var editor_body_class = '';
+		if( typeof tinymce != 'undefined' ){
+			editor_body_class = tinyMCEPreInit.mceInit.fxb_editor.body_class;
+		}
+		else{
+			head = "<style>.wp-editor{font-family: Consolas,Monaco,monospace;font-size: 13px;line-height: 150%;}</style>"
+		}
 		var body_class = 'wp-editor';
 		var raw_content = iframe.siblings( '.fxb-item-textarea' ).val();
 		var content = $.fn.fxB_formatContent( raw_content );
@@ -162,6 +174,9 @@
 	 * Force Switch to Visual Editor
 	 */
 	$.fn.fxB_switchEditor = function( id ) {
+		if( typeof tinymce == 'undefined' ){
+			return;
+		}
 		id = id || 'content';
 
 		var editor = tinymce.get( id ),
@@ -363,9 +378,14 @@ jQuery(document).ready(function($){
 		target_textarea.addClass( 'fxb_editing_active' );
 
 		/* Set it to tinyMCE content */
-		var content = target_textarea.val();
-		content = $.fn.fxB_wpautop( content );
-		tinyMCE.get( editor_id ).setContent( content );
+		var raw_content = target_textarea.val();
+		var content = $.fn.fxB_wpautop( raw_content );
+		if( typeof tinymce != 'undefined' ){
+			tinyMCE.get( editor_id ).setContent( content );
+		}
+		else{
+			$( "#" + editor_id ).val( raw_content );
+		}
 
 		/* Show Editor Modal & Modal Overlay */
 		$( '.fxb-editor' ).show();
@@ -389,7 +409,9 @@ jQuery(document).ready(function($){
 		$.fn.fxB_switchEditor( editor_id );
 
 		/* Force tinyMCE to save the data to their textarea */
-		tinyMCE.get( editor_id ).save();
+		if( typeof tinymce != 'undefined' ){
+			tinyMCE.get( editor_id ).save();
+		}
 
 		/* Get the value saved in textarea */
 		var editor_val = $( '#' + editor_id ).val();
