@@ -381,6 +381,7 @@ jQuery(document).ready(function($){
 		var raw_content = target_textarea.val();
 		var content = $.fn.fxB_wpautop( raw_content );
 		if( typeof tinymce != 'undefined' ){
+			tinyMCE.get( editor_id ).show();
 			tinyMCE.get( editor_id ).setContent( content );
 		}
 		else{
@@ -411,6 +412,7 @@ jQuery(document).ready(function($){
 		/* Force tinyMCE to save the data to their textarea */
 		if( typeof tinymce != 'undefined' ){
 			tinyMCE.get( editor_id ).save();
+			tinyMCE.get( editor_id ).hide();
 		}
 
 		/* Get the value saved in textarea */
