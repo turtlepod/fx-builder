@@ -84,6 +84,56 @@
 		return iframe_css;
 	};
 
+
+	/**
+	 * Format Content
+	 */
+	$.fn.fxB_formatContent = function( raw_content ){
+		var content = "";
+		$.ajax({
+			type: "POST",
+			async: false,
+			url: fxb_ajax.ajax_url,
+			data:{
+				action     : 'fxb_item_format_content',
+				nonce      : fxb_ajax.ajax_nonce,
+				content    : raw_content,
+			},
+			success: function( data ){
+				content = data;
+			},
+			fail: function( data ){
+				content = raw_content;
+			},
+		});
+		return content;
+	}
+
+
+	/**
+	 * wpautop
+	 */
+	$.fn.fxB_wpautop = function( raw_content ){
+		var content = "";
+		$.ajax({
+			type: "POST",
+			async: false,
+			url: fxb_ajax.ajax_url,
+			data:{
+				action     : 'fxb_item_wpautop',
+				nonce      : fxb_ajax.ajax_nonce,
+				content    : raw_content,
+			},
+			success: function( data ){
+				content = data;
+			},
+			fail: function( data ){
+				content = raw_content;
+			},
+		});
+		return content;
+	}
+
 	/**
 	 * Load Iframe
 	 */
@@ -91,9 +141,11 @@
 		var iframe = this;
 		var editor_body_class = tinyMCEPreInit.mceInit.fxb_editor.body_class;
 		var body_class = 'wp-editor';
-		var content = iframe.siblings( '.fxb-item-textarea' ).val();
-		iframe.contents().find('head').html( head );
-		iframe.contents().find('body').attr( 'id', 'tinymce' ).addClass( editor_body_class ).addClass( body_class ).html( content );
+		var raw_content = iframe.siblings( '.fxb-item-textarea' ).val();
+		var content = $.fn.fxB_formatContent( raw_content );
+
+		iframe.contents().find( 'head' ).html( head );
+		iframe.contents().find( 'body' ).attr( 'id', 'tinymce' ).addClass( editor_body_class ).addClass( body_class ).html( content );
 
 		/* 
 		 * Firefox Hack
@@ -105,6 +157,65 @@
 		});
 	};
 
+	$.fn.fxB_switchEditor = function( id, mode ) {
+		id = id || 'content';
+		mode = mode || 'toggle';
+
+		var editorHeight, toolbarHeight, iframe,
+			editor = tinymce.get( id ),
+			wrap = $( '#wp-' + id + '-wrap' ),
+			$textarea = $( '#' + id ),
+			textarea = $textarea[0];
+
+		if ( 'toggle' === mode ) {
+			if ( editor && ! editor.isHidden() ) {
+				mode = 'html';
+			} else {
+				mode = 'tmce';
+			}
+		}
+
+		if ( 'tmce' === mode || 'tinymce' === mode ) {
+			if ( editor && ! editor.isHidden() ) {
+				return false;
+			}
+
+			if ( typeof( window.QTags ) !== 'undefined' ) {
+				window.QTags.closeAllTags( id );
+			}
+			if ( editor ) {
+				editor.show();
+			}
+			else {
+				tinymce.init( window.tinyMCEPreInit.mceInit[id] );
+			}
+
+			wrap.removeClass( 'html-active' ).addClass( 'tmce-active' );
+			$textarea.attr( 'aria-hidden', true );
+			window.setUserSetting( 'editor', 'tinymce' );
+
+		} else if ( 'html' === mode ) {
+			if ( editor && editor.isHidden() ) {
+				return false;
+			}
+
+			if ( editor ) {
+				if ( ! tinymce.Env.iOS ) {
+					iframe = editor.iframeElement;
+				}
+
+				editor.hide();
+			} else {
+				// The TinyMCE instance doesn't exist, show the textarea
+				$textarea.css({ 'display': '', 'visibility': '' });
+			}
+
+			wrap.removeClass( 'tmce-active' ).addClass( 'html-active' );
+			$textarea.attr( 'aria-hidden', false );
+			window.setUserSetting( 'editor', 'html' );
+		}
+	}
+
 
 })(jQuery);
 
@@ -112,6 +223,11 @@
 /* Document Ready
 ------------------------------------------ */
 jQuery(document).ready(function($){
+
+	/**
+	 * Make Sure Visual Editor Is Active
+	 */
+	$.fn.fxB_switchEditor( "fxb_editor", "tmce" );
 
 	/**
 	 * VAR
@@ -256,6 +372,14 @@ jQuery(document).ready(function($){
 	$( document.body ).on( 'click', '.fxb-item-iframe-overlay', function(e){
 		e.preventDefault();
 
+		var editor_id = "fxb_editor";
+
+		/**
+		 * Make sure it's using tmce editor
+		 * if not it will get "tinyMCE.get(...) is null" error
+		 */
+		$.fn.fxB_switchEditor( editor_id, "tmce" );
+
 		/* Textarea source */
 		var target_textarea = $( this ).siblings( '.fxb-item-textarea' );
 
@@ -263,7 +387,9 @@ jQuery(document).ready(function($){
 		target_textarea.addClass( 'fxb_editing_active' );
 
 		/* Set it to tinyMCE content */
-		tinyMCE.get( 'fxb_editor' ).setContent( target_textarea.val() );
+		var content = target_textarea.val();
+		content = $.fn.fxB_wpautop( content );
+		tinyMCE.get( editor_id ).setContent( content );
 
 		/* Show Editor Modal & Modal Overlay */
 		$( '.fxb-editor' ).show();
@@ -278,11 +404,19 @@ jQuery(document).ready(function($){
 	$( document.body ).on( 'click', '.fxb-editor .fxb-modal-close', function(e){
 		e.preventDefault();
 
+		var editor_id = "fxb_editor";
+
+		/**
+		 * Make sure it's using tmce editor
+		 * if not it will get "tinyMCE.get(...) is null" error
+		 */
+		$.fn.fxB_switchEditor( editor_id, "tmce" );
+
 		/* Force tinyMCE to save the data to their textarea */
-		tinyMCE.get( 'fxb_editor' ).save();
+		tinyMCE.get( editor_id ).save();
 
 		/* Get the value saved in textarea */
-		var editor_val = $('#fxb_editor').val();
+		var editor_val = $( '#' + editor_id ).val();
 
 		/* Item Textarea */
 		var item_textarea = $( '.fxb_editing_active' );
