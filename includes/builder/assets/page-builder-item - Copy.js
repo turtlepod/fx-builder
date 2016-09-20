@@ -157,35 +157,63 @@
 		});
 	};
 
-
-	/**
-	 * Force Switch to Visual Editor
-	 */
-	$.fn.fxB_switchEditor = function( id ) {
+	$.fn.fxB_switchEditor = function( id, mode ) {
 		id = id || 'content';
+		mode = mode || 'toggle';
 
-		var editor = tinymce.get( id ),
+		var editorHeight, toolbarHeight, iframe,
+			editor = tinymce.get( id ),
 			wrap = $( '#wp-' + id + '-wrap' ),
 			$textarea = $( '#' + id ),
 			textarea = $textarea[0];
 
-		if ( editor && ! editor.isHidden() ) {
-			return false;
+		if ( 'toggle' === mode ) {
+			if ( editor && ! editor.isHidden() ) {
+				mode = 'html';
+			} else {
+				mode = 'tmce';
+			}
 		}
 
-		if ( typeof( window.QTags ) !== 'undefined' ) {
-			window.QTags.closeAllTags( id );
-		}
-		if ( editor ) {
-			editor.show();
-		}
-		else {
-			tinymce.init( window.tinyMCEPreInit.mceInit[id] );
-		}
+		if ( 'tmce' === mode || 'tinymce' === mode ) {
+			if ( editor && ! editor.isHidden() ) {
+				return false;
+			}
 
-		wrap.removeClass( 'html-active' ).addClass( 'tmce-active' );
-		$textarea.attr( 'aria-hidden', true );
-		window.setUserSetting( 'editor', 'tinymce' );
+			if ( typeof( window.QTags ) !== 'undefined' ) {
+				window.QTags.closeAllTags( id );
+			}
+			if ( editor ) {
+				editor.show();
+			}
+			else {
+				tinymce.init( window.tinyMCEPreInit.mceInit[id] );
+			}
+
+			wrap.removeClass( 'html-active' ).addClass( 'tmce-active' );
+			$textarea.attr( 'aria-hidden', true );
+			window.setUserSetting( 'editor', 'tinymce' );
+
+		} else if ( 'html' === mode ) {
+			if ( editor && editor.isHidden() ) {
+				return false;
+			}
+
+			if ( editor ) {
+				if ( ! tinymce.Env.iOS ) {
+					iframe = editor.iframeElement;
+				}
+
+				editor.hide();
+			} else {
+				// The TinyMCE instance doesn't exist, show the textarea
+				$textarea.css({ 'display': '', 'visibility': '' });
+			}
+
+			wrap.removeClass( 'tmce-active' ).addClass( 'html-active' );
+			$textarea.attr( 'aria-hidden', false );
+			window.setUserSetting( 'editor', 'html' );
+		}
 	}
 
 
@@ -199,11 +227,7 @@ jQuery(document).ready(function($){
 	/**
 	 * Make Sure Visual Editor Is Active
 	 */
-	$.fn.fxB_switchEditor( "fxb_editor" );
-	$( document.body ).on( 'submit', '#post', function(){
-		$.fn.fxB_switchEditor( "fxb_editor" );
-	} );
-
+	$.fn.fxB_switchEditor( "fxb_editor", "tmce" );
 
 	/**
 	 * VAR
@@ -354,7 +378,7 @@ jQuery(document).ready(function($){
 		 * Make sure it's using tmce editor
 		 * if not it will get "tinyMCE.get(...) is null" error
 		 */
-		$.fn.fxB_switchEditor( editor_id );
+		$.fn.fxB_switchEditor( editor_id, "tmce" );
 
 		/* Textarea source */
 		var target_textarea = $( this ).siblings( '.fxb-item-textarea' );
@@ -386,7 +410,7 @@ jQuery(document).ready(function($){
 		 * Make sure it's using tmce editor
 		 * if not it will get "tinyMCE.get(...) is null" error
 		 */
-		$.fn.fxB_switchEditor( editor_id );
+		$.fn.fxB_switchEditor( editor_id, "tmce" );
 
 		/* Force tinyMCE to save the data to their textarea */
 		tinyMCE.get( editor_id ).save();
