@@ -4,10 +4,16 @@ jQuery(document).ready(function($){
 	$( document.body ).on( 'click', '#fxb-switcher a.nav-tab', function(e){
 		e.preventDefault();
 
+		/* Confirm ? */
+		if ( true !== confirm( $( this ).data( 'confirm' ) ) ) {
+			return false;
+		}
+
 		/* Force Switch to Visual Editor */
 		$.fn.fxB_switchEditor( "fxb_editor" );
 
 		var this_data = $( this ).data( 'fxb-switcher' );
+
 		/* Clicking "Editor" */
 		if( 'editor' == this_data ){
 			$( 'html' ).removeClass( 'fx_builder_active' );

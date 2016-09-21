@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Genbu Media f(x) Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-19 11:13+0700\n"
+"POT-Creation-Date: 2016-09-21 11:12+0700\n"
 "PO-Revision-Date: \n"
 "Last-Translator: David Chandra Purnama <david@shellcreeper.com>\n"
 "Language-Team: David Chandra P <david@shellcreeper.com>\n"
@@ -77,6 +77,26 @@ msgstr ""
 msgid "Add Item"
 msgstr ""
 
+#: includes/builder/switcher.php:110
+msgid ""
+"Would you like to clear your Page Builder content the next time you update "
+"this post and revert to using the standard editor?"
+msgstr ""
+
+#: includes/builder/switcher.php:110
+msgid "Editor"
+msgstr ""
+
+#: includes/builder/switcher.php:111
+msgid ""
+"Would you like to clear your editor existing content the next time you "
+"update this post and use Page Builder?"
+msgstr ""
+
+#: includes/builder/switcher.php:111 includes/settings/settings.php:49
+msgid "Page Builder"
+msgstr ""
+
 #: includes/builder/templates/tmpl-item.php:45
 msgid "Delete item?"
 msgstr ""
@@ -135,18 +155,14 @@ msgstr ""
 msgid "Dismiss this notice."
 msgstr ""
 
-#: includes/settings/settings.php:47 includes/settings/settings.php:62
+#: includes/settings/settings.php:48 includes/settings/settings.php:63
 msgid "Page Builder Settings"
 msgstr ""
 
-#: includes/settings/settings.php:48
-msgid "Page Builder"
-msgstr ""
-
-#: includes/settings/settings.php:136
+#: includes/settings/settings.php:123
 msgid "Disable WP Editor"
 msgstr ""
 
-#: includes/settings/settings.php:141
+#: includes/settings/settings.php:128
 msgid "Enable Page Builder"
 msgstr ""
