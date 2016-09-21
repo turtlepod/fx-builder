@@ -30,9 +30,6 @@ class Switcher{
 		/* Setup Write Panel */
 		add_action( 'admin_init', array( $this, 'remove_wp_editor_support' ) );
 
-		/* Force Enable Rich Editing */
-		//add_action( 'admin_init', array( $this, 'force_enable_rich_editing' ), 9 );
-
 		/* Add HTML Class */
 		add_action( 'admin_head', array( $this, 'html_class_script' ) );
 
@@ -67,31 +64,6 @@ class Switcher{
 			$disable_wp_editor = Fs::sanitize_post_types( get_option( 'fx-builder_disable-wp-editor' ) );
 			foreach( $disable_wp_editor as $pt ){
 				remove_post_type_support( $pt, 'editor' );
-			}
-		}
-	}
-
-
-	/**
-	 * Force Rich Editing
-	 */
-	public function force_enable_rich_editing(){
-		global $pagenow;
-		if( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ){
-			$post_type = '';
-			if( "post-new.php" == $pagenow && isset( $_GET['post_type'] ) && !empty( $_GET['post_type'] ) ){
-				$post_type = esc_attr( $_GET['post_type'] );
-			}
-			elseif( "post.php" == $pagenow && isset( $_GET['post'] ) && !empty( $_GET['post'] ) ){
-				$post_type = get_post_type( $_GET['post'] );
-			}
-			if( ! $post_type || ( $post_type && post_type_supports( $post_type, 'fx_builder' ) ) ){
-				add_filter( 'get_user_metadata', function( $val, $user_id, $key, $single ){
-					if( "rich_editing" == $key && get_current_user_id() == $user_id ){
-						return "true";
-					}
-					return $val;
-				}, 10, 4 );
 			}
 		}
 	}
