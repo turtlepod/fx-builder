@@ -2,7 +2,7 @@
 Contributors: turtlepod
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TT23LVNKA3AU2
 Tags: Page Builder, Drag and Drop, Alpha
-Requires at least: 4.4
+Requires at least: 4.6
 Tested up to: 4.6
 Stable tag: 1.0.0.alpha
 License: GPLv2 or later
@@ -33,6 +33,7 @@ This plugin is still in alpha stage. Do not use on production site. It might exp
 3. To install from plugin .zip file, click "Upload Plugin" button in "Plugins > Add New" Screen. Browse the plugin .zip file, and click "Install Now" button.
 4. Activate the plugin.
 5. Navigate to "Settings > Page Builder" to configure.
+6. Edit your content.
 
 == Frequently Asked Questions ==
 

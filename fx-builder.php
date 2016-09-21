@@ -53,18 +53,3 @@ function fx_builder_init(){
 	/* Setup */
 	require_once( $path . 'includes/setup.php' );
 }
-
-
-/* Activation
------------------------------------------- */
-
-/* Register activation hook. */
-register_activation_hook( __FILE__, 'fx_builder_plugin_activation' );
-
-/**
- * Runs only when the plugin is activated.
- * @since 1.0.0
- */
-function fx_builder_plugin_activation() {
-	require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'install.php' );
-}
