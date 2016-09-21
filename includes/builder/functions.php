@@ -123,6 +123,36 @@ class Functions{
 
 	/**
 	 * Format Post Builder Data To Single String
+	 * This is the builder data without div wrapper
+	 */
+	public static function to_string_raw( $post_id ){
+		$row_ids     = get_post_meta( $post_id, '_fxb_row_ids', true );
+		$rows_data   = get_post_meta( $post_id, '_fxb_rows', true );
+		$items_data  = get_post_meta( $post_id, '_fxb_items', true );
+		if( !$row_ids || ! $rows_data ) return false;
+		$rows        = explode( ',', $row_ids );
+
+		$content = '';
+		foreach( $rows as $row_id ){
+			if( isset( $rows_data[$row_id] ) ){
+				$cols = range( 1, $rows_data[$row_id]['col_num'] );
+				foreach( $cols as $k ){
+					$items = $rows_data[$row_id]['col_' . $k];
+					$items = explode(",", $items);
+					foreach( $items as $item_id ){
+						if( isset( $items_data[$item_id]['content'] ) && !empty( $items_data[$item_id]['content'] ) ){
+							$content .= $items_data[$item_id]['content'] . "\r\n\r\n";
+						}
+					}
+				}
+
+			}
+		}
+		return $content;
+	}
+
+	/**
+	 * Format Post Builder Data To Single String
 	 * This will format page builder data to content (single string)
 	 */
 	public static function to_string( $post_id ){
@@ -136,10 +166,11 @@ class Functions{
 		<div id="fxb-<?php echo intval( $post_id ); ?>" class="fxb-wrap">
 
 			<?php foreach( $rows as $row_id ){ ?>
-				<?php if( isset( $rows_data[$row_id] ) ){ ?>
+				<?php if( isset( $rows_data[$row_id] ) ){
+					$col_order = $rows_data[$row_id]['col_order'];
+					?>
 
-					<div id="fxb-row-<?php echo intval( $row_id ); ?>" class="fxb-row" data-index="<?php echo intval( $rows_data[$row_id]['index'] ); ?>" data-layout="<?php echo esc_attr( $rows_data[$row_id]['layout'] ); ?>" data-col_order=<?php echo esc_attr( $rows_data[$row_id]['col_order'] ); ?>>
-
+					<div id="fxb-row-<?php echo intval( $row_id ); ?>" class="fxb-row" data-index="<?php echo intval( $rows_data[$row_id]['index'] ); ?>" data-layout="<?php echo esc_attr( $rows_data[$row_id]['layout'] ); ?>" data-col_order=<?php echo self::sanitize_col_order( $rows_data[$row_id]['col_order'] ); ?>>
 						<?php
 						$cols = range( 1, $rows_data[$row_id]['col_num'] );
 						foreach( $cols as $k ){
@@ -195,6 +226,22 @@ class Functions{
 			$content = wpautop( $content );
 		}
 		return $content;
+	}
+
+
+	/* Sanitize
+	------------------------------------------ */
+	
+	/**
+	 * Sanitize Collapse Order
+	 */
+	public static function sanitize_col_order( $order ){
+		$default = is_rtl() ? 'r2l' : 'l2r';
+		$valid = array( 'r2l', 'l2r' );
+		if( in_array( $order, $valid ) ){
+			return $order;
+		}
+		return $default;
 	}
 
 

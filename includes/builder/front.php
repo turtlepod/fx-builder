@@ -23,8 +23,11 @@ class Front{
 	 */
 	public function __construct() {
 
-		/* Filter content with page builder content */
-		add_filter( 'the_content', array( $this, 'content_filter' ) );
+		/* Filter content with page builder content. Need to be after WP wpautop filter */
+		add_filter( 'the_content', array( $this, 'content_filter' ), 10 );
+
+		/* Enqueue Scripts */
+		add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) );
 	}
 
 	/**
@@ -41,6 +44,15 @@ class Front{
 			$content = Functions::to_string( $post_id );
 		}
 		return $content;
+	}
+
+	/**
+	 * Front-End Scripts
+	 */
+	public function scripts(){
+		if( apply_filters( 'fx_builder_css', true ) ){
+			wp_enqueue_style( 'fx-builder', URI . 'assets/front.css', array(), VERSION );
+		}
 	}
 
 }
