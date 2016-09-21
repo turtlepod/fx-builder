@@ -1,0 +1,168 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Genbu Media f(x) Plugins\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-21 11:12+0700\n"
+"PO-Revision-Date: \n"
+"Last-Translator: David Chandra Purnama <david@shellcreeper.com>\n"
+"Language-Team: David Chandra P <david@shellcreeper.com>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__;esc_html_e;esc_html__;_x;"
+"_n;_x:1,2c;_n:1,2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Generator: Poedit 1.8.8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/builder/builder.php:60
+msgid "Add Row"
+msgstr ""
+
+#: includes/builder/builder.php:74
+msgid "Edit Content"
+msgstr ""
+
+#: includes/builder/functions.php:26
+msgid "Done"
+msgstr ""
+
+#: includes/builder/functions.php:49
+msgid "Row Layout"
+msgstr ""
+
+#: includes/builder/functions.php:54
+msgid "1 Column"
+msgstr ""
+
+#: includes/builder/functions.php:56
+msgid "1/2 - 1/2"
+msgstr ""
+
+#: includes/builder/functions.php:58
+msgid "1/3 - 2/3"
+msgstr ""
+
+#: includes/builder/functions.php:60
+msgid "2/3 - 1/3"
+msgstr ""
+
+#: includes/builder/functions.php:62
+msgid "1/3 - 1/3 - 1/3"
+msgstr ""
+
+#: includes/builder/functions.php:64
+msgid "1/4 - 1/4 - 1/4 - 1/4"
+msgstr ""
+
+#: includes/builder/functions.php:74
+msgid "Collapse Order"
+msgstr ""
+
+#: includes/builder/functions.php:79
+msgid "Default"
+msgstr ""
+
+#: includes/builder/functions.php:81
+msgid "Left on Top"
+msgstr ""
+
+#: includes/builder/functions.php:83
+msgid "Right on Top"
+msgstr ""
+
+#: includes/builder/functions.php:117
+msgid "Add Item"
+msgstr ""
+
+#: includes/builder/switcher.php:110
+msgid ""
+"Would you like to clear your Page Builder content the next time you update "
+"this post and revert to using the standard editor?"
+msgstr ""
+
+#: includes/builder/switcher.php:110
+msgid "Editor"
+msgstr ""
+
+#: includes/builder/switcher.php:111
+msgid ""
+"Would you like to clear your editor existing content the next time you "
+"update this post and use Page Builder?"
+msgstr ""
+
+#: includes/builder/switcher.php:111 includes/settings/settings.php:49
+msgid "Page Builder"
+msgstr ""
+
+#: includes/builder/templates/tmpl-item.php:45
+msgid "Delete item?"
+msgstr ""
+
+#: includes/builder/templates/tmpl-row.php:47
+msgid "Delete row?"
+msgstr ""
+
+#: includes/builder/templates/tmpl-row.php:52
+msgid "Row Settings"
+msgstr ""
+
+#: includes/builder/templates/tmpl-row.php:62
+msgid "1st Column"
+msgstr ""
+
+#: includes/builder/templates/tmpl-row.php:67
+msgid "2nd Column"
+msgstr ""
+
+#: includes/builder/templates/tmpl-row.php:72
+msgid "3rd Column"
+msgstr ""
+
+#: includes/builder/templates/tmpl-row.php:77
+msgid "4th Column"
+msgstr ""
+
+#: includes/prepare.php:15
+msgid "f(x) Builder"
+msgstr ""
+
+#: includes/prepare.php:17
+msgid "Get Support"
+msgstr ""
+
+#: includes/prepare.php:28
+#, php-format
+msgid ""
+"f(x) Builder plugin requires at least WordPress 4.4+. You are running "
+"WordPress %s. Please upgrade and try again."
+msgstr ""
+
+#: includes/prepare.php:32
+#, php-format
+msgid ""
+"f(x) Builder plugin requires at least PHP 5.3+. You are running PHP %s. "
+"Please upgrade and try again."
+msgstr ""
+
+#: includes/prepare.php:43
+msgid "Thank you for using our plugin :)"
+msgstr ""
+
+#: includes/prepare.php:44
+msgid "Dismiss this notice."
+msgstr ""
+
+#: includes/settings/settings.php:48 includes/settings/settings.php:63
+msgid "Page Builder Settings"
+msgstr ""
+
+#: includes/settings/settings.php:123
+msgid "Disable WP Editor"
+msgstr ""
+
+#: includes/settings/settings.php:128
+msgid "Enable Page Builder"
+msgstr ""

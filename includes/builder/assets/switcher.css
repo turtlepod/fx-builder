@@ -1,0 +1,9 @@
+#fxb-wrapper{
+	display: none !important;
+}
+.fx_builder_active #postdivrich{
+	display: none !important;
+}
+.fx_builder_active #fxb-wrapper{
+	display: block !important;
+}
