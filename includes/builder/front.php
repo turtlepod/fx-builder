@@ -39,7 +39,7 @@ class Front{
 		if( ! post_type_supports( $post_type, 'fx_builder' ) ){
 			return $content;
 		}
-		$active = get_post_meta( $post_id, 'fx_builder_active', true );
+		$active = get_post_meta( $post_id, '_fx_builder_active', true );
 		if( $active ){
 			$content = Functions::to_string( $post_id );
 		}
