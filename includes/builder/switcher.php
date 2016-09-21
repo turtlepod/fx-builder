@@ -37,7 +37,7 @@ class Switcher{
 		add_action( 'edit_form_after_title', array( $this, 'editor_toggle' ) );
 
 		/* Save Switcher Preference */
-		add_action( 'save_post', array( $this, 'save' ), 10, 2 );
+		add_action( 'save_post', array( $this, 'save' ), 9, 2 );
 
 		/* Scripts */
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ), 99 );

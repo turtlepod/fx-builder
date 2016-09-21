@@ -142,6 +142,9 @@ class Builder{
 	 * @since 1.0.0
 	 */
 	public function save( $post_id, $post ){
+
+		/* Prepare
+		------------------------------------------ */
 		$request = stripslashes_deep( $_POST );
 		if ( ! isset( $request['fxb_nonce'] ) || ! wp_verify_nonce( $request['fxb_nonce'], __FILE__ ) ){
 			return false;
@@ -153,6 +156,9 @@ class Builder{
 		if ( !current_user_can( $post_type->cap->edit_post, $post_id ) ){
 			return false;
 		}
+
+		/* Page Builder Datas
+		------------------------------------------ */
 
 		/* DB Version */
 		if( isset( $request['_fxb_db_version'] ) ){
@@ -206,6 +212,25 @@ class Builder{
 		else{
 			delete_post_meta( $post_id, '_fxb_items' );
 		}
+
+		/* Content Data
+		------------------------------------------ */
+		$active = get_post_meta( $post_id, '_fx_builder_active', true );
+		if( $active ){
+			$pb_content = Functions::to_string_raw( $post_id );
+			$this_post = array(
+				'ID'           => $post_id,
+				'post_content' => sanitize_post_field( 'post_content', $pb_content, $post_id, 'db' ),
+			);
+			/**
+			 * Prevent infinite loop.
+			 * @link https://developer.wordpress.org/reference/functions/wp_update_post/
+			 */
+			remove_action( 'save_post', array( $this, __FUNCTION__ ) );
+			wp_update_post( $this_post );
+			add_action( 'save_post', array( $this, __FUNCTION__ ) );
+		}
+
 	}
 
 	/**
