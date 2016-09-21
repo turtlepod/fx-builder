@@ -220,23 +220,7 @@ class Builder{
 		check_ajax_referer( 'fxb_ajax_nonce', 'nonce' );
 
 		/* Format Content */
-		$content = '';
-		if( isset( $request['content'] ) && !empty( $request['content'] ) ){
-			global $wp_embed;
-			$content = $request['content'];
-			$content = $wp_embed->run_shortcode( $content );
-			$content = $wp_embed->autoembed( $content );
-			$content = wptexturize( $content );
-			$content = convert_smilies( $content );
-			$content = convert_chars( $content );
-			$content = wptexturize( $content );
-			$content = do_shortcode( $content );
-			$content = shortcode_unautop( $content );
-			if( function_exists('wp_make_content_images_responsive') ) { /* WP 4.4+ */
-				$content = wp_make_content_images_responsive( $content );
-			}
-			$content = wpautop( $content );
-		}
+		$content = isset( $request['content'] ) ? Functions::do_content( $request['content'] ) : '';
 
 		/* Output */
 		echo $content;
