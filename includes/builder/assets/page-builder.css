@@ -154,6 +154,9 @@
 	font-weight: 400;
 	text-align: center;
 	border-top: 1px solid #ccc;
+	margin: 10px 0 0 0;
+	font-size: 14px;
+	line-height: 1em;
 }
 .fxb-col-title span{
 	top: -10px;
@@ -166,13 +169,13 @@
 	background-color: #fff;
 	border: 1px solid #dfdfdf;
 	clear: both;
-	height: 76px;
+	height: 36px;
 }
 .fxb-add-item:before{
 	color: #1bc865;
 	content: "\f502";
 	display: block;
-	font: 36px/76px dashicons;
+	font: 24px/36px dashicons;
 	text-align: center;
 }
 .fxb-add-item span{
@@ -186,7 +189,7 @@
 ------------------------------------------ */
 /* Container */
 .fxb-col-content{
-	padding: 10px 0;
+	padding: 10px 0 0 0;
 }
 .fxb-item.ui-sortable-placeholder{
 	border: 1px dashed #ccc;
@@ -197,7 +200,7 @@
 .fxb-item{
 	border: 1px solid #d9d9d9;
 	background: #fff;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 .fxb-item-menu{
 	background: #eee;
