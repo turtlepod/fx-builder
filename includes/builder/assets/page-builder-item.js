@@ -432,6 +432,7 @@ jQuery(document).ready(function($){
 		if( typeof tinymce != 'undefined' ){
 			tinyMCE.get( editor_id ).show();
 			tinyMCE.get( editor_id ).setContent( content );
+			tinyMCE.get( editor_id ).undoManager.clear();
 		}
 		else{
 			$( "#" + editor_id ).val( raw_content );
