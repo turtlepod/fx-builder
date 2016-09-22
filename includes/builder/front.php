@@ -64,7 +64,7 @@ class Front{
 	public function post_class( $classes, $class, $post_id ){
 		$post_type = get_post_type( $post_id );
 		if( ! post_type_supports( $post_type, 'fx_builder' ) ){
-			return $content;
+			return $classes;
 		}
 		$active = get_post_meta( $post_id, '_fx_builder_active', true );
 		if( $active ){
