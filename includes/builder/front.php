@@ -28,6 +28,9 @@ class Front{
 
 		/* Enqueue Scripts */
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) );
+
+		/* Post Class */
+		add_filter( 'post_class', array( $this, 'post_class' ), 10, 3 );
 	}
 
 	/**
@@ -53,6 +56,21 @@ class Front{
 		if( apply_filters( 'fx_builder_css', true ) ){
 			wp_enqueue_style( 'fx-builder', URI . 'assets/front.css', array(), VERSION );
 		}
+	}
+
+	/**
+	 * Post Class
+	 */
+	public function post_class( $classes, $class, $post_id ){
+		$post_type = get_post_type( $post_id );
+		if( ! post_type_supports( $post_type, 'fx_builder' ) ){
+			return $content;
+		}
+		$active = get_post_meta( $post_id, '_fx_builder_active', true );
+		if( $active ){
+			$classes[] = 'fx-builder-entry';
+		}
+		return $classes;
 	}
 
 }
