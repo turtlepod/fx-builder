@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Page Builder, Drag and Drop, Alpha
 Requires at least: 4.6
 Tested up to: 4.6
-Stable tag: 1.0.0.alpha
+Stable tag: 1.0.0.alpha2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
