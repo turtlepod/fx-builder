@@ -246,7 +246,7 @@
 .fxb-item-iframe{
 	width: 100%;
 	height: auto;
-	min-height: 200px;
+	min-height: 150px;
 }
 /* Textarea */
 .fxb-item-textarea{
