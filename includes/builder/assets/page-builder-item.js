@@ -440,6 +440,12 @@ jQuery(document).ready(function($){
 		/* Show Editor Modal & Modal Overlay */
 		$( '.fxb-editor' ).show();
 		$( '.fxb-modal-overlay' ).show();
+
+		/* Fix Height */
+		$( '.fxb-editor .fxb-modal-content' ).css( "height", $( '.fxb-editor' ).height() - 35 + "px" ); 
+		$( window ).resize( function(){
+			$( '.fxb-editor .fxb-modal-content' ).css( "height", "auto" ).css( "height", $( '.fxb-editor' ).height() - 35 + "px" ); 
+		});
 	});
 
 	/**

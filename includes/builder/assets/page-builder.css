@@ -268,6 +268,7 @@
 	padding: 0;
 	z-index: 100050;
 	background: rgba(0,0,0,0.7);
+	overflow: hidden;
 }
 	.fxb-modal-stop-scoll{
 		overflow: hidden;
