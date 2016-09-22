@@ -111,6 +111,7 @@ class Switcher{
 				<a data-fxb-switcher="builder" data-confirm="<?php esc_attr_e( "Would you like to clear your editor existing content the next time you update this post and use Page Builder?", 'fx-builder' ); ?>" class="<?php echo esc_attr( $builder_class ); ?>" href="#"><?php _e( 'Page Builder', 'fx-builder' ); ?></a>
 				<input type="hidden" name="_fx_builder_active" value="<?php echo esc_attr( $active ); ?>">
 				<?php wp_nonce_field( __FILE__ , 'fx_builder_switcher_nonce' ); ?>
+				<?php do_action( 'fxb_switcher_nav', $post ); ?>
 			</h1>
 			<?php
 		}

@@ -28,4 +28,19 @@ class Functions{
 		return $post_types;
 	}
 
+	/**
+	 * Sanitize Custom CSS
+	 */
+	public static function sanitize_css( $css ){
+		$css = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $css );
+		$css = wp_kses( $css, array() );
+		$css = esc_html( $css );
+		$css = str_replace( '&gt;', '>', $css );
+		$css = str_replace( '&quot;', '"', $css );
+		$css = str_replace( '&amp;', "&", $css );
+		$css = str_replace( '&amp;#039;', "'", $css );
+		$css = str_replace( '&#039;', "'", $css );
+		return $css;
+	}
+
 } // end class
