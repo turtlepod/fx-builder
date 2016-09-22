@@ -35,10 +35,6 @@ class Builder{
 		/* Save Builder Data */
 		add_action( 'save_post', array( $this, 'save' ), 10, 2 );
 
-		/* Format Content Ajax */
-		add_action( 'wp_ajax_fxb_item_format_content', array( $this, 'ajax_format_content' ) );
-		add_action( 'wp_ajax_fxb_item_wpautop', array( $this, 'ajax_wpautop' ) );
-
 		/* Scripts */
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ), 99 );
 	}
@@ -232,49 +228,6 @@ class Builder{
 		}
 
 	}
-
-	/**
-	 * Ajax Format Content
-	 */
-	public function ajax_format_content(){
-
-		/* Strip Slash */
-		$request = stripslashes_deep( $_POST );
-
-		/* Check Ajax */
-		check_ajax_referer( 'fxb_ajax_nonce', 'nonce' );
-
-		/* Format Content */
-		$content = isset( $request['content'] ) ? Functions::do_content( $request['content'] ) : '';
-
-		/* Output */
-		echo $content;
-		wp_die();
-	}
-
-
-	/**
-	 * Ajax Format Content
-	 */
-	public function ajax_wpautop(){
-
-		/* Strip Slash */
-		$request = stripslashes_deep( $_POST );
-
-		/* Check Ajax */
-		check_ajax_referer( 'fxb_ajax_nonce', 'nonce' );
-
-		/* Format Content */
-		$content = '';
-		if( isset( $request['content'] ) && !empty( $request['content'] ) ){
-			$content = wpautop( $request['content'] );
-		}
-
-		/* Output */
-		echo $content;
-		wp_die();
-	}
-
 
 	/**
 	 * Admin Scripts
