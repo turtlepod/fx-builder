@@ -4,10 +4,20 @@ jQuery(document).ready(function($){
 	$( document.body ).on( 'click', '#fxb-switcher a.nav-tab', function(e){
 		e.preventDefault();
 
-		/* Confirm ? */
-		if ( true !== confirm( $( this ).data( 'confirm' ) ) ) {
+		/* Bail */
+		if( $( this ).hasClass( 'nav-tab-active' ) ){
 			return false;
 		}
+
+		/* Confirm ? */
+		if( ! $( this ).hasClass( 'switch-confirmed' ) ){
+			if ( true !== confirm( $( this ).data( 'confirm' ) ) ) {
+				return false;
+			}
+		}
+
+		/* Add Confirmed Class */
+		$( this ).addClass( 'switch-confirmed' );
 
 		/* Force Switch to Visual Editor */
 		$.fn.fxB_switchEditor( "fxb_editor" );
