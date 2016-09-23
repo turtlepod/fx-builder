@@ -79,6 +79,10 @@
 	max-width: 100%;
 	height: auto;
 }
+/* Hide Bottom Add Row */
+.fxb-add-row[data-add_row_method="append"]{
+	display: none;
+}
 
 /* Page Builder
 ------------------------------------------ */

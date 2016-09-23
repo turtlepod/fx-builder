@@ -70,6 +70,15 @@ jQuery(document).ready(function($){
 	});
 
 	/**
+	 * Show Bottom Add Row
+	 * 
+	 ************************************
+	 */
+	if( $( '#fxb .fxb-row' ).length ) {
+		$( '.fxb-add-row' ).show();
+	}
+
+	/**
 	 * VAR
 	 * 
 	 ************************************
@@ -103,7 +112,7 @@ jQuery(document).ready(function($){
 		}
 
 		/* Add template to container */
-		if( $( this ).parents( '.fxb-add-row' ).hasClass( 'prepend' ) ){
+		if( "prepend" == $( this ).parents( '.fxb-add-row' ).data( 'add_row_method' ) ){
 			$( '#fxb' ).prepend( row_template( row_config ) );
 		}
 		else{
@@ -115,6 +124,9 @@ jQuery(document).ready(function($){
 
 		/* Make New Column Sortable */
 		$.fn.fxB_sortItems();
+
+		/* Always show both add row buttons */
+		$( '.fxb-add-row' ).show();
 
 	} );
 
@@ -139,6 +151,11 @@ jQuery(document).ready(function($){
 
 			/* Update Index */
 			$.fn.fxB_updateRowsIndex();
+
+			/* No Row, Hide Bottom Add Row */
+			if( ! $( '#fxb .fxb-row' ).length ) {
+				$( '.fxb-add-row[data-add_row_method="append"]' ).hide();
+			}
 		}
 	} );
 

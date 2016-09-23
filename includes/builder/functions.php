@@ -13,7 +13,7 @@ class Functions{
 	public static function add_row_field( $method = 'prepend' ){
 		$img = URI . 'assets/layout-images/';
 		?>
-		<div class="fxb-add-row <?php echo esc_attr( $method ); ?>">
+		<div class="fxb-add-row" data-add_row_method="<?php echo esc_attr( $method ); ?>">
 
 			<div class="layout-thumb-wrap">
 				<a class="layout-thumb" data-row-layout="1" data-row-col_num="1" href="#"><img src="<?php echo esc_url( $img . 'layout-1.png' ); ?>"></a>
