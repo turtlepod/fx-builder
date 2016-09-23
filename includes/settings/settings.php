@@ -34,6 +34,9 @@ class Settings{
 
 		/* Register Settings and Fields */
 		add_action( 'admin_init', array( $this, 'register_settings' ), 1 );
+
+		/* Admin Head */
+		add_action( 'admin_head-settings_page_fx-builder', array( $this, 'admin_head' ) );
 	}
 
 
@@ -136,5 +139,17 @@ class Settings{
 			}
 		}
 
+	}
+
+	/**
+	 * Admin Head
+	 */
+	public function admin_head(){
+		if( ! get_option( 'fx-builder_welcome' ) && current_user_can( 'manage_options' ) ){
+			?>
+			<style>.fx-welcome-notice{display:none;}</style>
+			<?php
+			update_option( 'fx-builder_welcome', 1 );
+		}
 	}
 }

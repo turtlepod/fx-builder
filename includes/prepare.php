@@ -38,10 +38,12 @@ if( ! $sys_req->check() ) return;
 
 /* Welcome Notice
 ------------------------------------------ */
-require_once( $path . 'library/welcome-notice.php' );
-$args = array( 
-	'notice'  => wpautop( __( 'Thank you for using our plugin :)', 'fx-builder' ) ),
-	'dismiss' => __( 'Dismiss this notice.', 'fx-builder' ),
-	'option'  => 'fx-builder_welcome',
-);
-//new Fx_Builder_Welcome_Notice( $args );
+if( ! get_option( 'fx-builder' ) ){
+	require_once( $path . 'library/welcome-notice.php' );
+	$args = array( 
+		'notice'  => wpautop( sprintf( __( 'Please Navigate to <a href="%s">Page Builder Settings</a>.', 'fx-builder' ), esc_url( add_query_arg( 'page', 'fx-builder', admin_url( 'options-general.php' ) ) ) ) ),
+		'dismiss' => __( 'Dismiss this notice.', 'fx-builder' ),
+		'option'  => 'fx-builder_welcome',
+	);
+	new Fx_Builder_Welcome_Notice( $args );
+}
