@@ -1,6 +1,6 @@
 /* Box Sizing To All
 ------------------------------------------ */
-#fxb-menu, #fxb-menu *, #fxb-menu *:before, #fxb-menu *:after,
+.fxb-add-row, .fxb-add-row *, .fxb-add-row *:before, .fxb-add-row *:after,
 #fxb, #fxb *, #fxb *:before, #fxb *:after{
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -41,14 +41,44 @@
 
 /* Menu
 ------------------------------------------ */
-#fxb-menu{
+.fxb-add-row{
 	margin-top: 20px;
-	padding: 0 10px;
-	background: #fff;
-	border: 1px solid #e5e5e5;
-	
+	padding: 0;
+	width: 100%;
 }
-
+.fxb-add-row:after{
+	content:".";display:block;height:0;clear:both;visibility:hidden;
+}
+.layout-thumb-wrap{
+	background: #fff;
+	display: block;
+	width: 16.6%;
+	float: left;
+	padding: 30px;
+	border: 1px solid #e5e5e5;
+	border-right: 0;
+}
+.layout-thumb-wrap:last-child{
+	border-right: 1px solid #e5e5e5;
+}
+.layout-thumb{
+	background: #fff;
+	display: block;
+	float: left;
+	width: 100%;
+	padding: 0;
+	border: 1px solid #e5e5e5;
+}
+.layout-thumb:hover{
+	border-color: #bbb;
+}
+.layout-thumb img{
+	display: block;
+	float: left;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+}
 
 /* Page Builder
 ------------------------------------------ */
@@ -356,6 +386,26 @@
 
 /* Media Queries
 ------------------------------------------ */
+/* Add Rows */
+@media screen and (max-width: 1200px) {
+	.layout-thumb-wrap{
+		padding: 20px;
+	}
+}
+@media screen and (max-width: 500px) {
+	.layout-thumb-wrap{
+		width: 33.3%;
+	}
+	.layout-thumb-wrap:nth-child(6){
+		border-right: 0;
+	}
+	.layout-thumb-wrap:nth-child(1),
+	.layout-thumb-wrap:nth-child(2),
+	.layout-thumb-wrap:nth-child(3){
+		border-bottom: none;
+	}
+}
+/* Cols */
 @media screen and (max-width: 1200px) {
 	#post-body.columns-2 .fxb-col{
 		width: 100% !important;
@@ -366,3 +416,4 @@
 		width: 100% !important;
 	}
 }
+

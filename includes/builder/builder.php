@@ -52,12 +52,12 @@ class Builder{
 
 			<div class="fxb-modal-overlay" style="display:none;"></div>
 
-			<div id="fxb-menu">
-				<p><a href="#" class="button button-primary fxb-add-row"><?php _e( 'Add Row', 'fx-builder' ); ?></a></p>
-			</div><!-- #fxb-menu -->
+			<?php Functions::add_row_field( 'prepend' ); ?>
 
 			<div id="fxb">
 			</div><!-- #fxb -->
+
+			<?php Functions::add_row_field( 'append' ); ?>
 
 			<input type="hidden" name="_fxb_row_ids" value="<?php echo esc_attr( get_post_meta( $post_id, '_fxb_row_ids', true ) ); ?>" autocomplete="off"/>
 			<input type="hidden" name="_fxb_db_version" value="<?php echo esc_attr( VERSION ); ?>" autocomplete="off"/>

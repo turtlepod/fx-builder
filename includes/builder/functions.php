@@ -8,6 +8,37 @@ namespace fx_builder\builder;
 class Functions{
 
 	/**
+	 * Add Row
+	 */
+	public static function add_row_field( $method = 'prepend' ){
+		$img = URI . 'assets/layout-images/';
+		?>
+		<div class="fxb-add-row <?php echo esc_attr( $method ); ?>">
+
+			<div class="layout-thumb-wrap">
+				<a class="layout-thumb" data-row-layout="1" data-row-col_num="1" href="#"><img src="<?php echo esc_url( $img . 'layout-1.png' ); ?>"></a>
+			</div>
+			<div class="layout-thumb-wrap">
+				<a class="layout-thumb" data-row-layout="12_12" data-row-col_num="2" href="#"><img src="<?php echo esc_url( $img . 'layout-12_12.png' ); ?>"></a>
+			</div>
+			<div class="layout-thumb-wrap">
+				<a class="layout-thumb" data-row-layout="13_23" data-row-col_num="2" href="#"><img src="<?php echo esc_url( $img . 'layout-13_23.png' ); ?>"></a>
+			</div>
+			<div class="layout-thumb-wrap">
+				<a class="layout-thumb" data-row-layout="23_13" data-row-col_num="2" href="#"><img src="<?php echo esc_url( $img . 'layout-23_13.png' ); ?>"></a>
+			</div>
+			<div class="layout-thumb-wrap">
+				<a class="layout-thumb" data-row-layout="13_13_13" data-row-col_num="3" href="#"><img src="<?php echo esc_url( $img . 'layout-13_13_13.png' ); ?>"></a>
+			</div>
+			<div class="layout-thumb-wrap">
+				<a class="layout-thumb" data-row-layout="14_14_14_14" data-row-col_num="4" href="#"><img src="<?php echo esc_url( $img . 'layout-14_14_14_14.png' ); ?>"></a>
+			</div>
+
+		</div><!-- .fxb-add-row -->
+		<?php
+	}
+
+	/**
 	 * Render Modal Box Settings HTML
 	 * @since 1.0.0
 	 */

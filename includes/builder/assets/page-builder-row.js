@@ -72,25 +72,31 @@ jQuery(document).ready(function($){
 	 * 
 	 ************************************
 	 */
-	$( document.body ).on( 'click', '.fxb-add-row', function(e){
+	$( document.body ).on( 'click', '.fxb-add-row a', function(e){
 		e.preventDefault();
 
 		/* Var */
 		var row_id = new Date().getTime(); // time stamp when crating row
-
-		/* Add template to container */
-		$( '#fxb' ).prepend( row_template( {
+		var row_config = {
 			id          : row_id,
 			index       : '1',
 			state       : 'open',
-			layout      : '1',
-			col_num     : '1',
+			layout      : $( this ).data( 'row-layout' ),
+			col_num     : $( this ).data( 'row-col_num' ),
 			col_order   : '',
 			col_1       : '',
 			col_2       : '',
 			col_3       : '',
 			col_4       : '',
-		} ) );
+		}
+
+		/* Add template to container */
+		if( $( this ).parents( '.fxb-add-row' ).hasClass( 'prepend' ) ){
+			$( '#fxb' ).prepend( row_template( row_config ) );
+		}
+		else{
+			$( '#fxb' ).append( row_template( row_config ) );
+		}
 
 		/* Update Index */
 		$.fn.fxB_updateRowsIndex();
