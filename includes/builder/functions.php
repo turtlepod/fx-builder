@@ -1,5 +1,7 @@
 <?php
 namespace fx_builder\builder;
+use fx_builder\Functions as Fs;
+if ( ! defined( 'WPINC' ) ) { die; }
 
 /**
  * Functions.
@@ -236,6 +238,7 @@ class Functions{
 					$row_html_id = isset( $rows_data[$row_id]['row_html_id'] ) && !empty( $rows_data[$row_id]['row_html_id'] ) ? $rows_data[$row_id]['row_html_id'] : "fxb-row-{$row_id}";
 					$row_html_id = sanitize_html_class( $row_html_id );
 					$row_html_class = isset( $rows_data[$row_id]['row_html_class'] ) && !empty( $rows_data[$row_id]['row_html_class'] ) ? "fxb-row {$rows_data[$row_id]['row_html_class']}" : "fxb-row";
+					$row_html_class = Fs::sanitize_html_classes( $row_html_class );
 					?>
 
 					<div id="<?php echo $row_html_id; ?>" class="<?php echo esc_attr( $row_html_class ); ?>" data-index="<?php echo intval( $rows_data[$row_id]['index'] ); ?>" data-layout="<?php echo esc_attr( $rows_data[$row_id]['layout'] ); ?>" data-col_order=<?php echo self::sanitize_col_order( $rows_data[$row_id]['col_order'] ); ?>>

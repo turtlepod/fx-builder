@@ -43,4 +43,14 @@ class Functions{
 		return $css;
 	}
 
+	/**
+	 * Sanitize HTML Classes
+	 */
+	public static function sanitize_html_classes( $classes ){
+		$classes = explode( " ", $classes );
+		$classes = array_map( "sanitize_html_class", $classes );
+		$classes = implode( " ", $classes );
+		return $classes;
+	}
+
 } // end class
