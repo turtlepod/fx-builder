@@ -39,7 +39,7 @@
 
 			/* Update Row */
 			$( this ).attr( 'data-index', row_index ); // set data attr
-			$( this ).find( '.fxb_row_index' ).text( row_index ); // display text
+			$( this ).find( '.fxb_row_index' ).attr( 'data-row-index', row_index ); // display text
 			$( this ).find( 'input[data-row_field="index"]' ).val( row_index ); // change input
 
 			/* Get ID */
@@ -179,6 +179,10 @@ jQuery(document).ready(function($){
 	/* == Close Settings == */
 	$( document.body ).on( 'click', '.fxb-row-settings .fxb-modal-close', function(e){
 		e.preventDefault();
+
+		/* Update Title in Row */
+		var this_title = $( this ).parents( '.fxb-modal' ).find( 'input[data-row_field="row_title"]' ).val();
+		$( this ).parents( '.fxb-row-menu' ).find( '.fxb_row_title' ).data( 'row-title', this_title ).attr( 'data-row-title', this_title );
 
 		/* Hide Settings Modal */
 		$( this ).parents( '.fxb-modal' ).hide();

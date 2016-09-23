@@ -74,6 +74,18 @@ class Functions{
 	**/
 	public static function row_settings(){
 		?>
+		<?php /* Row Title */ ?>
+		<div class="fxb-modal-field fxb-modal-field-text">
+
+			<label for="fxb_rows[{{data.id}}][row_title]">
+				<?php esc_html_e( 'Row Title', 'fx-builder' ); ?>
+			</label>
+
+			<input autocomplete="off" id="fxb_rows[{{data.id}}][row_title]" data-row_field="row_title" name="_fxb_rows[{{data.id}}][row_title]" type="text" value="{{data.row_title}}">
+
+		</div><!-- .fxb-modal-field -->
+
+		<?php /* Row Layout */ ?>
 		<div class="fxb-modal-field fxb-modal-field-select">
 
 			<label for="fxb_rows[{{data.id}}][layout]">
@@ -114,6 +126,28 @@ class Functions{
 				<option value="r2l" <# if( data.col_order == 'r2l' ){ print('selected="selected"') } #>><?php _e( 'Right on Top', 'fx-builder' ); ?></option>
 
 			</select>
+
+		</div><!-- .fxb-modal-field -->
+
+		<?php /* HTML ID */ ?>
+		<div class="fxb-modal-field fxb-modal-field-text">
+
+			<label for="fxb_rows[{{data.id}}][row_html_id]">
+				<?php esc_html_e( 'HTML ID', 'fx-builder' ); ?>
+			</label>
+
+			<input autocomplete="off" id="fxb_rows[{{data.id}}][row_html_id]" data-row_field="row_html_id" name="_fxb_rows[{{data.id}}][row_html_id]" type="text" value="{{data.row_html_id}}">
+
+		</div><!-- .fxb-modal-field -->
+
+		<?php /* HTML CLASSES */ ?>
+		<div class="fxb-modal-field fxb-modal-field-text">
+
+			<label for="fxb_rows[{{data.id}}][row_html_class]">
+				<?php esc_html_e( 'HTML Class', 'fx-builder' ); ?>
+			</label>
+
+			<input autocomplete="off" id="fxb_rows[{{data.id}}][row_html_class]" data-row_field="row_html_class" name="_fxb_rows[{{data.id}}][row_html_class]" type="text" value="{{data.row_html_class}}">
 
 		</div><!-- .fxb-modal-field -->
 		<?php
@@ -199,9 +233,12 @@ class Functions{
 			<?php foreach( $rows as $row_id ){ ?>
 				<?php if( isset( $rows_data[$row_id] ) ){
 					$col_order = $rows_data[$row_id]['col_order'];
+					$row_html_id = isset( $rows_data[$row_id]['row_html_id'] ) && !empty( $rows_data[$row_id]['row_html_id'] ) ? $rows_data[$row_id]['row_html_id'] : "fxb-row-{$row_id}";
+					$row_html_id = sanitize_html_class( $row_html_id );
+					$row_html_class = isset( $rows_data[$row_id]['row_html_class'] ) && !empty( $rows_data[$row_id]['row_html_class'] ) ? "fxb-row {$rows_data[$row_id]['row_html_class']}" : "fxb-row";
 					?>
 
-					<div id="fxb-row-<?php echo intval( $row_id ); ?>" class="fxb-row" data-index="<?php echo intval( $rows_data[$row_id]['index'] ); ?>" data-layout="<?php echo esc_attr( $rows_data[$row_id]['layout'] ); ?>" data-col_order=<?php echo self::sanitize_col_order( $rows_data[$row_id]['col_order'] ); ?>>
+					<div id="<?php echo $row_html_id; ?>" class="<?php echo esc_attr( $row_html_class ); ?>" data-index="<?php echo intval( $rows_data[$row_id]['index'] ); ?>" data-layout="<?php echo esc_attr( $rows_data[$row_id]['layout'] ); ?>" data-col_order=<?php echo self::sanitize_col_order( $rows_data[$row_id]['col_order'] ); ?>>
 						<?php
 						$cols = range( 1, $rows_data[$row_id]['col_num'] );
 						foreach( $cols as $k ){
