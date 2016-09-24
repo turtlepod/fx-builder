@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Page Builder, Drag and Drop, Alpha
 Requires at least: 4.6
 Tested up to: 4.6
-Stable tag: 1.0.0.alpha2
+Stable tag: 1.0.0.alpha3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,16 @@ Yes, I actually use it in my own site, because I need it. But as I mention, it's
 6. Front End Results.
 
 == Changelog ==
+
+= 1.0.0.alpha2 - 23 Sep 2016 =
+* Add row with thumbnail for each layoout.
+* Welcome notice with link to admin page/
+* Improve overall builder design.
+* Fix overflow in editor modal.
+* add post class "fx-builder-entry" when active.
+* Reset undo in editor modal.
+* Custom CSS for each posts.
+* Other small fixes and improvements.
 
 = 1.0.0.alpha - 21 Sep 2016 =
 * Initial alpha release.

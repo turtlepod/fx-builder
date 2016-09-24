@@ -3,7 +3,7 @@
  * Plugin Name: f(x) Builder
  * Plugin URI: http://genbumedia.com/plugins/fx-builder/
  * Description: A simple page builder plugin. The one you can actually use. (Alpha Version)
- * Version: 1.0.0.alpha2
+ * Version: 1.0.0.alpha3
  * Author: David Chandra Purnama
  * Author URI: http://shellcreeper.com/
  * License: GPLv2 or later
