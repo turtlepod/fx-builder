@@ -121,7 +121,6 @@
 /* Row Menu */
 .fxb-row-menu .fxb-left{
 	width: calc( 100% - 125px);
-	position: absolute;
 }
 /* Index */
 .fxb_row_index:before{
