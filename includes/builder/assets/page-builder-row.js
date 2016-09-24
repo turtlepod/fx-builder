@@ -39,7 +39,7 @@
 
 			/* Update Row */
 			$( this ).attr( 'data-index', row_index ); // set data attr
-			$( this ).find( '.fxb_row_index' ).text( row_index ); // display text
+			$( this ).find( '.fxb_row_index' ).attr( 'data-row-index', row_index ); // display text
 			$( this ).find( 'input[data-row_field="index"]' ).val( row_index ); // change input
 
 			/* Get ID */
@@ -58,6 +58,27 @@
 jQuery(document).ready(function($){
 
 	/**
+	 * Disable Enter to Submit Form
+	 * 
+	 ************************************
+	 */
+	$( 'form' ).bind( "keypress", function(e){
+		if ( e.keyCode == 13 ){               
+			e.preventDefault();
+			return false;
+		}
+	});
+
+	/**
+	 * Show Bottom Add Row
+	 * 
+	 ************************************
+	 */
+	if( $( '#fxb .fxb-row' ).length ) {
+		$( '.fxb-add-row' ).show();
+	}
+
+	/**
 	 * VAR
 	 * 
 	 ************************************
@@ -72,31 +93,40 @@ jQuery(document).ready(function($){
 	 * 
 	 ************************************
 	 */
-	$( document.body ).on( 'click', '.fxb-add-row', function(e){
+	$( document.body ).on( 'click', '.fxb-add-row a', function(e){
 		e.preventDefault();
 
 		/* Var */
 		var row_id = new Date().getTime(); // time stamp when crating row
-
-		/* Add template to container */
-		$( '#fxb' ).prepend( row_template( {
+		var row_config = {
 			id          : row_id,
 			index       : '1',
 			state       : 'open',
-			layout      : '1',
-			col_num     : '1',
+			layout      : $( this ).data( 'row-layout' ),
+			col_num     : $( this ).data( 'row-col_num' ),
 			col_order   : '',
 			col_1       : '',
 			col_2       : '',
 			col_3       : '',
 			col_4       : '',
-		} ) );
+		}
+
+		/* Add template to container */
+		if( "prepend" == $( this ).parents( '.fxb-add-row' ).data( 'add_row_method' ) ){
+			$( '#fxb' ).prepend( row_template( row_config ) );
+		}
+		else{
+			$( '#fxb' ).append( row_template( row_config ) );
+		}
 
 		/* Update Index */
 		$.fn.fxB_updateRowsIndex();
 
 		/* Make New Column Sortable */
 		$.fn.fxB_sortItems();
+
+		/* Always show both add row buttons */
+		$( '.fxb-add-row' ).show();
 
 	} );
 
@@ -121,6 +151,11 @@ jQuery(document).ready(function($){
 
 			/* Update Index */
 			$.fn.fxB_updateRowsIndex();
+
+			/* No Row, Hide Bottom Add Row */
+			if( ! $( '#fxb .fxb-row' ).length ) {
+				$( '.fxb-add-row[data-add_row_method="append"]' ).hide();
+			}
 		}
 	} );
 
@@ -173,6 +208,10 @@ jQuery(document).ready(function($){
 	/* == Close Settings == */
 	$( document.body ).on( 'click', '.fxb-row-settings .fxb-modal-close', function(e){
 		e.preventDefault();
+
+		/* Update Title in Row */
+		var this_title = $( this ).parents( '.fxb-modal' ).find( 'input[data-row_field="row_title"]' ).val();
+		$( this ).parents( '.fxb-row-menu' ).find( '.fxb_row_title' ).data( 'row-title', this_title ).attr( 'data-row-title', this_title );
 
 		/* Hide Settings Modal */
 		$( this ).parents( '.fxb-modal' ).hide();

@@ -40,7 +40,8 @@ namespace fx_builder\builder;
 		<div class="fxb-row-menu fxb-clear">
 			<div class="fxb-left">
 				<span class="fxb-icon fxb-grab fxb-row-handle dashicons dashicons-sort"></span>
-				<span class="fxb-icon fxb_row_index">{{data.index}}</span>
+				<span class="fxb-icon fxb_row_index" data-row-index="{{data.index}}"></span>
+				<span class="fxb-icon fxb_row_title" data-row-title="{{data.row_title}}"></span>
 			</div><!-- .fxb-left -->
 			<div class="fxb-right">
 				<span data-target=".fxb-row-settings" class="fxb-icon fxb-link fxb-settings dashicons dashicons-admin-generic"></span>

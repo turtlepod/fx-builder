@@ -35,10 +35,6 @@ class Builder{
 		/* Save Builder Data */
 		add_action( 'save_post', array( $this, 'save' ), 10, 2 );
 
-		/* Format Content Ajax */
-		add_action( 'wp_ajax_fxb_item_format_content', array( $this, 'ajax_format_content' ) );
-		add_action( 'wp_ajax_fxb_item_wpautop', array( $this, 'ajax_wpautop' ) );
-
 		/* Scripts */
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ), 99 );
 	}
@@ -56,12 +52,12 @@ class Builder{
 
 			<div class="fxb-modal-overlay" style="display:none;"></div>
 
-			<div id="fxb-menu">
-				<p><a href="#" class="button button-primary fxb-add-row"><?php _e( 'Add Row', 'fx-builder' ); ?></a></p>
-			</div><!-- #fxb-menu -->
+			<?php Functions::add_row_field( 'prepend' ); ?>
 
 			<div id="fxb">
 			</div><!-- #fxb -->
+
+			<?php Functions::add_row_field( 'append' ); ?>
 
 			<input type="hidden" name="_fxb_row_ids" value="<?php echo esc_attr( get_post_meta( $post_id, '_fxb_row_ids', true ) ); ?>" autocomplete="off"/>
 			<input type="hidden" name="_fxb_db_version" value="<?php echo esc_attr( VERSION ); ?>" autocomplete="off"/>
@@ -232,49 +228,6 @@ class Builder{
 		}
 
 	}
-
-	/**
-	 * Ajax Format Content
-	 */
-	public function ajax_format_content(){
-
-		/* Strip Slash */
-		$request = stripslashes_deep( $_POST );
-
-		/* Check Ajax */
-		check_ajax_referer( 'fxb_ajax_nonce', 'nonce' );
-
-		/* Format Content */
-		$content = isset( $request['content'] ) ? Functions::do_content( $request['content'] ) : '';
-
-		/* Output */
-		echo $content;
-		wp_die();
-	}
-
-
-	/**
-	 * Ajax Format Content
-	 */
-	public function ajax_wpautop(){
-
-		/* Strip Slash */
-		$request = stripslashes_deep( $_POST );
-
-		/* Check Ajax */
-		check_ajax_referer( 'fxb_ajax_nonce', 'nonce' );
-
-		/* Format Content */
-		$content = '';
-		if( isset( $request['content'] ) && !empty( $request['content'] ) ){
-			$content = wpautop( $request['content'] );
-		}
-
-		/* Output */
-		echo $content;
-		wp_die();
-	}
-
 
 	/**
 	 * Admin Scripts

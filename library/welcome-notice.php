@@ -43,7 +43,7 @@ class Fx_Builder_Welcome_Notice{
 		);
 		$url = wp_nonce_url( $url, "{$this->args['option']}_nonce" );
 		?>
-		<div class="notice notice-info" style="padding-right:38px;position:relative;">
+		<div class="notice notice-info fx-welcome-notice" style="padding-right:38px;position:relative;">
 			<?php echo $this->args['notice']; ?>
 			<a href="<?php echo esc_url( $url ); ?>" class="notice-dismiss" style="text-decoration:none;"><span class="screen-reader-text"><?php echo $this->args['dismiss']; ?></span></a>
 		</div>

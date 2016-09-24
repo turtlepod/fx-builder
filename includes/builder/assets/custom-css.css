@@ -1,0 +1,41 @@
+.fxb-nav-css{
+	font-size: 14px;
+	float: right;
+	text-decoration: none;
+	display: block;
+	padding: 5px 10px;
+	background: #F5F5F5;
+	border: 1px solid #ccc;
+	color: #aaa;
+	font-weight: 400;
+	margin-right: -14px;
+}
+.fxb-nav-css:hover,
+.fxb-nav-css:focus{
+	color: #222;
+	background: #eee;
+}
+.fxb-nav-css span:before{
+	content: "\f540";
+	font-family: "dashicons";
+	vertical-align: top;
+	margin-right: 5px;
+	-webkit-font-smoothing: antialiased;
+}
+.fxb-custom-css-textarea{
+	width: 100%;
+	height: 330px;
+	max-height: 100%;
+	font-family: Consolas,Monaco,monospace;
+	font-size: 18px;
+	line-height: 150%;
+}
+
+/* Media Queries */
+@media only screen and (max-width: 600px) {
+	.fxb-nav-css{
+		padding: 8px 10px;
+		margin: 10px -14px 0 0;
+	}
+}
+
