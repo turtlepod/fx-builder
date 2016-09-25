@@ -1,11 +1,3 @@
-/* Box Sizing To All
------------------------------------------- */
-.fxb-wrap, .fxb-wrap *, .fxb-wrap *:before, .fxb-wrap *:after{
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
 /* Wrap
 ------------------------------------------ */
 .fxb-wrap:after{
