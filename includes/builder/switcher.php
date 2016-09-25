@@ -82,7 +82,7 @@ class Switcher{
 		if( post_type_supports( $post_type, 'editor' ) && post_type_supports( $post_type, 'fx_builder' ) ){
 
 			/* If builder selected */
-			if( $active = get_post_meta( get_the_ID(), '_fx_builder_active', true ) ){
+			if( $active = get_post_meta( get_the_ID(), '_fxb_active', true ) ){
 				?>
 				<script type="text/javascript">
 				/* <![CDATA[ */
@@ -101,7 +101,7 @@ class Switcher{
 	public function editor_toggle( $post ){
 		$post_id = $post->ID;
 		if( post_type_supports( $post->post_type, 'editor' ) && post_type_supports( $post->post_type, 'fx_builder' ) ){
-			$active        = get_post_meta( $post_id, '_fx_builder_active', true );
+			$active        = get_post_meta( $post_id, '_fxb_active', true );
 			$active        = $active ? 1 : 0;
 			$editor_class  = $active ? "nav-tab" : "nav-tab nav-tab-active";
 			$builder_class = $active ? "nav-tab nav-tab-active" : "nav-tab";
@@ -109,8 +109,8 @@ class Switcher{
 			<h1 id="fxb-switcher" class="nav-tab-wrapper wp-clearfix">
 				<a data-fxb-switcher="editor" data-confirm="<?php esc_attr_e( 'Would you like to clear your Page Builder content the next time you update this post and revert to using the standard editor?', 'fx-builder' ); ?>" class="<?php echo esc_attr( $editor_class ); ?>" href="#"><?php _e( 'Editor', 'fx-builder' ); ?></a>
 				<a data-fxb-switcher="builder" data-confirm="<?php esc_attr_e( "Would you like to clear your editor existing content the next time you update this post and use Page Builder?", 'fx-builder' ); ?>" class="<?php echo esc_attr( $builder_class ); ?>" href="#"><?php _e( 'Page Builder', 'fx-builder' ); ?></a>
-				<input type="hidden" name="_fx_builder_active" value="<?php echo esc_attr( $active ); ?>">
-				<?php wp_nonce_field( __FILE__ , 'fx_builder_switcher_nonce' ); ?>
+				<input type="hidden" name="_fxb_active" value="<?php echo esc_attr( $active ); ?>">
+				<?php wp_nonce_field( __FILE__ , 'fxb_switcher_nonce' ); ?>
 				<?php do_action( 'fxb_switcher_nav', $post ); ?>
 			</h1>
 			<?php
@@ -124,7 +124,7 @@ class Switcher{
 	 */
 	public function save( $post_id, $post ){
 		$request = stripslashes_deep( $_POST );
-		if ( ! isset( $request['fx_builder_switcher_nonce'] ) || ! wp_verify_nonce( $request['fx_builder_switcher_nonce'], __FILE__ ) ){
+		if ( ! isset( $request['fxb_switcher_nonce'] ) || ! wp_verify_nonce( $request['fxb_switcher_nonce'], __FILE__ ) ){
 			return false;
 		}
 		if( defined('DOING_AUTOSAVE' ) && DOING_AUTOSAVE ){
@@ -136,17 +136,17 @@ class Switcher{
 		}
 
 		/* Save Builder Tab */
-		if( isset( $request['_fx_builder_active'] ) ){
-			$new_data = $request['_fx_builder_active'] ? 1 : 0;
+		if( isset( $request['_fxb_active'] ) ){
+			$new_data = $request['_fxb_active'] ? 1 : 0;
 			if( $new_data ){
-				update_post_meta( $post_id, '_fx_builder_active', 1 );
+				update_post_meta( $post_id, '_fxb_active', 1 );
 			}
 			else{
-				delete_post_meta( $post_id, '_fx_builder_active' );
+				delete_post_meta( $post_id, '_fxb_active' );
 			}
 		}
 		else{
-			delete_post_meta( $post_id, '_fx_builder_active' );
+			delete_post_meta( $post_id, '_fxb_active' );
 		}
 	}
 

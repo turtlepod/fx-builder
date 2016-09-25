@@ -211,7 +211,7 @@ class Builder{
 
 		/* Content Data
 		------------------------------------------ */
-		$active = get_post_meta( $post_id, '_fx_builder_active', true );
+		$active = get_post_meta( $post_id, '_fxb_active', true );
 		if( $active ){
 			$pb_content = Functions::to_string_raw( $post_id );
 			$this_post = array(
