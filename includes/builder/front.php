@@ -27,7 +27,7 @@ class Front{
 		add_filter( 'the_content', array( $this, 'content_filter' ), 10 );
 
 		/* Enqueue Scripts */
-		add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 1 );
 
 		/* Post Class */
 		add_filter( 'post_class', array( $this, 'post_class' ), 10, 3 );
@@ -42,7 +42,7 @@ class Front{
 		if( ! post_type_supports( $post_type, 'fx_builder' ) ){
 			return $content;
 		}
-		$active = get_post_meta( $post_id, '_fx_builder_active', true );
+		$active = get_post_meta( $post_id, '_fxb_active', true );
 		if( $active ){
 			$content = Functions::to_string( $post_id );
 		}
@@ -66,7 +66,7 @@ class Front{
 		if( ! post_type_supports( $post_type, 'fx_builder' ) ){
 			return $classes;
 		}
-		$active = get_post_meta( $post_id, '_fx_builder_active', true );
+		$active = get_post_meta( $post_id, '_fxb_active', true );
 		if( $active ){
 			$classes[] = 'fx-builder-entry';
 		}
