@@ -58,18 +58,6 @@
 jQuery(document).ready(function($){
 
 	/**
-	 * Disable Enter to Submit Form
-	 * 
-	 ************************************
-	 */
-	$( 'form' ).bind( "keypress", function(e){
-		if ( e.keyCode == 13 ){               
-			e.preventDefault();
-			return false;
-		}
-	});
-
-	/**
 	 * Show Bottom Add Row
 	 * 
 	 ************************************
@@ -203,6 +191,14 @@ jQuery(document).ready(function($){
 
 		/* Show overlay background */
 		$( '.fxb-modal-overlay' ).show();
+
+		/* Disable Enter to Submit Form */
+		$( '.fxb-row-settings' ).bind( "keypress", function(e){
+			if ( e.keyCode == 13 ){
+				e.preventDefault();
+				return false;
+			}
+		});
 	} );
 
 	/* == Close Settings == */
