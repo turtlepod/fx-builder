@@ -199,6 +199,12 @@ jQuery(document).ready(function($){
 				return false;
 			}
 		});
+
+		/* Fix Height */
+		$( '.fxb-row-settings .fxb-modal-content' ).css( "height", $( '.fxb-row-settings' ).height() - 35 + "px" ); 
+		$( window ).resize( function(){
+			$( '.fxb-row-settings .fxb-modal-content' ).css( "height", "auto" ).css( "height", $( '.fxb-row-settings' ).height() - 35 + "px" ); 
+		});
 	} );
 
 	/* == Close Settings == */
