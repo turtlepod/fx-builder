@@ -61,7 +61,7 @@ class Custom_CSS{
 	}
 
 	/**
-	 * Save Switcher Pref
+	 * Save Custom CSS Data
 	 * @since 1.0.0
 	 */
 	public function save( $post_id, $post ){

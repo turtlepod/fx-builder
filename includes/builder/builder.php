@@ -30,7 +30,7 @@ class Builder{
 		add_action( 'edit_form_after_editor', array( $this, 'form' ) );
 
 		/* Load Underscore Templates + Print Scripts */
-		add_action( 'admin_footer', array( $this, 'load_templates' ) );
+		//add_action( 'admin_footer', array( $this, 'load_templates' ) );
 
 		/* Save Builder Data */
 		add_action( 'save_post', array( $this, 'save' ), 10, 2 );
@@ -81,6 +81,14 @@ class Builder{
 				},
 			));?>
 
+			<div id="fxb-templates">
+				<?php require_once( PATH . 'templates/tmpl-row.php' ); ?>
+				<?php require_once( PATH . 'templates/tmpl-item.php' ); ?>
+			</div>
+			<div id="fxb-template-loader">
+				<?php $this->load_templates( $post_id ); ?>
+			</div>
+
 		</div><!-- #fxb-wrapper -->
 		<?php
 	}
@@ -89,16 +97,7 @@ class Builder{
 	/**
 	 * Admin Footer Scripts
 	 */
-	public function load_templates(){
-		global $post_type;
-		if( ! post_type_supports( $post_type, 'fx_builder' ) ){ return; }
-		$post_id = get_the_ID();
-
-		/* Row Template */
-		require_once( PATH . 'templates/tmpl-row.php' );
-
-		/* Item Template */
-		require_once( PATH . 'templates/tmpl-item.php' );
+	public function load_templates( $post_id ){
 
 		/* Rows data */
 		$rows_data   = get_post_meta( $post_id, '_fxb_rows', true );
