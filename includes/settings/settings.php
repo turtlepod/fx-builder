@@ -35,8 +35,8 @@ class Settings{
 		/* Register Settings and Fields */
 		add_action( 'admin_init', array( $this, 'register_settings' ), 1 );
 
-		/* Admin Head */
-		add_action( 'admin_head-settings_page_fx-builder', array( $this, 'admin_head' ) );
+		/* Add Post Type Support */
+		add_action( 'init', array( $this, 'add_builder_support' ) );
 	}
 
 
@@ -46,6 +46,9 @@ class Settings{
 	 */
 	public function create_settings_page(){
 
+		/* Hook to disable settings */
+		if( false === apply_filters( 'fx_builder_settings', true ) ){ return false; }
+
 		/* Create Settings Sub-Menu */
 		$this->hook_suffix = add_options_page(
 			$page_title  = __( 'Page Builder Settings', 'fx-builder' ),
@@ -54,6 +57,9 @@ class Settings{
 			$menu_slug   = $this->settings_slug,
 			$function    = array( $this, 'settings_page' )
 		);
+
+		/* Admin Head */
+		add_action( "admin_head-{$this->hook_suffix}", array( $this, 'admin_head' ) );
 	}
 
 	/**
@@ -80,19 +86,13 @@ class Settings{
 	 */
 	public function register_settings(){
 
-		/* Disable WP Editor: array of post type to disable wp editor */
-		register_setting(
-			$option_group      = $this->options_group,
-			$option_name       = 'fx-builder_disable-wp-editor',
-			$sanitize_callback = function( $data ){
-				return Fs::sanitize_post_types( $data );
-			}
-		);
+		/* Hook to disable settings */
+		if( false === apply_filters( 'fx_builder_settings', true ) ){ return false; }
 
 		/* Disable Page Builder */
 		register_setting(
 			$option_group      = $this->options_group,
-			$option_name       = 'fx-builder_enable-page-builder',
+			$option_name       = 'fx-builder_post_types',
 			$sanitize_callback = function( $data ){
 				return Fs::sanitize_post_types( $data );
 			}
@@ -106,38 +106,33 @@ class Settings{
 			$settings_slug     = $this->settings_slug
 		);
 
-		/* Get All Public Post Types */
-		$post_types = get_post_types( $args = array( 'public' => true ) , 'objects' );
+		/* Create Setting Field */
+		add_settings_field(
+			$field_id          = 'fxb_post_types_field',
+			$field_title       = __( 'Enable Page Builder in', 'fx-builder' ),
+			$callback_function = function(){
 
-		/* Create Options For Each Post Types */
-		foreach( $post_types as $post_type ){
+				/* Get All Public Post Types */
+				$post_types = get_post_types( $args = array( 'public' => true ) , 'objects' );
 
-			/* Only if post type supports "editor" */
-			if( post_type_supports( $post_type->name, 'editor' ) ){
+				/* Create Options For Each Post Types */
+				foreach( $post_types as $post_type ){
 
-				/* Create Setting Field */
-				add_settings_field(
-					$field_id          = $post_type->name,
-					$field_title       = $post_type->label,
-					$callback_function = function() use( $post_type ){
+					/* Only if post type supports "editor" (content) */
+					if( post_type_supports( $post_type->name, 'editor' ) ){
 						?>
 						<p>
 							<label>
-								<input type="checkbox" value="<?php echo esc_attr( $post_type->name );?>" name="fx-builder_disable-wp-editor[]" <?php checked( in_array( $post_type->name, (array)get_option( 'fx-builder_disable-wp-editor' ) ) ); ?>> <?php _e( 'Disable WP Editor', 'fx-builder' ); ?>
-							</label>
-						</p>
-						<p>
-							<label>
-								<input type="checkbox" value="<?php echo esc_attr( $post_type->name );?>" name="fx-builder_enable-page-builder[]" <?php checked( post_type_supports( $post_type->name, 'fx_builder' ) ); ?>> <?php _e( 'Enable Page Builder', 'fx-builder' ); ?>
+								<input type="checkbox" value="<?php echo esc_attr( $post_type->name );?>" name="fx-builder_post_types[]" <?php checked( post_type_supports( $post_type->name, 'fx_builder' ) ); ?>> <?php echo $post_type->label; ?>
 							</label>
 						</p>
 						<?php
-					},
-					$settings_slug     = $this->settings_slug,
-					$section_id        = 'fxb_settings'
-				);
-			}
-		}
+					}
+				}
+			},
+			$settings_slug     = $this->settings_slug,
+			$section_id        = 'fxb_settings'
+		);
 
 	}
 
@@ -150,6 +145,26 @@ class Settings{
 			<style>.fx-welcome-notice{display:none;}</style>
 			<?php
 			update_option( 'fx-builder_welcome', 1 );
+		}
+	}
+
+	/**
+	 * Enable Page Builder to Post Type
+	 */
+	public function add_builder_support(){
+		/* Hook to disable settings */
+		if( false === apply_filters( 'fx_builder_settings', true ) ){ return false; }
+
+		/* If not set, default to page. */
+		$post_types = get_option( 'fx-builder_post_types' );
+		if( ! $post_types && ! is_array( $post_types ) ){
+			$post_types = array( 'page' );
+		}
+		else{
+			$post_types = Fs::sanitize_post_types( $post_types );
+		}
+		foreach( $post_types as $pt ){
+			add_post_type_support( $pt, 'fx_builder' );
 		}
 	}
 }

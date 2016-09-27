@@ -24,12 +24,6 @@ class Switcher{
 	 */
 	public function __construct() {
 
-		/* Add Post Type Support */
-		add_action( 'init', array( $this, 'add_builder_support' ) );
-
-		/* Setup Write Panel */
-		add_action( 'admin_init', array( $this, 'remove_wp_editor_support' ) );
-
 		/* Add HTML Class */
 		add_action( 'admin_head', array( $this, 'html_class_script' ) );
 
@@ -41,31 +35,6 @@ class Switcher{
 
 		/* Scripts */
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ), 99 );
-	}
-
-	/**
-	 * Enable Page Builder to Post Type
-	 */
-	public function add_builder_support(){
-		$enable_page_builder = Fs::sanitize_post_types( get_option( 'fx-builder_enable-page-builder' ) );
-		foreach( $enable_page_builder as $pt ){
-			add_post_type_support( $pt, 'fx_builder' );
-		}
-	}
-
-
-	/**
-	 * Disable WP Editor
-	 * Remove editor support only in write panel.
-	 */
-	public function remove_wp_editor_support(){
-		global $pagenow;
-		if( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ){
-			$disable_wp_editor = Fs::sanitize_post_types( get_option( 'fx-builder_disable-wp-editor' ) );
-			foreach( $disable_wp_editor as $pt ){
-				remove_post_type_support( $pt, 'editor' );
-			}
-		}
 	}
 
 
