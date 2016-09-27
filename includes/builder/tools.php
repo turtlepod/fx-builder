@@ -29,6 +29,10 @@ class Tools{
 
 		/* Scripts */
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
+
+		/* Ajax: To JSON */
+		add_action( 'wp_ajax_fxb_export_to_json', array( $this, 'ajax_export_to_json' ) );
+		add_action( 'wp_ajax_fxb_import_data', array( $this, 'ajax_import_data' ) );
 	}
 
 	/**
@@ -55,7 +59,7 @@ class Tools{
 				</ul><!-- .wp-tab-bar -->
 
 				<div id="fxb-export-panel" class="fxb-tools-panel wp-tab-panel" style="display:block;">
-					<textarea autocomplete="off" id="fxb-tools-export-textarea" readonly="readonly" style="display:none;"><?php echo esc_textarea( ' Quisque tempus lobortis turpis vel congue. Proin mi sapien, mollis at dignissim ut, ultricies vel mi. Aenean sagittis rhoncus elementum. Curabitur ut justo leo. Nam lobortis pellentesque velit, vel mattis erat aliquam ac. Aliquam erat volutpat. Donec pulvinar imperdiet eros, interdum consequat justo rhoncus eu. Nulla rhoncus lacus ut velit iaculis vitae blandit dui sodales. Pellentesque sed mi eu eros molestie feugiat ac et sem. Phasellus suscipit, arcu sed euismod semper, dolor nibh ullamcorper libero, a bibendum ipsum risus sed velit. Nullam vitae elit eu urna pharetra pretium in sed enim. Quisque porta, lacus eu pulvinar convallis, nibh mi aliquet velit, quis congue nulla nisi a lectus. Suspendisse sed lectus metus. Vestibulum dignissim elit at ante dictum pellentesque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec pellentesque vestibulum suscipit. Mauris vitae justo justo, nec vestibulum lorem. Nam lacus ipsum, sagittis vel elementum eu, imperdiet vel turpis. Aenean rhoncus libero augue, quis ultricies tellus. In mauris eros, lobortis eget adipiscing lacinia, eleifend mattis purus. Sed feugiat urna id lorem elementum eu molestie nulla lobortis.' ); ?></textarea>
+					<textarea autocomplete="off" id="fxb-tools-export-textarea" readonly="readonly" style="display:none;" placeholder="<?php esc_attr_e( 'No Data', 'fx-builder' ); ?>"></textarea>
 					<p><a id="fxb-tools-export-action" href="#" class="button button-primary"><?php _e( 'Generate Export Code', 'fx-builder' ); ?></a></p>
 				</div><!-- .wp-tab-panel -->
 
@@ -83,9 +87,95 @@ class Tools{
 			/* CSS */
 			wp_enqueue_style( 'fx-builder-tools', URI . 'assets/tools.css', array( 'fx-builder' ), VERSION );
 
+			/* Serialize Object */
+			wp_register_script( 'serialize-object', URI . 'assets/library/jquery.serialize-object.min.js', array( 'jquery' ), VERSION, true );
+
 			/* JS */
-			wp_enqueue_script( 'fx-builder-tools', URI . 'assets/tools.js', array( 'jquery' ), VERSION, true );
+			wp_enqueue_script( 'fx-builder-tools', URI . 'assets/tools.js', array( 'jquery', 'fx-builder-item', 'serialize-object' ), VERSION, true );
+			$ajax_data = array(
+				'ajax_url'         => admin_url( 'admin-ajax.php' ),
+				'ajax_nonce'       => wp_create_nonce( 'fxb_tools_nonce' ),
+			);
+			wp_localize_script( 'fx-builder-tools', 'fxb_tools', $ajax_data );
 		}
+	}
+
+	/**
+	 * Ajax Export To JSon
+	 */
+	public function ajax_export_to_json(){
+
+		/* Strip Slash */
+		$request = stripslashes_deep( $_POST );
+
+		/* Check Ajax */
+		check_ajax_referer( 'fxb_tools_nonce', 'nonce' );
+
+		$data = array(
+			'row_ids' => isset( $request['row_ids'] ) ? $request['row_ids'] : '',
+			'rows'    => isset( $request['rows'] ) ? $request['rows'] : array(),
+			'items'   => isset( $request['items'] ) ? $request['items'] : array(),
+		);
+
+		echo json_encode( $data );
+		wp_die();
+	}
+
+	/**
+	 * Ajax Import Data
+	 */
+	public function ajax_import_data(){
+
+		/* Strip Slash */
+		$request = stripslashes_deep( $_POST );
+
+		/* Check Ajax */
+		check_ajax_referer( 'fxb_tools_nonce', 'nonce' );
+
+		$data = isset( $request['data'] ) ? $request['data'] : '';
+		$data = json_decode( $data, true );
+		$default = array(
+			'row_ids' => '',
+			'rows'    => array(),
+			'items'   => array(),
+		);
+		$data = wp_parse_args( $data, $default );
+
+		/* Checking Data */
+		$rows_data   = $data['rows'];
+		$row_ids     = $data['row_ids'];
+		if( ! $rows_data && $row_ids && is_array( $rows_data ) && is_array( $row_ids ) ){ return false; }
+		$rows        = explode( ',', $row_ids );
+
+		/* Items data */
+		$items_data  = $data['items'];
+		?>
+		<script type="text/javascript">
+			jQuery( document ).ready( function( $ ) {
+				var row_template = wp.template( 'fxb-row' );
+
+				<?php foreach( $rows as $row_id ){ ?>
+					<?php if( isset( $rows_data[$row_id] ) ){ ?>
+						$( '#fxb' ).append( row_template( <?php echo wp_json_encode( $rows_data[$row_id] ); ?> ) );
+					<?php } ?>
+				<?php } // end foreach ?>
+
+				<?php if( $items_data && is_array( $items_data ) ){ ?>
+					var item_template = wp.template( 'fxb-item' );
+					<?php foreach( $items_data as $item_id => $item ){ ?>
+						<?php if( isset( $rows_data[$item['row_id']] ) ){ ?>
+							$( '.fxb-row[data-id="<?php echo $item['row_id']; ?>"] .fxb-col[data-col_index="<?php echo $item['col_index']; ?>"] .fxb-col-content' ).append( item_template( <?php echo wp_json_encode( $item ); ?> ) );
+						<?php } ?>
+					<?php } // end foreach ?>
+				<?php } ?>
+				var iframe_css = $.fn.fxB_getIframeCSS();
+				$( '.fxb-item-iframe' ).each( function(i){
+					$( this ).fxB_loadIfameContent( iframe_css );
+				} );
+			} );
+		</script>
+		<?php
+		wp_die();
 	}
 
 }

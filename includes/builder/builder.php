@@ -29,9 +29,6 @@ class Builder{
 		/* Add it after editor in edit screen */
 		add_action( 'edit_form_after_editor', array( $this, 'form' ) );
 
-		/* Load Underscore Templates + Print Scripts */
-		//add_action( 'admin_footer', array( $this, 'load_templates' ) );
-
 		/* Save Builder Data */
 		add_action( 'save_post', array( $this, 'save' ), 10, 2 );
 
@@ -95,7 +92,7 @@ class Builder{
 
 
 	/**
-	 * Admin Footer Scripts
+	 * Load Template
 	 */
 	public function load_templates( $post_id ){
 
