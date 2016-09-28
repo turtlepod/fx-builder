@@ -10,12 +10,6 @@ jQuery(document).ready(function($){
 		$( '.fxb-tools' ).show();
 		$( '.fxb-modal-overlay' ).show();
 
-		/* DEBUG */
-		//var pb_object = $( '#post' ).serializeObject();
-		//console.log( pb_object );
-		//var pb_json = $( '#post' ).serializeJSON();
-		//console.log( pb_json );
-
 		/* Fix Height */
 		$( '.fxb-fxb-tools .fxb-modal-content' ).css( "height", $( '.fxb-tools' ).height() - 35 + "px" ); 
 		$( window ).resize( function(){
@@ -132,9 +126,23 @@ jQuery(document).ready(function($){
 			return false;
 		}
 		else{
+
+			/* Confirm */
 			if ( true !== confirm( $( this ).data( 'confirm' ) ) ) {
 				return false;
 			}
+
+			/* Check valid data */
+			var json_data = $( '#fxb-tools-import-textarea' ).val();
+			var obj_data = $.parseJSON( json_data );
+			if( typeof obj_data != 'object' || typeof obj_data.row_ids == 'undefined' || typeof obj_data.rows == 'undefined' || typeof obj_data.items == 'undefined' ){
+				alert( $( this ).data( 'alert' ) );
+				return false;
+			}
+
+			/* Update Row IDs input */
+			$( 'input[name="_fxb_row_ids"]' ).val( obj_data.row_ids );
+
 			/* Start Importing Data Via Ajax */
 			$.ajax({
 				type: "POST",
@@ -142,18 +150,16 @@ jQuery(document).ready(function($){
 				data:{
 					action     : 'fxb_import_data',
 					nonce      : fxb_tools.ajax_nonce,
-					data       : $( '#fxb-tools-import-textarea' ).val(),
+					data       : json_data,
 				},
 				//dataType: 'json',
 				success: function( data ){
-					$( '#fxb' ).html( data );
+					$( '#fxb' ).empty();
+					$( '#fxb-template-loader' ).empty().html( data );
+					$.fn.fxB_sortItems();
 					return;
 				},
 			});
-			
-			
-			
-			
 		}
 	});
 });

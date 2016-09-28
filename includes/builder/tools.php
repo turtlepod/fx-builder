@@ -65,7 +65,7 @@ class Tools{
 
 				<div id="fxb-import-panel" class="fxb-tools-panel wp-tab-panel" style="display:none;">
 					<textarea autocomplete="off" id="fxb-tools-import-textarea" ><?php echo esc_textarea( '' ); ?></textarea>
-					<p><a id="fxb-tools-import-action" href="#" data-confirm="<?php esc_attr_e( 'Are you sure you want to import this new data?', 'fx-builder' ); ?>" class="button button-primary disabled"><?php _e( 'Import Page Builder Data', 'fx-builder' ); ?></a></p>
+					<p><a id="fxb-tools-import-action" href="#" data-confirm="<?php esc_attr_e( 'Are you sure you want to import this new data?', 'fx-builder' ); ?>" data-alert="<?php esc_attr_e( 'Your data is not valid.', 'fx-builder' ); ?>" class="button button-primary disabled"><?php _e( 'Import Page Builder Data', 'fx-builder' ); ?></a></p>
 				</div><!-- .wp-tab-panel -->
 				<?php
 			},

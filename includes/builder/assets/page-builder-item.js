@@ -53,7 +53,7 @@
 	 * MAKE ITEMS SORTABLE
 	 ************************************
 	 */
-	$.fn.fxB_sortItems = function( col ) {
+	$.fn.fxB_sortItems = function() {
 
 		$( '.fxb-col-content' ).sortable({
 			handle      : '.fxb-item-handle',
