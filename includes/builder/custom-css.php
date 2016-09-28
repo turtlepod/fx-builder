@@ -28,7 +28,7 @@ class Custom_CSS{
 		add_action( 'fxb_switcher_nav', array( $this, 'add_css_control' ) );
 
 		/* Save CSS */
-		add_action( 'save_post', array( $this, 'save' ), 9, 2 );
+		add_action( 'save_post', array( $this, 'save' ), 10, 2 );
 
 		/* Scripts */
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );

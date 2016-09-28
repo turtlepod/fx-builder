@@ -1,11 +1,10 @@
-jQuery(document).ready(function($){
+;(function($){
 
 	/**
-	 * OPEN TOOLS MODAL
+	 * TOOLS OPEN
+	 ************************************
 	 */
-	$( document.body ).on( 'click', '#fxb-nav-tools', function(e){
-		e.preventDefault();
-
+	$.fn.fxB_Tools_Open = function() {
 		/* Show Editor Modal & Modal Overlay */
 		$( '.fxb-tools' ).show();
 		$( '.fxb-modal-overlay' ).show();
@@ -15,14 +14,13 @@ jQuery(document).ready(function($){
 		$( window ).resize( function(){
 			$( '.fxb-tools .fxb-modal-content' ).css( "height", "auto" ).css( "height", $( '.fxb-tools' ).height() - 35 + "px" ); 
 		});
-	});
+	};
 
 	/**
-	 * CLOSE TOOLS MODAL
+	 * TOOLS CLOSE
+	 ************************************
 	 */
-	$( document.body ).on( 'click', '.fxb-tools .fxb-modal-close', function(e){
-		e.preventDefault();
-
+	$.fn.fxB_Tools_Close = function() {
 		/* Show Editor Modal & Modal Overlay */
 		$( '.fxb-tools' ).hide();
 		$( '.fxb-modal-overlay' ).hide();
@@ -35,6 +33,27 @@ jQuery(document).ready(function($){
 		$( '#fxb-tools-export-textarea' ).val( '' ).hide();
 		$( '#fxb-tools-import-textarea' ).val( '' );
 		$( '#fxb-tools-import-action' ).addClass( 'disabled' );
+	};
+
+})(jQuery);
+
+
+jQuery(document).ready(function($){
+
+	/**
+	 * OPEN TOOLS MODAL
+	 */
+	$( document.body ).on( 'click', '#fxb-nav-tools', function(e){
+		e.preventDefault();
+		$.fn.fxB_Tools_Open();
+	});
+
+	/**
+	 * CLOSE TOOLS MODAL
+	 */
+	$( document.body ).on( 'click', '.fxb-tools .fxb-modal-close', function(e){
+		e.preventDefault();
+		$.fn.fxB_Tools_Close();
 	});
 
 	/**
@@ -140,9 +159,6 @@ jQuery(document).ready(function($){
 				return false;
 			}
 
-			/* Update Row IDs input */
-			$( 'input[name="_fxb_row_ids"]' ).val( obj_data.row_ids );
-
 			/* Start Importing Data Via Ajax */
 			$.ajax({
 				type: "POST",
@@ -154,9 +170,11 @@ jQuery(document).ready(function($){
 				},
 				//dataType: 'json',
 				success: function( data ){
+					$( 'input[name="_fxb_row_ids"]' ).val( obj_data.row_ids );
 					$( '#fxb' ).empty();
 					$( '#fxb-template-loader' ).empty().html( data );
 					$.fn.fxB_sortItems();
+					$.fn.fxB_Tools_Close();
 					return;
 				},
 			});
