@@ -24,7 +24,7 @@ define( 'FX_BUILDER_URI', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'FX_BUILDER_PATH', trailingslashit( plugin_dir_path( __FILE__ ) ) );
 define( 'FX_BUILDER_FILE', __FILE__ );
 define( 'FX_BUILDER_PLUGIN', plugin_basename( __FILE__ ) );
-define( 'FX_BUILDER_VERSION', '1.0.0.alpha2' );
+define( 'FX_BUILDER_VERSION', '1.0.0.alpha3' );
 
 
 /* Init
