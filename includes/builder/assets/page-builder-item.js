@@ -430,9 +430,10 @@ jQuery(document).ready(function($){
 		var raw_content = target_textarea.val();
 		var content = $.fn.fxB_autop( raw_content );
 		if( typeof tinymce != 'undefined' ){
-			tinyMCE.get( editor_id ).show();
-			tinyMCE.get( editor_id ).setContent( content );
-			tinyMCE.get( editor_id ).undoManager.clear();
+			var fxb_editor = tinyMCE.get( editor_id );
+			fxb_editor.show();
+			fxb_editor.setContent( content );
+			fxb_editor.undoManager.clear();
 		}
 		else{
 			$( "#" + editor_id ).val( raw_content );
@@ -441,6 +442,14 @@ jQuery(document).ready(function($){
 		/* Show Editor Modal & Modal Overlay */
 		$( '.fxb-editor' ).show();
 		$( '.fxb-modal-overlay' ).show();
+
+		/* Focus: wonly works if it's no longer hidden */
+		if( typeof tinymce != 'undefined' ){
+			fxb_editor.focus();
+		}
+		else{
+			$( '#' + editor_id ).focus();
+		}
 
 		/* Fix Height */
 		$( '.fxb-editor .fxb-modal-content' ).css( "height", $( '.fxb-editor' ).height() - 35 + "px" ); 
