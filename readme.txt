@@ -52,6 +52,14 @@ Yes, I actually use it in my own site, because I need it. But as I mention, it's
 
 == Changelog ==
 
+= 1.0.0.alpha3 - 29 Sep 2016 =
+* Remove disable editor feature. Simpler Settings.
+* Change settings option name. You need to re-configure settings.
+* Export / Import page builder data feature.
+* Auto focus to editor when open editor modal.
+* Fix Custom CSS textarea line break.
+* Fix several small-screen accessibility issue in modal box.
+
 = 1.0.0.alpha2 - 23 Sep 2016 =
 * Add row with thumbnail for each layoout.
 * Welcome notice with link to admin page/
