@@ -61,10 +61,11 @@ This screenshot is outdated (from alpha1 version). I will update to the latest w
 == Changelog ==
 
 = 1.0.0.alpha3 - 29 Sep 2016 =
+* Revision: Revert to Revision now also revert to page builder data.
 * Remove disable editor feature. Simpler Settings.
 * Change settings option name. You need to re-configure settings.
 * Page is enabled by default.
-* Export / Import page builder data feature.
+* Introduce Tools: Export / Import page builder data.
 * Auto focus to editor when open editor modal.
 * Fix Custom CSS textarea line break.
 * Fix several small-screen accessibility issue in modal box.
