@@ -58,18 +58,6 @@
 jQuery(document).ready(function($){
 
 	/**
-	 * Disable Enter to Submit Form
-	 * 
-	 ************************************
-	 */
-	$( 'form' ).bind( "keypress", function(e){
-		if ( e.keyCode == 13 ){               
-			e.preventDefault();
-			return false;
-		}
-	});
-
-	/**
 	 * Show Bottom Add Row
 	 * 
 	 ************************************
@@ -203,6 +191,20 @@ jQuery(document).ready(function($){
 
 		/* Show overlay background */
 		$( '.fxb-modal-overlay' ).show();
+
+		/* Disable Enter to Submit Form */
+		$( '.fxb-row-settings' ).bind( "keypress", function(e){
+			if ( e.keyCode == 13 ){
+				e.preventDefault();
+				return false;
+			}
+		});
+
+		/* Fix Height */
+		$( '.fxb-row-settings .fxb-modal-content' ).css( "height", $( '.fxb-row-settings' ).height() - 35 + "px" ); 
+		$( window ).resize( function(){
+			$( '.fxb-row-settings .fxb-modal-content' ).css( "height", "auto" ).css( "height", $( '.fxb-row-settings' ).height() - 35 + "px" ); 
+		});
 	} );
 
 	/* == Close Settings == */

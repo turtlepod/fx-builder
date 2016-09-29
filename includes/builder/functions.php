@@ -80,7 +80,7 @@ class Functions{
 		<div class="fxb-modal-field fxb-modal-field-text">
 
 			<label for="fxb_rows[{{data.id}}][row_title]">
-				<?php esc_html_e( 'Row Title', 'fx-builder' ); ?>
+				<?php esc_html_e( 'Label', 'fx-builder' ); ?>
 			</label>
 
 			<input autocomplete="off" id="fxb_rows[{{data.id}}][row_title]" data-row_field="row_title" name="_fxb_rows[{{data.id}}][row_title]" type="text" value="{{data.row_title}}">
@@ -91,7 +91,7 @@ class Functions{
 		<div class="fxb-modal-field fxb-modal-field-select">
 
 			<label for="fxb_rows[{{data.id}}][layout]">
-				<?php esc_html_e( 'Row Layout', 'fx-builder' ); ?>
+				<?php esc_html_e( 'Layout', 'fx-builder' ); ?>
 			</label>
 
 			<select id="fxb_rows[{{data.id}}][layout]" data-row_field="layout" name="_fxb_rows[{{data.id}}][layout]" autocomplete="off">
@@ -223,14 +223,14 @@ class Functions{
 	 * This will format page builder data to content (single string)
 	 */
 	public static function to_string( $post_id ){
-		$row_ids     = get_post_meta( $post_id, '_fxb_row_ids', true );
-		$rows_data   = get_post_meta( $post_id, '_fxb_rows', true );
-		$items_data  = get_post_meta( $post_id, '_fxb_items', true );
-		if( !$row_ids || ! $rows_data ) return false;
+		$row_ids     = self::sanitize_ids( get_post_meta( $post_id, '_fxb_row_ids', true ) );
+		$rows_data   = self::sanitize_rows_data( get_post_meta( $post_id, '_fxb_rows', true ) );
+		$items_data  = self::sanitize_items_data( get_post_meta( $post_id, '_fxb_items', true ) );
 		$rows        = explode( ',', $row_ids );
+		if( !$row_ids || ! $rows_data ) return false;
 		ob_start();
 		?>
-		<div id="fxb-<?php echo intval( $post_id ); ?>" class="fxb-wrap">
+		<div id="fxb-<?php echo strip_tags( $post_id ); ?>" class="fxb-wrap">
 
 			<?php foreach( $rows as $row_id ){ ?>
 				<?php if( isset( $rows_data[$row_id] ) ){
@@ -253,7 +253,7 @@ class Functions{
 								<?php foreach( $items as $item_id ){ ?>
 									<?php if( isset( $items_data[$item_id] ) ){?>
 
-										<div id="fxb-item-<?php echo intval( $item_id ); ?>" class="fxb-item">
+										<div id="fxb-item-<?php echo strip_tags( $item_id ); ?>" class="fxb-item">
 												<?php echo Functions::do_content( $items_data[$item_id]['content'] ); ?>
 										</div><!-- .fxb-item -->
 
@@ -291,9 +291,7 @@ class Functions{
 			$content = wptexturize( $content );
 			$content = do_shortcode( $content );
 			$content = shortcode_unautop( $content );
-			if( function_exists('wp_make_content_images_responsive') ) { /* WP 4.4+ */
-				$content = wp_make_content_images_responsive( $content );
-			}
+			$content = wp_make_content_images_responsive( $content );
 			$content = wpautop( $content );
 		}
 		return $content;
@@ -311,6 +309,150 @@ class Functions{
 		$valid = array( 'r2l', 'l2r' );
 		if( in_array( $order, $valid ) ){
 			return $order;
+		}
+		return $default;
+	}
+
+	/**
+	 * Sanitize Version
+	 */
+	public static function sanitize_version( $input ){
+		$output = sanitize_text_field( $input );
+		$output = str_replace( ' ', '', $output );
+		return trim( esc_attr( $output ) );
+	}
+
+	/**
+	 * Sanitize IDs
+	 */
+	public static function sanitize_ids( $input ){
+		$output = explode( ",", $input );
+		$output = array_map( "strip_tags", $output );
+		$output = implode( ",", $output );
+		return $output;
+	}
+
+	/**
+	 * Sanitize Row Datas
+	 */
+	public static function sanitize_rows_data( $input ){
+		if( ! is_array( $input ) || empty( $input ) ){
+			return array();
+		}
+		$rows = array();
+		foreach( $input as $row_id => $row_data ){
+			$default = array(
+				'id'              => $row_id,
+				'index'           => '',
+				'state'           => 'open',
+				'col_num'         => '1',
+				'layout'          => '1',
+				'col_order'       => '',
+				'col_1'           => '',
+				'col_2'           => '',
+				'col_3'           => '',
+				'col_4'           => '',
+				'row_title'       => '',
+				'row_html_id'     => '',
+				'row_html_class'  => '',
+			);
+			$rows[$row_id]                     = wp_parse_args( $row_data, $default );
+			$rows[$row_id]['id']               = strip_tags( $rows[$row_id]['id'] );
+			$rows[$row_id]['index']            = strip_tags( $rows[$row_id]['index'] );
+			$rows[$row_id]['state']            = self::sanitize_state( $rows[$row_id]['state'] );
+			$rows[$row_id]['col_num']          = self::get_col_num( $rows[$row_id]['layout'] );
+			$rows[$row_id]['col_1']            = self::sanitize_ids( $rows[$row_id]['col_1'] );
+			$rows[$row_id]['col_2']            = self::sanitize_ids( $rows[$row_id]['col_2'] );
+			$rows[$row_id]['col_3']            = self::sanitize_ids( $rows[$row_id]['col_3'] );
+			$rows[$row_id]['col_4']            = self::sanitize_ids( $rows[$row_id]['col_4'] );
+			$rows[$row_id]['row_title']        = sanitize_text_field( $rows[$row_id]['row_title'] );
+			$rows[$row_id]['row_html_id']      = sanitize_html_class( $rows[$row_id]['row_html_id'] );
+			$rows[$row_id]['row_html_class']   = Fs::sanitize_html_classes( $rows[$row_id]['row_html_class'] );
+		}
+		return $rows;
+	}
+
+	/**
+	 * Sanitize Items Datas
+	 */
+	public static function sanitize_items_data( $input ){
+		if( ! is_array( $input ) || empty( $input ) ){
+			return array();
+		}
+		$items = array();
+		foreach( $input as $item_id => $item_data ){
+			$default = array(
+				'item_id'      => $item_id,
+				'item_index'   => '',
+				'item_state'   => 'open',
+				'item_type'    => 'text',
+				'row_id'       => '',
+				'col_index'    => 'col_1',
+				'content'      => '',
+			);
+			$items[$item_id]                  = wp_parse_args( $item_data, $default );
+			$items[$item_id]['item_id']       = strip_tags( $items[$item_id]['item_id'] );
+			$items[$item_id]['item_index']    = strip_tags( $items[$item_id]['item_index'] );
+			$items[$item_id]['item_state']    = self::sanitize_state( $items[$item_id]['item_state'] );
+			$items[$item_id]['item_type']     = self::sanitize_item_type( $items[$item_id]['item_type'] );
+			$items[$item_id]['row_id']        = strip_tags( $items[$item_id]['row_id'] );
+			$items[$item_id]['col_index']     = self::sanitize_item_col_index( $items[$item_id]['col_index'] );
+			$items[$item_id]['content']       = wp_kses_post( $items[$item_id]['content'] );
+		}
+		return $items;
+	}
+
+	/**
+	 * Sanitize State
+	 */
+	public static function sanitize_state( $input ){
+		$default = 'open';
+		$valid = array( 'open', 'close' );
+		if( in_array( $input, $valid ) ){
+			return $input;
+		}
+		return $default;
+	}
+
+	/**
+	 * Get Col Number from Layout
+	 */
+	public static function get_col_num( $layout ){
+		if( '1' == $layout ){
+			return 1;
+		}
+		elseif( in_array( $layout, array( '12_12', '13_23', '23_13' ) ) ){
+			return 2;
+		}
+		elseif( '13_13_13' == $layout ){
+			return 3;
+		}
+		elseif( '14_14_14_14' == $layout ){
+			return 4;
+		}
+		return 1; // fallback
+	}
+
+	/**
+	 * Sanitize Col Number from Layout
+	 */
+	public static function sanitize_item_type( $input ){
+		$default = 'text';
+		$valid = array( 'text' );
+		if( in_array( $input, $valid ) ){
+			return $input;
+		}
+		return $default;
+	}
+
+	/**
+	 * Sanitize Col Index
+	 */
+	public static function sanitize_item_col_index( $input ){
+		$default = 'col_1';
+		$valid = array( 'col_1', 'col_2', 'col_3', 'col_4' );
+		if( in_array( $input, $valid ) ){
+			return $input;
 		}
 		return $default;
 	}

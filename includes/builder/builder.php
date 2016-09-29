@@ -29,9 +29,6 @@ class Builder{
 		/* Add it after editor in edit screen */
 		add_action( 'edit_form_after_editor', array( $this, 'form' ) );
 
-		/* Load Underscore Templates + Print Scripts */
-		add_action( 'admin_footer', array( $this, 'load_templates' ) );
-
 		/* Save Builder Data */
 		add_action( 'save_post', array( $this, 'save' ), 10, 2 );
 
@@ -81,33 +78,32 @@ class Builder{
 				},
 			));?>
 
+			<div id="fxb-templates">
+				<?php require_once( PATH . 'templates/tmpl-row.php' ); ?>
+				<?php require_once( PATH . 'templates/tmpl-item.php' ); ?>
+			</div>
+			<div id="fxb-template-loader">
+				<?php $this->load_templates( $post_id ); ?>
+			</div>
+
 		</div><!-- #fxb-wrapper -->
 		<?php
 	}
 
 
 	/**
-	 * Admin Footer Scripts
+	 * Load Template
 	 */
-	public function load_templates(){
-		global $post_type;
-		if( ! post_type_supports( $post_type, 'fx_builder' ) ){ return; }
-		$post_id = get_the_ID();
-
-		/* Row Template */
-		require_once( PATH . 'templates/tmpl-row.php' );
-
-		/* Item Template */
-		require_once( PATH . 'templates/tmpl-item.php' );
+	public function load_templates( $post_id ){
 
 		/* Rows data */
-		$rows_data   = get_post_meta( $post_id, '_fxb_rows', true );
-		$row_ids     = get_post_meta( $post_id, '_fxb_row_ids', true );
+		$rows_data   = Functions::sanitize_rows_data( get_post_meta( $post_id, '_fxb_rows', true ) );
+		$row_ids     = Functions::sanitize_ids( get_post_meta( $post_id, '_fxb_row_ids', true ) );
 		if( ! $rows_data && $row_ids && is_array( $rows_data ) && is_array( $row_ids ) ){ return false; }
 		$rows        = explode( ',', $row_ids );
 
 		/* Items data */
-		$items_data  = get_post_meta( $post_id, '_fxb_items', true );
+		$items_data  = Functions::sanitize_items_data( get_post_meta( $post_id, '_fxb_items', true ) );
 		?>
 		<script type="text/javascript">
 			jQuery( document ).ready( function( $ ) {
@@ -153,13 +149,27 @@ class Builder{
 			return false;
 		}
 
+		/* Check Swicther
+		------------------------------------------ */
+		$active = get_post_meta( $post_id, '_fxb_active', true );
+
+		/* Page Builder Not Selected: Delete Data and Bail. */
+		if( !$active ){
+			delete_post_meta( $post_id, '_fxb_db_version' );
+			delete_post_meta( $post_id, '_fxb_row_ids' );
+			delete_post_meta( $post_id, '_fxb_rows' );
+			delete_post_meta( $post_id, '_fxb_items' );
+			return false;
+		}
+
 		/* Page Builder Datas
 		------------------------------------------ */
 
 		/* DB Version */
 		if( isset( $request['_fxb_db_version'] ) ){
-			if( $request['_fxb_db_version'] ){
-				update_post_meta( $post_id, '_fxb_db_version', $request['_fxb_db_version'] );
+			$db_version = Functions::sanitize_version( $request['_fxb_db_version'] );
+			if( $db_version ){
+				update_post_meta( $post_id, '_fxb_db_version', $db_version );
 			}
 			else{
 				delete_post_meta( $post_id, '_fxb_db_version' );
@@ -172,8 +182,9 @@ class Builder{
 
 		/* Row IDs */
 		if( isset( $request['_fxb_row_ids'] ) ){
-			if( $request['_fxb_row_ids'] ){
-				update_post_meta( $post_id, '_fxb_row_ids', $request['_fxb_row_ids'] );
+			$row_ids = Functions::sanitize_ids( $request['_fxb_row_ids'] );
+			if( $row_ids ){
+				update_post_meta( $post_id, '_fxb_row_ids', $row_ids );
 			}
 			else{
 				delete_post_meta( $post_id, '_fxb_row_ids' );
@@ -185,8 +196,9 @@ class Builder{
 
 		/* Rows Datas */
 		if( isset( $request['_fxb_rows'] ) ){
-			if( $request['_fxb_rows'] ){
-				update_post_meta( $post_id, '_fxb_rows', $request['_fxb_rows'] );
+			$rows = Functions::sanitize_rows_data( $request['_fxb_rows'] );
+			if( $rows ){
+				update_post_meta( $post_id, '_fxb_rows', $rows );
 			}
 			else{
 				delete_post_meta( $post_id, '_fxb_rows' );
@@ -198,8 +210,9 @@ class Builder{
 
 		/*  Items Datas */
 		if( isset( $request['_fxb_items'] ) ){
-			if( $request['_fxb_items'] ){
-				update_post_meta( $post_id, '_fxb_items', $request['_fxb_items'] );
+			$items = Functions::sanitize_items_data( $request['_fxb_items'] );
+			if( $items ){
+				update_post_meta( $post_id, '_fxb_items', $items );
 			}
 			else{
 				delete_post_meta( $post_id, '_fxb_items' );
@@ -211,22 +224,18 @@ class Builder{
 
 		/* Content Data
 		------------------------------------------ */
-		$active = get_post_meta( $post_id, '_fx_builder_active', true );
-		if( $active ){
-			$pb_content = Functions::to_string_raw( $post_id );
-			$this_post = array(
-				'ID'           => $post_id,
-				'post_content' => sanitize_post_field( 'post_content', $pb_content, $post_id, 'db' ),
-			);
-			/**
-			 * Prevent infinite loop.
-			 * @link https://developer.wordpress.org/reference/functions/wp_update_post/
-			 */
-			remove_action( 'save_post', array( $this, __FUNCTION__ ) );
-			wp_update_post( $this_post );
-			add_action( 'save_post', array( $this, __FUNCTION__ ) );
-		}
-
+		$pb_content = Functions::to_string_raw( $post_id );
+		$this_post = array(
+			'ID'           => $post_id,
+			'post_content' => sanitize_post_field( 'post_content', $pb_content, $post_id, 'db' ),
+		);
+		/**
+		 * Prevent infinite loop.
+		 * @link https://developer.wordpress.org/reference/functions/wp_update_post/
+		 */
+		remove_action( 'save_post', array( $this, __FUNCTION__ ) );
+		wp_update_post( $this_post );
+		add_action( 'save_post', array( $this, __FUNCTION__ ) );
 	}
 
 	/**

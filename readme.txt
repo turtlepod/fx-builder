@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Page Builder, Drag and Drop, Alpha
 Requires at least: 4.6
 Tested up to: 4.6
-Stable tag: 1.0.0.alpha2
+Stable tag: 1.0.0.alpha3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,16 +12,22 @@ A simple page builder plugin. The one you can actually use. (Alpha Version)
 
 == Description ==
 
-**[f(x) Builder](http://genbumedia.com/plugins/fx-builder/)** is a simple page builder plugin. Without the complexity of front end builder, confusing control, etc.
+**[f(x) Builder](http://genbumedia.com/plugins/fx-builder/)** is a new page builder plugin that provides visual columns in the post editor without using shortcodes. From the setting page, you can enable it for posts, pages, and custom post types. There is no vendor lock-in. If you decide you no longer wish to use the plugin, you can disable it without losing your content (though you would loose the column formatting).
 
 **IMPORTANT**
 
 This plugin is still in alpha stage. Do not use on production site. It might explode.
 
+**GITHUB**
+
+You can contribute to development at GitHub https://github.com/turtlepod/fx-builder
+
 **Features:**
 
 1. Super simple to use.
-1. Settings to Enable/Disable for each post type.
+1. Visual columns in the post editor.
+1. If you disable the plugin, you content is not lost.
+1. Settings to enable/disable for each post type.
 1. 1 - 4 columns supported.
 1. Free, Open Source, GPL v2.0 or later license. :) Use it to make something cool.
 1. Support available at [Genbu Media](http://genbumedia.com/contact/?about=f%28x%29+Builder).
@@ -43,6 +49,8 @@ Yes, I actually use it in my own site, because I need it. But as I mention, it's
 
 == Screenshots ==
 
+This screenshot is outdated (from alpha1 version). I will update to the latest when the plugin enters beta stage.
+
 1. Page Builder Settings
 2. The Page Builder in Action
 3. Row Settings: Layout Option
@@ -51,6 +59,26 @@ Yes, I actually use it in my own site, because I need it. But as I mention, it's
 6. Front End Results.
 
 == Changelog ==
+
+= 1.0.0.alpha3 - 29 Sep 2016 =
+* Revision: Revert to Revision now also revert to page builder data.
+* Remove disable editor feature. Simpler Settings.
+* Change settings option name. You need to re-configure settings.
+* Page is enabled by default.
+* Introduce Tools: Export / Import page builder data.
+* Auto focus to editor when open editor modal.
+* Fix Custom CSS textarea line break.
+* Fix several small-screen accessibility issue in modal box.
+
+= 1.0.0.alpha2 - 23 Sep 2016 =
+* Add row with thumbnail for each layoout.
+* Welcome notice with link to admin page/
+* Improve overall builder design.
+* Fix overflow in editor modal.
+* add post class "fx-builder-entry" when active.
+* Reset undo in editor modal.
+* Custom CSS for each posts.
+* Other small fixes and improvements.
 
 = 1.0.0.alpha - 21 Sep 2016 =
 * Initial alpha release.
@@ -64,6 +92,6 @@ Might explode.
 
 Notes for developer: 
 
-= Github =
+= GitHub =
 
 Development of this plugin is hosted at [GitHub](https://github.com/turtlepod/fx-builder). Pull request and bug reports are welcome.

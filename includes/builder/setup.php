@@ -26,8 +26,14 @@ require_once( PATH . 'switcher.php' );
 /* Custom CSS */
 require_once( PATH . 'custom-css.php' );
 
+/* Tools */
+require_once( PATH . 'tools.php' );
+
 /* The Page Builder */
 require_once( PATH . 'builder.php' );
+
+/* Revisions */
+require_once( PATH . 'revisions.php' );
 
 /* Front */
 require_once( PATH . 'front.php' );

@@ -121,7 +121,6 @@
 /* Row Menu */
 .fxb-row-menu .fxb-left{
 	width: calc( 100% - 125px);
-	position: absolute;
 }
 /* Index */
 .fxb_row_index:before{
@@ -269,6 +268,10 @@
 }
 .fxb-item-menu .fxb-link:hover{
 	color: #444;
+}
+/* Index */
+.fxb_item_index:before{
+	content: attr(data-item-index);
 }
 /* State */
 .fxb-item[data-item_state="close"] .fxb-item-content{

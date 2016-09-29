@@ -39,7 +39,7 @@ namespace fx_builder\builder;
 		<div class="fxb-item-menu fxb-clear">
 			<div class="fxb-left">
 				<span class="fxb-icon fxb-grab fxb-item-handle dashicons dashicons-move"></span>
-				<span class="fxb-icon fxb_item_index">{{data.item_index}}</span>
+				<span class="fxb-icon fxb_item_index" data-item-index="{{data.item_index}}"></span>
 			</div><!-- .fxb-left -->
 			<div class="fxb-right">
 				<span data-confirm="<?php _e( 'Delete item?', 'fx-builder' ); ?>" class="fxb-icon fxb-remove-item fxb-link dashicons dashicons-trash"></span>

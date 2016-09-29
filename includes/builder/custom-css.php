@@ -28,7 +28,7 @@ class Custom_CSS{
 		add_action( 'fxb_switcher_nav', array( $this, 'add_css_control' ) );
 
 		/* Save CSS */
-		add_action( 'save_post', array( $this, 'save' ), 9, 2 );
+		add_action( 'save_post', array( $this, 'save' ), 10, 2 );
 
 		/* Scripts */
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
@@ -53,6 +53,7 @@ class Custom_CSS{
 			'callback'  => function() use( $post_id ){
 				?>
 				<textarea class="fxb-custom-css-textarea" name="_fxb_custom_css" autocomplete="off" placeholder="<?php esc_attr_e( 'Custom CSS Here...', 'fx-builder' ); ?>"><?php echo esc_textarea( Fs::sanitize_css( get_post_meta( $post_id, '_fxb_custom_css', true ) ) ); ?></textarea>
+				<p><label><input type="checkbox" name="_fxb_custom_css_disable" value="1" <?php checked( '1', get_post_meta( $post_id, '_fxb_custom_css_disable', true ) ); ?>><?php _e( 'Disable Custom CSS', 'fx-builder' ); ?></label></p>
 				<?php
 			},
 		));?>
@@ -60,7 +61,7 @@ class Custom_CSS{
 	}
 
 	/**
-	 * Save Switcher Pref
+	 * Save Custom CSS Data
 	 * @since 1.0.0
 	 */
 	public function save( $post_id, $post ){
@@ -76,13 +77,21 @@ class Custom_CSS{
 			return false;
 		}
 
-		/* Save Builder Tab */
+		/* Save Data */
 		if( isset( $request['_fxb_custom_css'] ) ){
 			if( $request['_fxb_custom_css'] ){
 				update_post_meta( $post_id, '_fxb_custom_css', Fs::sanitize_css( $request['_fxb_custom_css'] ) );
 			}
 			else{
 				delete_post_meta( $post_id, '_fxb_custom_css' );
+			}
+		}
+		if( isset( $request['_fxb_custom_css_disable'] ) ){
+			if( $request['_fxb_custom_css_disable'] ){
+				update_post_meta( $post_id, '_fxb_custom_css_disable', 1 );
+			}
+			else{
+				delete_post_meta( $post_id, '_fxb_custom_css_disable' );
 			}
 		}
 	}
@@ -99,7 +108,7 @@ class Custom_CSS{
 		if( post_type_supports( $post_type, 'editor' ) && post_type_supports( $post_type, 'fx_builder' ) ){
 
 			/* CSS */
-			wp_enqueue_style( 'fx-builder-custom_css', URI . 'assets/custom-css.css', array(), VERSION );
+			wp_enqueue_style( 'fx-builder-custom_css', URI . 'assets/custom-css.css', array( 'fx-builder' ), VERSION );
 
 			/* JS */
 			wp_enqueue_script( 'fx-builder-custom_css', URI . 'assets/custom-css.js', array( 'jquery' ), VERSION, true );
@@ -116,7 +125,8 @@ class Custom_CSS{
 		$post_type = get_post_type( $post_id );
 		if( ! post_type_supports( $post_type, 'fx_builder' ) ) return;
 		$css = get_post_meta( $post_id, '_fxb_custom_css', true );
-		if( $css ){
+		$disable = get_post_meta( $post_id, '_fxb_custom_css_disable', true );
+		if( $css && !$disable ){
 		?>
 		<style id="fx-builder-custom-css" type="text/css">
 			<?php echo wp_strip_all_tags( $css );?>
