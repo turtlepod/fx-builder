@@ -32,7 +32,8 @@
 
 			/* Update Item Index */
 			$( this ).attr( 'data-item_index', item_index ); // set data attr
-			$( this ).find( '.fxb_item_index' ).text( item_index ); // display text
+			$( this ).find( '.fxb_item_index' ).attr( 'data-item-index', item_index );
+			$( this ).find( '.fxb_item_index' ).data( 'item-index', item_index );
 			$( this ).find( 'input[data-item_field="item_index"]' ).val( item_index ); // change input
 
 			/* Update Row ID and Col Index */
