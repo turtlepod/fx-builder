@@ -80,7 +80,7 @@ class Functions{
 		<div class="fxb-modal-field fxb-modal-field-text">
 
 			<label for="fxb_rows[{{data.id}}][row_title]">
-				<?php esc_html_e( 'Row Title', 'fx-builder' ); ?>
+				<?php esc_html_e( 'Label', 'fx-builder' ); ?>
 			</label>
 
 			<input autocomplete="off" id="fxb_rows[{{data.id}}][row_title]" data-row_field="row_title" name="_fxb_rows[{{data.id}}][row_title]" type="text" value="{{data.row_title}}">
@@ -91,7 +91,7 @@ class Functions{
 		<div class="fxb-modal-field fxb-modal-field-select">
 
 			<label for="fxb_rows[{{data.id}}][layout]">
-				<?php esc_html_e( 'Row Layout', 'fx-builder' ); ?>
+				<?php esc_html_e( 'Layout', 'fx-builder' ); ?>
 			</label>
 
 			<select id="fxb_rows[{{data.id}}][layout]" data-row_field="layout" name="_fxb_rows[{{data.id}}][layout]" autocomplete="off">
