@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Page Builder, Drag and Drop, Alpha
 Requires at least: 4.6
 Tested up to: 4.6
-Stable tag: 1.0.0.alpha3
+Stable tag: 1.0.0.beta
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,6 +59,9 @@ This screenshot is outdated (from alpha1 version). I will update to the latest w
 6. Front End Results.
 
 == Changelog ==
+
+= 1.0.0.beta - 01 Oct 2016 =
+* 
 
 = 1.0.0.alpha3 - 29 Sep 2016 =
 * Revision: Revert to Revision now also revert to page builder data.
