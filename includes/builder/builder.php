@@ -26,6 +26,9 @@ class Builder{
 	 */
 	public function __construct() {
 
+		/* Get Admin Color */
+		add_action( 'admin_head', array( $this, 'global_admin_color' ), 1 );
+
 		/* Add it after editor in edit screen */
 		add_action( 'edit_form_after_editor', array( $this, 'form' ) );
 
@@ -36,6 +39,21 @@ class Builder{
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ), 99 );
 	}
 
+
+	/**
+	 * Get Admin Color in Global
+	 */
+	public function global_admin_color(){
+		global $pagenow, $_wp_admin_css_colors, $fxb_admin_color;
+		$fxb_admin_color = array( '#222', '#333', '#0073aa', '#00a0d2' ); // default (fresh)
+		if( ! in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ){
+			return false;
+		}
+		$user_admin_color_scheme = get_user_option( 'admin_color' );
+		if( isset( $_wp_admin_css_colors[$user_admin_color_scheme]->colors ) ){
+			$fxb_admin_color = $_wp_admin_css_colors[$user_admin_color_scheme]->colors;
+		}
+	}
 
 	/**
 	 * Builder Form

@@ -81,7 +81,7 @@ jQuery(document).ready(function($){
 	 * 
 	 ************************************
 	 */
-	$( document.body ).on( 'click', '.fxb-add-row a', function(e){
+	$( document.body ).on( 'click', '.fxb-add-row .layout-thumb', function(e){
 		e.preventDefault();
 
 		/* Var */

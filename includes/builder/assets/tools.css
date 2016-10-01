@@ -44,4 +44,10 @@
 		margin: 10px 10px 0 0;
 	}
 }
+@media only screen and (max-width: 390px) {
+	.fxb-nav-tools span:before{
+		content: "";
+		margin-right: 0;
+	}
+}
 

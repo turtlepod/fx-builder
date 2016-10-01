@@ -38,4 +38,9 @@
 		margin: 10px -14px 0 0;
 	}
 }
-
+@media only screen and (max-width: 390px) {
+	.fxb-nav-css span:before{
+		content: "";
+		margin-right: 0;
+	}
+}

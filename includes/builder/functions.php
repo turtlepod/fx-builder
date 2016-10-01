@@ -13,27 +13,28 @@ class Functions{
 	 * Add Row
 	 */
 	public static function add_row_field( $method = 'prepend' ){
+		global $fxb_admin_color;
 		$img = URI . 'assets/layout-images/';
 		?>
-		<div class="fxb-add-row" data-add_row_method="<?php echo esc_attr( $method ); ?>">
+		<div class="fxb-add-row" data-add_row_method="<?php echo esc_attr( $method ); ?>" style="color:<?php echo esc_attr( $fxb_admin_color['2'] );?>">
 
 			<div class="layout-thumb-wrap">
-				<a class="layout-thumb" data-row-layout="1" data-row-col_num="1" href="#"><img src="<?php echo esc_url( $img . 'layout-1.png' ); ?>"></a>
+				<div class="layout-thumb" data-row-layout="1" data-row-col_num="1"><img src="<?php echo esc_url( $img . 'layout-1.png' ); ?>"></div>
 			</div>
 			<div class="layout-thumb-wrap">
-				<a class="layout-thumb" data-row-layout="12_12" data-row-col_num="2" href="#"><img src="<?php echo esc_url( $img . 'layout-12_12.png' ); ?>"></a>
+				<div class="layout-thumb" data-row-layout="12_12" data-row-col_num="2"><img src="<?php echo esc_url( $img . 'layout-12_12.png' ); ?>"></div>
 			</div>
 			<div class="layout-thumb-wrap">
-				<a class="layout-thumb" data-row-layout="13_23" data-row-col_num="2" href="#"><img src="<?php echo esc_url( $img . 'layout-13_23.png' ); ?>"></a>
+				<div class="layout-thumb" data-row-layout="13_23" data-row-col_num="2"><img src="<?php echo esc_url( $img . 'layout-13_23.png' ); ?>"></div>
 			</div>
 			<div class="layout-thumb-wrap">
-				<a class="layout-thumb" data-row-layout="23_13" data-row-col_num="2" href="#"><img src="<?php echo esc_url( $img . 'layout-23_13.png' ); ?>"></a>
+				<div class="layout-thumb" data-row-layout="23_13" data-row-col_num="2"><img src="<?php echo esc_url( $img . 'layout-23_13.png' ); ?>"></div>
 			</div>
 			<div class="layout-thumb-wrap">
-				<a class="layout-thumb" data-row-layout="13_13_13" data-row-col_num="3" href="#"><img src="<?php echo esc_url( $img . 'layout-13_13_13.png' ); ?>"></a>
+				<div class="layout-thumb" data-row-layout="13_13_13" data-row-col_num="3"><img src="<?php echo esc_url( $img . 'layout-13_13_13.png' ); ?>"></div>
 			</div>
 			<div class="layout-thumb-wrap">
-				<a class="layout-thumb" data-row-layout="14_14_14_14" data-row-col_num="4" href="#"><img src="<?php echo esc_url( $img . 'layout-14_14_14_14.png' ); ?>"></a>
+				<div class="layout-thumb" data-row-layout="14_14_14_14" data-row-col_num="4"><img src="<?php echo esc_url( $img . 'layout-14_14_14_14.png' ); ?>"></div>
 			</div>
 
 		</div><!-- .fxb-add-row -->
@@ -45,6 +46,7 @@ class Functions{
 	 * @since 1.0.0
 	 */
 	public static function render_settings( $args = array() ){
+		global $fxb_admin_color;
 		$args_default = array(
 			'id'        => '',
 			'title'     => '',
@@ -56,7 +58,7 @@ class Functions{
 		?>
 		<div class="<?php echo sanitize_title( $args['id'] ); ?> fxb-modal" style="display:none;width:<?php echo esc_attr( $args['width'] ); ?>;height:<?php echo esc_attr( $args['height'] );?>;">
 			<div class="fxb-modal-container">
-				<div class="fxb-modal-title"><?php echo $args['title']; ?><span class="fxb-modal-close"><?php _e( 'Done', 'fx-builder' ); ?></span></div><!-- .fxb-modal-title -->
+				<div class="fxb-modal-title"><?php echo $args['title']; ?><span class="fxb-modal-close" style="background-color:<?php echo esc_attr( $fxb_admin_color['2'] );?>"><?php _e( 'Done', 'fx-builder' ); ?></span></div><!-- .fxb-modal-title -->
 
 				<div class="fxb-modal-content">
 					<?php if ( is_callable( $args['callback'] ) ){
@@ -160,6 +162,7 @@ class Functions{
 	 * Render (empty) Column
 	 */
 	public static function render_column( $args = array() ){
+		global $fxb_admin_color;
 		$args_default = array(
 			'title'     => '',
 			'index'     => '',
@@ -180,7 +183,7 @@ class Functions{
 
 			<div class="fxb-col-content"></div><!-- .fxb-col-content -->
 
-			<div class="fxb-add-item fxb-link">
+			<div class="fxb-add-item fxb-link" style="color:<?php echo esc_attr( $fxb_admin_color['2'] ); ?>">
 				<span><?php _e( 'Add Item', 'fx-builder' );?></span>
 			</div><!-- .fxb-add-item -->
 

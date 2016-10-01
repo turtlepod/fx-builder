@@ -22,6 +22,7 @@
  * - "col_4"
 **/
 namespace fx_builder\builder;
+global $fxb_admin_color;
 ?>
 <script id="tmpl-fxb-row" type="text/html">
 
@@ -37,7 +38,7 @@ namespace fx_builder\builder;
 		<input type="hidden" data-row_field="col_num" name="_fxb_rows[{{data.id}}][col_num]" value="{{data.col_num}}" autocomplete="off"/>
 
 		<?php /* ROW MENU */ ?>
-		<div class="fxb-row-menu fxb-clear">
+		<div class="fxb-row-menu fxb-clear" style="background-color:<?php echo esc_attr( $fxb_admin_color['1'] );?>">
 			<div class="fxb-left">
 				<span class="fxb-icon fxb-grab fxb-row-handle dashicons dashicons-sort"></span>
 				<span class="fxb-icon fxb_row_index" data-row-index="{{data.index}}"></span>
