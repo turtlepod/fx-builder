@@ -272,6 +272,10 @@ class Builder{
 
 			/* Enqueue JS: ROW */
 			wp_enqueue_script( 'fx-builder-row', URI . 'assets/page-builder-row.js', array( 'jquery', 'jquery-ui-sortable', 'wp-util' ), VERSION, true );
+			$data = array(
+				'unload'         => __( 'The changes you made will be lost if you navigate away from this page','fx-builder' ),
+			);
+			wp_localize_script( 'fx-builder-row', 'fxb_i18n', $data );
 
 			/* Enqueue JS: ITEM */
 			wp_enqueue_script( 'fx-builder-item', URI . 'assets/page-builder-item.js', array( 'jquery', 'jquery-ui-sortable', 'wp-util' ), VERSION, true );
