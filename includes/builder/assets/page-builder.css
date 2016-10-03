@@ -72,15 +72,19 @@
 	cursor: pointer;
 }
 .layout-thumb:before{
-	content: "";
+	content: "\f502";
 	display: block;
-	font: 24px/36px dashicons;
+	font: 24px/24px dashicons;
 	text-align: center;
 	position: absolute;
 	left: auto;
 	top: auto;
-	right: 10px;
+	right: 0;
 	bottom: 0;
+	height: 24px;
+	width: 24px;
+	background: #fff;
+	border-radius: 50%;
 }
 .layout-thumb:hover{
 	border-color: #bbb;
@@ -115,7 +119,7 @@
 	color: #fff;
 }
 .fxb-row-menu .fxb-link:hover{
-	color: #fff;
+	opacity: 0.8;
 }
 /* State */
 .fxb-row[data-state="close"] .fxb-row-content{
@@ -266,16 +270,16 @@
 }
 /* Item */
 .fxb-item{
-	border: 1px solid #d9d9d9;
+	border: 1px solid #ccc;
 	background: #fff;
 	margin-bottom: 10px;
 }
 .fxb-item-menu{
 	background: #eee;
-	color: #aaa;
+	color: #888;
 }
 .fxb-item-menu .fxb-icon{
-	border-color: #d9d9d9;
+	border-color: #ccc;
 }
 .fxb-item-menu .fxb-link:hover{
 	color: #444;
