@@ -94,7 +94,7 @@ class Settings{
 			$option_group      = $this->options_group,
 			$option_name       = 'fx-builder_post_types',
 			$sanitize_callback = function( $data ){
-				return Fs::sanitize_post_types( $data );
+				return $this->check_post_types_exists( $data );
 			}
 		);
 
@@ -161,10 +161,27 @@ class Settings{
 			$post_types = array( 'page' );
 		}
 		else{
-			$post_types = Fs::sanitize_post_types( $post_types );
+			$post_types = $this->check_post_types_exists( $post_types );
 		}
 		foreach( $post_types as $pt ){
 			add_post_type_support( $pt, 'fx_builder' );
 		}
+	}
+
+	/**
+	 * Sanitize Post Types
+	 * @param $input array
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function check_post_types_exists( $input ) {
+		$input = is_array( $input ) ? $input : array();
+		$post_types = array();
+		foreach( $input as $post_type ){
+			if( post_type_exists( $post_type ) ){
+				$post_types[] = $post_type;
+			}
+		}
+		return $post_types;
 	}
 }

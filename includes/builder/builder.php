@@ -115,13 +115,13 @@ class Builder{
 	public function load_templates( $post_id ){
 
 		/* Rows data */
-		$rows_data   = Functions::sanitize_rows_data( get_post_meta( $post_id, '_fxb_rows', true ) );
-		$row_ids     = Functions::sanitize_ids( get_post_meta( $post_id, '_fxb_row_ids', true ) );
+		$rows_data   = Sanitize::rows_data( get_post_meta( $post_id, '_fxb_rows', true ) );
+		$row_ids     = Sanitize::ids( get_post_meta( $post_id, '_fxb_row_ids', true ) );
 		if( ! $rows_data && $row_ids && is_array( $rows_data ) && is_array( $row_ids ) ){ return false; }
 		$rows        = explode( ',', $row_ids );
 
 		/* Items data */
-		$items_data  = Functions::sanitize_items_data( get_post_meta( $post_id, '_fxb_items', true ) );
+		$items_data  = Sanitize::items_data( get_post_meta( $post_id, '_fxb_items', true ) );
 		?>
 		<script type="text/javascript">
 			jQuery( document ).ready( function( $ ) {
@@ -185,7 +185,7 @@ class Builder{
 
 		/* DB Version */
 		if( isset( $request['_fxb_db_version'] ) ){
-			$db_version = Functions::sanitize_version( $request['_fxb_db_version'] );
+			$db_version = Sanitize::version( $request['_fxb_db_version'] );
 			if( $db_version ){
 				update_post_meta( $post_id, '_fxb_db_version', $db_version );
 			}
@@ -200,7 +200,7 @@ class Builder{
 
 		/* Row IDs */
 		if( isset( $request['_fxb_row_ids'] ) ){
-			$row_ids = Functions::sanitize_ids( $request['_fxb_row_ids'] );
+			$row_ids = Sanitize::ids( $request['_fxb_row_ids'] );
 			if( $row_ids ){
 				update_post_meta( $post_id, '_fxb_row_ids', $row_ids );
 			}
@@ -214,7 +214,7 @@ class Builder{
 
 		/* Rows Datas */
 		if( isset( $request['_fxb_rows'] ) ){
-			$rows = Functions::sanitize_rows_data( $request['_fxb_rows'] );
+			$rows = Sanitize::rows_data( $request['_fxb_rows'] );
 			if( $rows ){
 				update_post_meta( $post_id, '_fxb_rows', $rows );
 			}
@@ -228,7 +228,7 @@ class Builder{
 
 		/*  Items Datas */
 		if( isset( $request['_fxb_items'] ) ){
-			$items = Functions::sanitize_items_data( $request['_fxb_items'] );
+			$items = Sanitize::items_data( $request['_fxb_items'] );
 			if( $items ){
 				update_post_meta( $post_id, '_fxb_items', $items );
 			}
