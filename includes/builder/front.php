@@ -23,8 +23,8 @@ class Front{
 	 */
 	public function __construct() {
 
-		/* Filter content with page builder content. Need to be after WP wpautop filter */
-		add_filter( 'the_content', array( $this, 'content_filter' ), 10 );
+		/* Filter content with page builder content. */
+		add_filter( 'the_content', array( $this, 'content_filter' ), 1 );
 
 		/* Enqueue Scripts */
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 1 );
@@ -44,6 +44,7 @@ class Front{
 		}
 		$active = get_post_meta( $post_id, '_fxb_active', true );
 		if( $active ){
+			remove_filter( 'the_content', 'wpautop' );
 			$content = Functions::to_string( $post_id );
 		}
 		return $content;

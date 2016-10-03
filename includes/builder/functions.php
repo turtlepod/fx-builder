@@ -257,7 +257,7 @@ class Functions{
 									<?php if( isset( $items_data[$item_id] ) ){?>
 
 										<div id="fxb-item-<?php echo strip_tags( $item_id ); ?>" class="fxb-item">
-												<?php echo Functions::do_content( $items_data[$item_id]['content'] ); ?>
+												<?php echo wpautop( $items_data[$item_id]['content'] ); ?>
 										</div><!-- .fxb-item -->
 
 									<?php } ?>
@@ -275,29 +275,6 @@ class Functions{
 		</div><!-- .fxb-wrap -->
 		<?php
 		return ob_get_clean();
-	}
-
-
-
-	/**
-	 * Do Content
-	 */
-	public static function do_content( $content ){
-		if( $content ){
-
-			global $wp_embed;
-			$content = $wp_embed->run_shortcode( $content );
-			$content = $wp_embed->autoembed( $content );
-			$content = wptexturize( $content );
-			$content = convert_smilies( $content );
-			$content = convert_chars( $content );
-			$content = wptexturize( $content );
-			$content = do_shortcode( $content );
-			$content = shortcode_unautop( $content );
-			$content = wp_make_content_images_responsive( $content );
-			$content = wpautop( $content );
-		}
-		return $content;
 	}
 
 
