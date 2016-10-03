@@ -196,9 +196,9 @@ class Functions{
 	 * This is the builder data without div wrapper
 	 */
 	public static function to_string_raw( $post_id ){
-		$row_ids     = get_post_meta( $post_id, '_fxb_row_ids', true );
-		$rows_data   = get_post_meta( $post_id, '_fxb_rows', true );
-		$items_data  = get_post_meta( $post_id, '_fxb_items', true );
+		$row_ids     = self::sanitize_ids( get_post_meta( $post_id, '_fxb_row_ids', true ) );
+		$rows_data   = self::sanitize_rows_data( get_post_meta( $post_id, '_fxb_rows', true ) );
+		$items_data  = self::sanitize_items_data( get_post_meta( $post_id, '_fxb_items', true ) );
 		if( !$row_ids || ! $rows_data ) return false;
 		$rows        = explode( ',', $row_ids );
 
@@ -218,7 +218,7 @@ class Functions{
 
 			}
 		}
-		return $content;
+		return apply_filters( 'fxb_content_raw', $content, $post_id, $row_ids, $rows_data, $items_data );
 	}
 
 	/**
@@ -237,35 +237,39 @@ class Functions{
 
 			<?php foreach( $rows as $row_id ){ ?>
 				<?php if( isset( $rows_data[$row_id] ) ){
-					$col_order = $rows_data[$row_id]['col_order'];
-					$row_html_id = isset( $rows_data[$row_id]['row_html_id'] ) && !empty( $rows_data[$row_id]['row_html_id'] ) ? $rows_data[$row_id]['row_html_id'] : "fxb-row-{$row_id}";
-					$row_html_id = sanitize_html_class( $row_html_id );
-					$row_html_class = isset( $rows_data[$row_id]['row_html_class'] ) && !empty( $rows_data[$row_id]['row_html_class'] ) ? "fxb-row {$rows_data[$row_id]['row_html_class']}" : "fxb-row";
-					$row_html_class = Fs::sanitize_html_classes( $row_html_class );
+					$row_html_id = $rows_data[$row_id]['row_html_id'] ? $rows_data[$row_id]['row_html_id'] : "fxb-row-{$row_id}";
+					$row_html_class = $rows_data[$row_id]['row_html_class'] ? "fxb-row {$rows_data[$row_id]['row_html_class']}" : "fxb-row";
 					?>
 
 					<div id="<?php echo $row_html_id; ?>" class="<?php echo esc_attr( $row_html_class ); ?>" data-index="<?php echo intval( $rows_data[$row_id]['index'] ); ?>" data-layout="<?php echo esc_attr( $rows_data[$row_id]['layout'] ); ?>" data-col_order=<?php echo self::sanitize_col_order( $rows_data[$row_id]['col_order'] ); ?>>
-						<?php
-						$cols = range( 1, $rows_data[$row_id]['col_num'] );
-						foreach( $cols as $k ){
-							$items = $rows_data[$row_id]['col_' . $k];
-							$items = explode(",", $items);
-							?>
-							<div class="fxb-col-<?php echo intval( $k ); ?> fxb-col">
 
-								<?php foreach( $items as $item_id ){ ?>
-									<?php if( isset( $items_data[$item_id] ) ){?>
+						<div class="fxb-wrap">
 
-										<div id="fxb-item-<?php echo strip_tags( $item_id ); ?>" class="fxb-item">
-												<?php echo wpautop( $items_data[$item_id]['content'] ); ?>
-										</div><!-- .fxb-item -->
-
-									<?php } ?>
-								<?php } ?>
-
-							</div><!-- .fxb-col -->
 							<?php
-						} ?>
+							$cols = range( 1, $rows_data[$row_id]['col_num'] );
+							foreach( $cols as $k ){
+								$items = $rows_data[$row_id]['col_' . $k];
+								$items = explode(",", $items);
+								?>
+								<div class="fxb-col-<?php echo intval( $k ); ?> fxb-col">
+
+									<?php foreach( $items as $item_id ){ ?>
+										<?php if( isset( $items_data[$item_id] ) ){?>
+
+											<div id="fxb-item-<?php echo strip_tags( $item_id ); ?>" class="fxb-item">
+												<div class="fxb-wrap">
+													<?php echo wpautop( $items_data[$item_id]['content'] ); ?>
+												</div><!-- .fxb-wrap -->
+											</div><!-- .fxb-item -->
+
+										<?php } ?>
+									<?php } ?>
+
+								</div><!-- .fxb-col -->
+								<?php
+							} ?>
+
+						</div><!-- .fxb-wrap -->
 
 					</div><!-- .fxb-row -->
 
@@ -274,7 +278,7 @@ class Functions{
 			
 		</div><!-- .fxb-wrap -->
 		<?php
-		return ob_get_clean();
+		return apply_filters( 'fxb_content', ob_get_clean(), $post_id, $row_ids, $rows_data, $items_data );
 	}
 
 
