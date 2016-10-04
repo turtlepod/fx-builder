@@ -35,7 +35,12 @@
 	cursor: pointer;
 }
 .fxb-grab{
+	cursor: -webkit-grab;
 	cursor: grab;
+}
+.fxb-grabbing{
+	cursor: -webkit-grabbing;
+	cursor: grabbing;
 }
 
 

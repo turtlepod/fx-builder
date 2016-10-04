@@ -298,5 +298,8 @@ jQuery(document).ready(function($){
 			$.fn.fxB_updateRowsIndex();
 		},
 	});
+	$( document.body ).on('mousedown mouseup', '.fxb-grab', function(event) {
+		$(this).toggleClass( 'fxb-grabbing' );
+	});
 
 });
