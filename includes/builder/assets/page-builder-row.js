@@ -66,9 +66,6 @@ jQuery(document).ready(function($){
 		} );
 	});
 	$( document ).on( 'submit', 'form', function(){
-		$( window ).on( 'beforeunload', function(){
-			return "";
-		} );
 		$( window ).unbind( 'beforeunload' );
 	});
 

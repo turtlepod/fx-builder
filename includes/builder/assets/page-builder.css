@@ -37,6 +37,7 @@
 .fxb-grab{
 	cursor: -webkit-grab;
 	cursor: grab;
+	cursor: move;
 }
 .fxb-grabbing{
 	cursor: -webkit-grabbing;

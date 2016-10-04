@@ -61,7 +61,9 @@ This screenshot is outdated (from alpha1 version). I will update to the latest w
 == Changelog ==
 
 = 1.0.0.beta - 01 Oct 2016 =
-* 
+* Browser compatibility (Tested with: Firefox, Chrome, IE11, Edge, Android Phone, Tablet)
+* Use Admin Color
+* UI and UX Improvement.
 
 = 1.0.0.alpha3 - 29 Sep 2016 =
 * Revision: Revert to Revision now also revert to page builder data.
