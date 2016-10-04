@@ -69,6 +69,7 @@ jQuery(document).ready(function($){
 		$( window ).on( 'beforeunload', function(){
 			return "";
 		} );
+		$( window ).unbind( 'beforeunload' );
 	});
 
 	/**
