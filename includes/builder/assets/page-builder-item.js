@@ -208,15 +208,13 @@
 		iframe.contents().find( 'body' ).attr( 'id', 'tinymce' ).addClass( editor_body_class ).addClass( body_class ).html( content );
 
 		/* 
-		 * Firefox Hack
+		 * Firefox Hack + This also fix chrome drag and drop content empty.
 		 * @link http://stackoverflow.com/a/24686535
 		 */
-		if( navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ){
-			$( iframe ).on('load', function() {
-				$( this ).contents().find( 'head' ).html( head );
-				$( this ).contents().find( 'body' ).attr( 'id', 'tinymce' ).addClass( editor_body_class ).addClass( body_class ).html( content );
-			});
-		}
+		$( iframe ).on( 'load', function() {
+			$( this ).contents().find( 'head' ).html( head );
+			$( this ).contents().find( 'body' ).attr( 'id', 'tinymce' ).addClass( editor_body_class ).addClass( body_class ).html( content );
+		});
 	};
 
 
