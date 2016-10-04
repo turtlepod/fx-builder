@@ -242,7 +242,7 @@ class Builder{
 
 		/* Content Data
 		------------------------------------------ */
-		$pb_content = Functions::to_string_raw( $post_id );
+		$pb_content = Functions::content_raw( $post_id );
 		$this_post = array(
 			'ID'           => $post_id,
 			'post_content' => sanitize_post_field( 'post_content', $pb_content, $post_id, 'db' ),

@@ -195,7 +195,7 @@ class Functions{
 	 * Format Post Builder Data To Single String
 	 * This is the builder data without div wrapper
 	 */
-	public static function to_string_raw( $post_id ){
+	public static function content_raw( $post_id ){
 		$row_ids     = Sanitize::ids( get_post_meta( $post_id, '_fxb_row_ids', true ) );
 		$rows_data   = Sanitize::rows_data( get_post_meta( $post_id, '_fxb_rows', true ) );
 		$items_data  = Sanitize::items_data( get_post_meta( $post_id, '_fxb_items', true ) );
@@ -225,7 +225,7 @@ class Functions{
 	 * Format Post Builder Data To Single String
 	 * This will format page builder data to content (single string)
 	 */
-	public static function to_string( $post_id ){
+	public static function content( $post_id ){
 		$row_ids     = Sanitize::ids( get_post_meta( $post_id, '_fxb_row_ids', true ) );
 		$rows_data   = Sanitize::rows_data( get_post_meta( $post_id, '_fxb_rows', true ) );
 		$items_data  = Sanitize::items_data( get_post_meta( $post_id, '_fxb_items', true ) );

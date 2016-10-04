@@ -35,17 +35,18 @@ class Front{
 
 	/**
 	 * Content Filter
+	 * This will format content with page builder data.
 	 */
 	public function content_filter( $content ){
-		$post_id = get_the_ID();
-		$post_type = get_post_type( $post_id );
-		if( ! post_type_supports( $post_type, 'fx_builder' ) ){
-			return $content;
+		$post_id      = get_the_ID();
+		$post_type    = get_post_type( $post_id );
+		$active       = get_post_meta( $post_id, '_fxb_active', true );
+		remove_filter( 'the_content', 'wpautop' );
+		if( post_type_supports( $post_type, 'fx_builder' ) && $active ){
+			$content = Functions::content( $post_id ); // autop added in this function.
 		}
-		$active = get_post_meta( $post_id, '_fxb_active', true );
-		if( $active ){
-			remove_filter( 'the_content', 'wpautop' );
-			$content = Functions::to_string( $post_id );
+		else{
+			add_filter( 'the_content', 'wpautop' );
 		}
 		return $content;
 	}
