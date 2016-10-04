@@ -306,6 +306,7 @@
 .fxb-item-content{
 	padding: 0;
 	position: relative;
+	overflow: hidden;
 }
 /* Iframe overlay */
 .fxb-item-iframe-overlay{
