@@ -1,6 +1,6 @@
-/* Wrap
+/* Container
 ------------------------------------------ */
-.fxb-wrap:after{
+.fxb-container:after{
 	content:".";display:block;height:0;clear:both;visibility:hidden;
 }
 

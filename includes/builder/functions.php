@@ -233,7 +233,7 @@ class Functions{
 		if( !$row_ids || ! $rows_data ) return false;
 		ob_start();
 		?>
-		<div id="fxb-<?php echo strip_tags( $post_id ); ?>" class="fxb-wrap">
+		<div id="fxb-<?php echo strip_tags( $post_id ); ?>" class="fxb-container">
 
 			<?php foreach( $rows as $row_id ){ ?>
 				<?php if( isset( $rows_data[$row_id] ) ){
@@ -252,31 +252,33 @@ class Functions{
 								$items = explode(",", $items);
 								?>
 								<div class="fxb-col-<?php echo intval( $k ); ?> fxb-col">
+									<div class="fxb-wrap">
 
-									<?php foreach( $items as $item_id ){ ?>
-										<?php if( isset( $items_data[$item_id] ) ){?>
+										<?php foreach( $items as $item_id ){ ?>
+											<?php if( isset( $items_data[$item_id] ) ){?>
 
-											<div id="fxb-item-<?php echo strip_tags( $item_id ); ?>" class="fxb-item">
-												<div class="fxb-wrap">
-													<?php echo wpautop( $items_data[$item_id]['content'] ); ?>
-												</div><!-- .fxb-wrap -->
-											</div><!-- .fxb-item -->
+												<div id="fxb-item-<?php echo strip_tags( $item_id ); ?>" class="fxb-item">
+													<div class="fxb-wrap">
+														<?php echo wpautop( $items_data[$item_id]['content'] ); ?>
+													</div><!-- .fxb-item > .fxb-wrap -->
+												</div><!-- .fxb-item -->
 
+											<?php } ?>
 										<?php } ?>
-									<?php } ?>
 
+									</div><!-- .fxb-col > .fxb-wrap -->
 								</div><!-- .fxb-col -->
 								<?php
 							} ?>
 
-						</div><!-- .fxb-wrap -->
+						</div><!-- .fxb-row > .fxb-wrap -->
 
 					</div><!-- .fxb-row -->
 
 				<?php } ?>
 			<?php } ?>
 			
-		</div><!-- .fxb-wrap -->
+		</div><!-- .fxb-container -->
 		<?php
 		return apply_filters( 'fxb_content', ob_get_clean(), $post_id, $row_ids, $rows_data, $items_data );
 	}

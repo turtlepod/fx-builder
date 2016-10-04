@@ -5,6 +5,7 @@
 	 ************************************
 	 */
 	$.fn.fxB_Tools_Open = function() {
+
 		/* Show Editor Modal & Modal Overlay */
 		$( '.fxb-tools' ).show();
 		$( '.fxb-modal-overlay' ).show();
@@ -21,6 +22,7 @@
 	 ************************************
 	 */
 	$.fn.fxB_Tools_Close = function() {
+
 		/* Show Editor Modal & Modal Overlay */
 		$( '.fxb-tools' ).hide();
 		$( '.fxb-modal-overlay' ).hide();
@@ -168,7 +170,6 @@ jQuery(document).ready(function($){
 					nonce      : fxb_tools.ajax_nonce,
 					data       : json_data,
 				},
-				//dataType: 'json',
 				success: function( data ){
 					$( 'input[name="_fxb_row_ids"]' ).val( obj_data.row_ids );
 					$( '#fxb' ).empty();
