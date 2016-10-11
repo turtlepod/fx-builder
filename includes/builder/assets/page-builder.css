@@ -398,6 +398,9 @@
 	border-bottom: 1px solid #dfdfdf;
 	background: #fcfcfc;
 }
+.rtl .fxb-modal-title{
+	padding: 10px 10px 10px 36px;
+}
 	.fxb-modal-close{
 		position: absolute;
 		top: 0;
@@ -408,6 +411,10 @@
 		border: none;
 		cursor: pointer;
 		color: #fff;
+	}
+	.rtl .fxb-modal-close{
+		right: auto;
+		left: 0;
 	}
 	.fxb-modal-close:hover{
 		color: #fff;

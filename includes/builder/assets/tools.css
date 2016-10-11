@@ -10,6 +10,11 @@
 	margin-right: 10px;
 	display: none;
 }
+.rtl .fxb-nav-tools{
+	float: left;
+	margin-right: 0;
+	margin-left: 10px;
+}
 .fx_builder_active .fxb-nav-tools{
 	display: block;
 }
@@ -39,6 +44,7 @@
 	display: block;
 	max-height: 100%;
 	font-family: Consolas,Monaco,monospace;
+	direction: ltr;
 }
 /* Media Queries */
 @media only screen and (max-width: 600px) {
