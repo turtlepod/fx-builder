@@ -1,14 +1,14 @@
 === f(x) Builder ===
 Contributors: turtlepod
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TT23LVNKA3AU2
-Tags: Page Builder, Drag and Drop, Alpha
-Requires at least: 4.6
+Tags: Page Builder, Drag and Drop, Beta
+Requires at least: 4.4
 Tested up to: 4.6
 Stable tag: 1.0.0.beta
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A simple page builder plugin. The one you can actually use. (Alpha Version)
+A simple page builder plugin. The one you can actually use. (Beta Version)
 
 == Description ==
 
@@ -16,7 +16,7 @@ A simple page builder plugin. The one you can actually use. (Alpha Version)
 
 **IMPORTANT**
 
-This plugin is still in alpha stage. Do not use on production site. It might explode.
+This plugin is still in beta stage. Do not use on production site. It might explode.
 
 **GITHUB**
 
@@ -45,25 +45,25 @@ You can contribute to development at GitHub https://github.com/turtlepod/fx-buil
 
 = Is it working? =
 
-Yes, I actually use it in my own site, because I need it. But as I mention, it's still in alpha stage.
+Yes, I actually use it in my own site, because I need it. But as I mention, it's still in beta stage.
 
 == Screenshots ==
 
-This screenshot is outdated (from alpha1 version). I will update to the latest when the plugin enters beta stage.
-
 1. Page Builder Settings
 2. The Page Builder in Action
-3. Row Settings: Layout Option
-4. Row Settings: Collapse Order Option
-5. Edit Content Item
-6. Front End Results.
+3. Row Settings
+4. Edit Content Item
+5. Front End Results.
+6. Admin Color Scheme.
 
 == Changelog ==
 
-= 1.0.0.beta - 01 Oct 2016 =
+= 1.0.0.beta - 12 Oct 2016 =
 * Browser compatibility (Tested with: Firefox, Chrome, IE11, Edge, Android Phone, Tablet)
 * Use Admin Color
 * UI and UX Improvement.
+* RTL Support
+* Use HTML Class for Front End Output + Update Front CSS.
 
 = 1.0.0.alpha3 - 29 Sep 2016 =
 * Revision: Revert to Revision now also revert to page builder data.
