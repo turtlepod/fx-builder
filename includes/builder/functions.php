@@ -237,8 +237,25 @@ class Functions{
 
 			<?php foreach( $rows as $row_id ){ ?>
 				<?php if( isset( $rows_data[$row_id] ) ){
+
+					/* = HTML ID = */
 					$row_html_id = $rows_data[$row_id]['row_html_id'] ? $rows_data[$row_id]['row_html_id'] : "fxb-row-{$row_id}";
+
+					/* = HTML CLASS = */
 					$row_html_class = $rows_data[$row_id]['row_html_class'] ? "fxb-row {$rows_data[$row_id]['row_html_class']}" : "fxb-row";
+					$row_html_class = explode( " ", $row_html_class ); // array
+
+					/* ID */
+					$row_html_class[] = "fxb-row-{$row_id}";
+
+					/* Layout */
+					$row_html_class[] = "fxb-row-layout-{$rows_data[$row_id]['layout']}";
+
+					/* Collapse Order */
+					$row_html_class[] = "fxb-row-col-order-{$rows_data[$row_id]['col_order']}";
+
+					$row_html_class = array_map( "sanitize_html_class", $row_html_class );
+					$row_html_class = implode( " ", $row_html_class );
 					?>
 
 					<div id="<?php echo $row_html_id; ?>" class="<?php echo esc_attr( $row_html_class ); ?>" data-index="<?php echo intval( $rows_data[$row_id]['index'] ); ?>" data-layout="<?php echo esc_attr( $rows_data[$row_id]['layout'] ); ?>" data-col_order=<?php echo esc_attr( $rows_data[$row_id]['col_order'] ); ?>>
