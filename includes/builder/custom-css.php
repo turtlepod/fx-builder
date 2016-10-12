@@ -52,8 +52,8 @@ class Custom_CSS{
 			'height'    => '400px',
 			'callback'  => function() use( $post_id ){
 				?>
-				<textarea class="fxb-custom-css-textarea" name="_fxb_custom_css" autocomplete="off" placeholder="<?php esc_attr_e( 'Custom CSS Here...', 'fx-builder' ); ?>"><?php echo esc_textarea( Fs::sanitize_css( get_post_meta( $post_id, '_fxb_custom_css', true ) ) ); ?></textarea>
-				<p><label><input type="checkbox" name="_fxb_custom_css_disable" value="1" <?php checked( '1', get_post_meta( $post_id, '_fxb_custom_css_disable', true ) ); ?>><?php _e( 'Disable Custom CSS', 'fx-builder' ); ?></label></p>
+				<textarea class="fxb-custom-css-textarea" name="_fxb_custom_css" autocomplete="off" placeholder="<?php esc_attr_e( 'Custom CSS Here...', 'fx-builder' ); ?>"><?php echo esc_textarea( Sanitize::css( get_post_meta( $post_id, '_fxb_custom_css', true ) ) ); ?></textarea>
+				<p><label><input autocomplete="off" type="checkbox" name="_fxb_custom_css_disable" value="1" <?php checked( '1', get_post_meta( $post_id, '_fxb_custom_css_disable', true ) ); ?>><?php _e( 'Disable Custom CSS', 'fx-builder' ); ?></label></p>
 				<?php
 			},
 		));?>
@@ -80,19 +80,17 @@ class Custom_CSS{
 		/* Save Data */
 		if( isset( $request['_fxb_custom_css'] ) ){
 			if( $request['_fxb_custom_css'] ){
-				update_post_meta( $post_id, '_fxb_custom_css', Fs::sanitize_css( $request['_fxb_custom_css'] ) );
+				update_post_meta( $post_id, '_fxb_custom_css', Sanitize::css( $request['_fxb_custom_css'] ) );
 			}
 			else{
 				delete_post_meta( $post_id, '_fxb_custom_css' );
 			}
 		}
-		if( isset( $request['_fxb_custom_css_disable'] ) ){
-			if( $request['_fxb_custom_css_disable'] ){
-				update_post_meta( $post_id, '_fxb_custom_css_disable', 1 );
-			}
-			else{
-				delete_post_meta( $post_id, '_fxb_custom_css_disable' );
-			}
+		if( isset( $request['_fxb_custom_css_disable'] ) && ( "1" == $request['_fxb_custom_css_disable'] ) ){
+			update_post_meta( $post_id, '_fxb_custom_css_disable', 1 );
+		}
+		else{
+			delete_post_meta( $post_id, '_fxb_custom_css_disable' );
 		}
 	}
 
@@ -120,10 +118,12 @@ class Custom_CSS{
 	 * @since 1.0.0
 	 */
 	public function print_css(){
-		if( !is_singular() ) return false;
+		if( !is_singular() ) return;
 		$post_id = get_queried_object_id();
 		$post_type = get_post_type( $post_id );
 		if( ! post_type_supports( $post_type, 'fx_builder' ) ) return;
+		$active = get_post_meta( $post_id, '_fxb_active', true );
+		if( ! $active ) return;
 		$css = get_post_meta( $post_id, '_fxb_custom_css', true );
 		$disable = get_post_meta( $post_id, '_fxb_custom_css_disable', true );
 		if( $css && !$disable ){

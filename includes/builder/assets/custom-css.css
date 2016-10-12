@@ -2,13 +2,21 @@
 	font-size: 14px;
 	float: right;
 	text-decoration: none;
-	display: block;
 	padding: 5px 10px;
 	background: #F5F5F5;
 	border: 1px solid #ccc;
-	color: #aaa;
+	color: #555;
 	font-weight: 400;
 	margin-right: -14px;
+	display: none;
+}
+.rtl .fxb-nav-css{
+	float: left;
+	margin-right: 0;
+	margin-left: -14px;
+}
+.fx_builder_active .fxb-nav-css{
+	display: block;
 }
 .fxb-nav-css:hover,
 .fxb-nav-css:focus{
@@ -29,6 +37,7 @@
 	font-family: Consolas,Monaco,monospace;
 	font-size: 18px;
 	line-height: 150%;
+	direction: ltr;
 }
 
 /* Media Queries */
@@ -38,4 +47,9 @@
 		margin: 10px -14px 0 0;
 	}
 }
-
+@media only screen and (max-width: 390px) {
+	.fxb-nav-css span:before{
+		content: "";
+		margin-right: 0;
+	}
+}

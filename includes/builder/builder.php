@@ -26,6 +26,9 @@ class Builder{
 	 */
 	public function __construct() {
 
+		/* Get Admin Color */
+		add_action( 'admin_head', array( $this, 'global_admin_color' ), 1 );
+
 		/* Add it after editor in edit screen */
 		add_action( 'edit_form_after_editor', array( $this, 'form' ) );
 
@@ -36,6 +39,21 @@ class Builder{
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ), 99 );
 	}
 
+
+	/**
+	 * Get Admin Color in Global
+	 */
+	public function global_admin_color(){
+		global $pagenow, $_wp_admin_css_colors, $fxb_admin_color;
+		$fxb_admin_color = array( '#222', '#333', '#0073aa', '#00a0d2' ); // default (fresh)
+		if( ! in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ){
+			return false;
+		}
+		$user_admin_color_scheme = get_user_option( 'admin_color' );
+		if( isset( $_wp_admin_css_colors[$user_admin_color_scheme]->colors ) ){
+			$fxb_admin_color = $_wp_admin_css_colors[$user_admin_color_scheme]->colors;
+		}
+	}
 
 	/**
 	 * Builder Form
@@ -97,13 +115,13 @@ class Builder{
 	public function load_templates( $post_id ){
 
 		/* Rows data */
-		$rows_data   = Functions::sanitize_rows_data( get_post_meta( $post_id, '_fxb_rows', true ) );
-		$row_ids     = Functions::sanitize_ids( get_post_meta( $post_id, '_fxb_row_ids', true ) );
+		$rows_data   = Sanitize::rows_data( get_post_meta( $post_id, '_fxb_rows', true ) );
+		$row_ids     = Sanitize::ids( get_post_meta( $post_id, '_fxb_row_ids', true ) );
 		if( ! $rows_data && $row_ids && is_array( $rows_data ) && is_array( $row_ids ) ){ return false; }
 		$rows        = explode( ',', $row_ids );
 
 		/* Items data */
-		$items_data  = Functions::sanitize_items_data( get_post_meta( $post_id, '_fxb_items', true ) );
+		$items_data  = Sanitize::items_data( get_post_meta( $post_id, '_fxb_items', true ) );
 		?>
 		<script type="text/javascript">
 			jQuery( document ).ready( function( $ ) {
@@ -167,7 +185,7 @@ class Builder{
 
 		/* DB Version */
 		if( isset( $request['_fxb_db_version'] ) ){
-			$db_version = Functions::sanitize_version( $request['_fxb_db_version'] );
+			$db_version = Sanitize::version( $request['_fxb_db_version'] );
 			if( $db_version ){
 				update_post_meta( $post_id, '_fxb_db_version', $db_version );
 			}
@@ -182,7 +200,7 @@ class Builder{
 
 		/* Row IDs */
 		if( isset( $request['_fxb_row_ids'] ) ){
-			$row_ids = Functions::sanitize_ids( $request['_fxb_row_ids'] );
+			$row_ids = Sanitize::ids( $request['_fxb_row_ids'] );
 			if( $row_ids ){
 				update_post_meta( $post_id, '_fxb_row_ids', $row_ids );
 			}
@@ -196,7 +214,7 @@ class Builder{
 
 		/* Rows Datas */
 		if( isset( $request['_fxb_rows'] ) ){
-			$rows = Functions::sanitize_rows_data( $request['_fxb_rows'] );
+			$rows = Sanitize::rows_data( $request['_fxb_rows'] );
 			if( $rows ){
 				update_post_meta( $post_id, '_fxb_rows', $rows );
 			}
@@ -210,7 +228,7 @@ class Builder{
 
 		/*  Items Datas */
 		if( isset( $request['_fxb_items'] ) ){
-			$items = Functions::sanitize_items_data( $request['_fxb_items'] );
+			$items = Sanitize::items_data( $request['_fxb_items'] );
 			if( $items ){
 				update_post_meta( $post_id, '_fxb_items', $items );
 			}
@@ -224,7 +242,7 @@ class Builder{
 
 		/* Content Data
 		------------------------------------------ */
-		$pb_content = Functions::to_string_raw( $post_id );
+		$pb_content = Functions::content_raw( $post_id );
 		$this_post = array(
 			'ID'           => $post_id,
 			'post_content' => sanitize_post_field( 'post_content', $pb_content, $post_id, 'db' ),
@@ -254,6 +272,10 @@ class Builder{
 
 			/* Enqueue JS: ROW */
 			wp_enqueue_script( 'fx-builder-row', URI . 'assets/page-builder-row.js', array( 'jquery', 'jquery-ui-sortable', 'wp-util' ), VERSION, true );
+			$data = array(
+				'unload'         => __( 'The changes you made will be lost if you navigate away from this page','fx-builder' ),
+			);
+			wp_localize_script( 'fx-builder-row', 'fxb_i18n', $data );
 
 			/* Enqueue JS: ITEM */
 			wp_enqueue_script( 'fx-builder-item', URI . 'assets/page-builder-item.js', array( 'jquery', 'jquery-ui-sortable', 'wp-util' ), VERSION, true );

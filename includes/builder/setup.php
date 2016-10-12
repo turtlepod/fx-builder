@@ -17,6 +17,9 @@ define( __NAMESPACE__ . '\VERSION', $version );
 /* Load Files
 ------------------------------------------ */
 
+/* Sanitize Functions */
+require_once( PATH . 'sanitize.php' );
+
 /* Functions */
 require_once( PATH . 'functions.php' );
 

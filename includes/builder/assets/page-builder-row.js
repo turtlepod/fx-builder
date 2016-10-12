@@ -40,14 +40,14 @@
 			/* Update Row */
 			$( this ).attr( 'data-index', row_index ); // set data attr
 			$( this ).find( '.fxb_row_index' ).attr( 'data-row-index', row_index ); // display text
-			$( this ).find( 'input[data-row_field="index"]' ).val( row_index ); // change input
+			$( this ).find( 'input[data-row_field="index"]' ).val( row_index ).trigger( 'change' ); // change input
 
 			/* Get ID */
 			row_ids.push( row_id );
 		});
 
 		/* Update Hidden Input */
-		$( 'input[name="_fxb_row_ids"]' ).val( row_ids.join() );
+		$( 'input[name="_fxb_row_ids"]' ).val( row_ids.join() ).trigger( 'change' );
 	};
 
 })(jQuery);
@@ -56,6 +56,18 @@
 /* Document Ready
 ------------------------------------------ */
 jQuery(document).ready(function($){
+
+	/**
+	 * Unload Notice
+	 */
+	$( document ).on( 'change', '#fxb-wrapper input, #fxb-wrapper select, #fxb-wrapper textarea, #fxb-switcher input, #fxb-switcher select, #fxb-switcher textarea', function(){
+		$( window ).on( 'beforeunload', function(){
+			return fxb_i18n.unload;
+		} );
+	});
+	$( document ).on( 'submit', 'form', function(){
+		$( window ).unbind( 'beforeunload' );
+	});
 
 	/**
 	 * Show Bottom Add Row
@@ -81,7 +93,7 @@ jQuery(document).ready(function($){
 	 * 
 	 ************************************
 	 */
-	$( document.body ).on( 'click', '.fxb-add-row a', function(e){
+	$( document.body ).on( 'click', '.fxb-add-row .layout-thumb', function(e){
 		e.preventDefault();
 
 		/* Var */
@@ -173,7 +185,7 @@ jQuery(document).ready(function($){
 		/* Update state */
 		var row_state = row.data( 'state' ); // get new state data
 		row.attr( 'data-state', row_state ); // change attr for styling
-		row.find( 'input[data-row_field="state"]' ).val( row_state ); // change hidden input
+		row.find( 'input[data-row_field="state"]' ).val( row_state ).trigger( 'change' ); // change hidden input
 	} );
 
 
@@ -245,7 +257,7 @@ jQuery(document).ready(function($){
 		row.attr( 'data-col_num', row.data( 'col_num' ) );
 
 		/* Update hidden Input */
-		row.find( 'input[data-row_field="col_num"]' ).val( row.data( 'col_num' ) );
+		row.find( 'input[data-row_field="col_num"]' ).val( row.data( 'col_num' ) ).trigger( 'change' );
 	} );
 
 
@@ -282,6 +294,9 @@ jQuery(document).ready(function($){
 		stop    : function( e, ui ) {
 			$.fn.fxB_updateRowsIndex();
 		},
+	});
+	$( document.body ).on('mousedown mouseup', '.fxb-grab', function(event) {
+		$(this).toggleClass( 'fxb-grabbing' );
 	});
 
 });

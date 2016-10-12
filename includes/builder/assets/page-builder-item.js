@@ -34,20 +34,20 @@
 			$( this ).attr( 'data-item_index', item_index ); // set data attr
 			$( this ).find( '.fxb_item_index' ).attr( 'data-item-index', item_index );
 			$( this ).find( '.fxb_item_index' ).data( 'item-index', item_index );
-			$( this ).find( 'input[data-item_field="item_index"]' ).val( item_index ); // change input
+			$( this ).find( 'input[data-item_field="item_index"]' ).val( item_index ).trigger( 'change' ); // change input
 
 			/* Update Row ID and Col Index */
 			$( this ).data( 'row_id', row_id );
-			$( this ).find( 'input[data-item_field="row_id"]' ).val( row_id );
+			$( this ).find( 'input[data-item_field="row_id"]' ).val( row_id ).trigger( 'change' );
 			$( this ).data( 'col_index', col_index );
-			$( this ).find( 'input[data-item_field="col_index"]' ).val( col_index );
+			$( this ).find( 'input[data-item_field="col_index"]' ).val( col_index ).trigger( 'change' );
 
 			/* Get ID */
 			item_ids.push( item_id );
 		});
 
 		/* Update Hidden Input */
-		items_input.val( item_ids.join() );
+		items_input.val( item_ids.join() ).trigger( 'change' );
 	};
 
 	/**
@@ -208,15 +208,13 @@
 		iframe.contents().find( 'body' ).attr( 'id', 'tinymce' ).addClass( editor_body_class ).addClass( body_class ).html( content );
 
 		/* 
-		 * Firefox Hack
+		 * Firefox Hack + This also fix chrome drag and drop content empty.
 		 * @link http://stackoverflow.com/a/24686535
 		 */
-		if( navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ){
-			$( iframe ).on('load', function() {
-				$( this ).contents().find( 'head' ).html( head );
-				$( this ).contents().find( 'body' ).attr( 'id', 'tinymce' ).addClass( editor_body_class ).addClass( body_class ).html( content );
-			});
-		}
+		$( iframe ).on( 'load', function() {
+			$( this ).contents().find( 'head' ).html( head );
+			$( this ).contents().find( 'body' ).attr( 'id', 'tinymce' ).addClass( editor_body_class ).addClass( body_class ).html( content );
+		});
 	};
 
 
@@ -381,7 +379,7 @@ jQuery(document).ready(function($){
 		/* Update state */
 		var item_state = item.data( 'item_state' ); // get data
 		item.attr( 'data-item_state', item_state ); // change attr for styling
-		item.find( 'input[data-item_field="item_state"]' ).val( item_state ); // change hidden input
+		item.find( 'input[data-item_field="item_state"]' ).val( item_state ).trigger( 'change' ); // change hidden input
 	} );
 
 
@@ -437,7 +435,7 @@ jQuery(document).ready(function($){
 			fxb_editor.undoManager.clear();
 		}
 		else{
-			$( "#" + editor_id ).val( raw_content );
+			$( "#" + editor_id ).val( raw_content ).trigger( 'change' );
 		}
 
 		/* Show Editor Modal & Modal Overlay */
@@ -488,7 +486,7 @@ jQuery(document).ready(function($){
 		var item_textarea = $( '.fxb_editing_active' );
 
 		/* Add content back to textarea and item iframe */
-		item_textarea.val( editor_val );
+		item_textarea.val( editor_val ).trigger( 'change' );
 		item_textarea.siblings( '.fxb-item-iframe' ).fxB_loadIfameContent( iframe_css );
 		item_textarea.removeClass( 'fxb_editing_active' );
 

@@ -142,13 +142,13 @@ class Tools{
 		$data = wp_parse_args( $data, $default );
 
 		/* Checking Data */
-		$rows_data   = Functions::sanitize_rows_data( $data['rows'] );
-		$row_ids     = Functions::sanitize_ids( $data['row_ids'] );
+		$rows_data   = Sanitize::rows_data( $data['rows'] );
+		$row_ids     = Sanitize::ids( $data['row_ids'] );
 		if( ! $rows_data && $row_ids && is_array( $rows_data ) && is_array( $row_ids ) ){ return false; }
 		$rows        = explode( ',', $row_ids );
 
 		/* Items data */
-		$items_data  = Functions::sanitize_items_data( $data['items'] );
+		$items_data  = Sanitize::items_data( $data['items'] );
 		?>
 		<script type="text/javascript">
 			jQuery( document ).ready( function( $ ) {
