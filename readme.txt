@@ -2,21 +2,17 @@
 Contributors: turtlepod
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TT23LVNKA3AU2
 Tags: Page Builder, Drag and Drop, Beta
-Requires at least: 4.4
-Tested up to: 4.6
-Stable tag: 1.0.0.beta
+Requires at least: 4.5
+Tested up to: 4.7
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A simple page builder plugin. The one you can actually use. (Beta Version)
+A simple page builder plugin. The one you can actually use.
 
 == Description ==
 
 **[f(x) Builder](http://genbumedia.com/plugins/fx-builder/)** is a new page builder plugin that provides visual columns in the post editor without using shortcodes. From the setting page, you can enable it for posts, pages, and custom post types. There is no vendor lock-in. If you decide you no longer wish to use the plugin, you can disable it without losing your content (though you would loose the column formatting).
-
-**IMPORTANT**
-
-This plugin is still in beta stage. Do not use on production site. It might explode.
 
 **GITHUB**
 
@@ -43,10 +39,6 @@ You can contribute to development at GitHub https://github.com/turtlepod/fx-buil
 
 == Frequently Asked Questions ==
 
-= Is it working? =
-
-Yes, I actually use it in my own site, because I need it. But as I mention, it's still in beta stage.
-
 == Screenshots ==
 
 1. Page Builder Settings
@@ -57,6 +49,9 @@ Yes, I actually use it in my own site, because I need it. But as I mention, it's
 6. Admin Color Scheme.
 
 == Changelog ==
+
+= 1.0.0 - 09 Dec 2016 =
+* First Stable Release.
 
 = 1.0.0.beta - 12 Oct 2016 =
 * Browser compatibility (Tested with: Firefox, Chrome, IE11, Edge, Android Phone, Tablet)
