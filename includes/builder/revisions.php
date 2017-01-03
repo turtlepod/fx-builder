@@ -43,12 +43,16 @@ class Revisions{
 
 			$parent     = get_post( $parent_id );
 
+			$active     = get_post_meta( $parent->ID, '_fxb_active', true );
 			$db_version = get_post_meta( $parent->ID, '_fxb_db_version', true );
 			$row_ids    = get_post_meta( $parent->ID, '_fxb_row_ids', true );
 			$rows       = get_post_meta( $parent->ID, '_fxb_rows', true );
 			$items      = get_post_meta( $parent->ID, '_fxb_items', true );
 			$css        = get_post_meta( $parent->ID, '_fxb_custom_css', true );
 
+			if ( $active ){
+				add_metadata( 'post', $post_id, '_fxb_active', $active );
+			}
 			if ( false !== $db_version ){
 				add_metadata( 'post', $post_id, '_fxb_db_version', $db_version );
 			}
@@ -76,11 +80,19 @@ class Revisions{
 
 		$revision   = get_post( $revision_id );
 
+		$active     = get_metadata( 'post', $revision->ID, '_fxb_active', true );
 		$db_version = get_metadata( 'post', $revision->ID, '_fxb_db_version', true );
 		$row_ids    = get_metadata( 'post', $revision->ID, '_fxb_row_ids', true );
 		$rows       = get_metadata( 'post', $revision->ID, '_fxb_rows', true );
 		$items      = get_metadata( 'post', $revision->ID, '_fxb_items', true );
 		$css        = get_metadata( 'post', $revision->ID, '_fxb_custom_css', true );
+
+		if ( $active ){
+			update_post_meta( $post_id, '_fxb_active', $active );
+		}
+		else{
+			delete_post_meta( $post_id, '_fxb_active' );
+		}
 
 		if ( false !== $db_version ){
 			update_post_meta( $post_id, '_fxb_db_version', $db_version );

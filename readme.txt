@@ -52,6 +52,9 @@ You can contribute to development at GitHub https://github.com/turtlepod/fx-buil
 
 = 1.0.1 - 03 Jan 2017 =
 * Fix bug: wp preview remove page builder data https://github.com/turtlepod/fx-builder/issues/45
+* Fix CSS Bug: Tools & CSS button position.
+* Store _fxb_active in revisions.
+* Hide "Preview Changes" button in  "Publish" meta box when page builder active.
 
 = 1.0.0 - 09 Dec 2016 =
 * First Stable Release.

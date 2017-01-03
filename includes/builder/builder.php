@@ -159,6 +159,9 @@ class Builder{
 		if ( ! isset( $request['fxb_nonce'] ) || ! wp_verify_nonce( $request['fxb_nonce'], __FILE__ ) ){
 			return $post_id;
 		}
+		if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ){
+			return $post_id;
+		}
 		$post_type = get_post_type_object( $post->post_type );
 		if ( !current_user_can( $post_type->cap->edit_post, $post_id ) ){
 			return $post_id;

@@ -7,3 +7,6 @@
 .fx_builder_active #fxb-wrapper{
 	display: block !important;
 }
+.fx_builder_active #post-preview{
+	display: none !important;
+}

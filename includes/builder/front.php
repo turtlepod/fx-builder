@@ -46,18 +46,8 @@ class Front{
 			return $content;
 		}
 
-		if( isset( $_GET['preview_id'] ) && !empty( $_GET['preview_id'] ) ){
-			$autosave = wp_get_post_autosave( $_GET['preview_id'] );
-			if( $autosave && $autosave->post_parent == $post_id ) {
-				$post_id = (int) $autosave->ID;
-			}
-		}
-		elseif( isset( $_GET['p'] ) && isset( $_GET['preview'] ) ){
-			$revisions = wp_get_post_revisions( $post_id );
-			$post_id = array_shift( $revisions );
-		}
-
 		$active = get_post_meta( $post_id, '_fxb_active', true );
+
 		remove_filter( 'the_content', 'wpautop' );
 		if( $active ){
 			$content = Functions::content( $post_id ); // autop added in this function.
