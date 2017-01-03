@@ -6,6 +6,7 @@ Switcher::get_instance();
 
 /**
  * Switcher: Toggle between page builder / wp editor.
+ * Since v.1.0.1 Switcher save method is added in builder.php 
  * @since 1.0.0
  */
 class Switcher{
@@ -29,9 +30,6 @@ class Switcher{
 
 		/* Add Editor/Page Builder Tab */
 		add_action( 'edit_form_after_title', array( $this, 'editor_toggle' ) );
-
-		/* Save Switcher Preference */
-		add_action( 'save_post', array( $this, 'save' ), 9, 2 );
 
 		/* Scripts */
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ), 99 );
@@ -83,39 +81,6 @@ class Switcher{
 				<?php do_action( 'fxb_switcher_nav', $post ); ?>
 			</h1>
 			<?php
-		}
-	}
-
-
-	/**
-	 * Save Switcher Pref
-	 * @since 1.0.0
-	 */
-	public function save( $post_id, $post ){
-		$request = stripslashes_deep( $_POST );
-		if ( ! isset( $request['fxb_switcher_nonce'] ) || ! wp_verify_nonce( $request['fxb_switcher_nonce'], __FILE__ ) ){
-			return false;
-		}
-		if( defined('DOING_AUTOSAVE' ) && DOING_AUTOSAVE ){
-			return false;
-		}
-		$post_type = get_post_type_object( $post->post_type );
-		if ( !current_user_can( $post_type->cap->edit_post, $post_id ) ){
-			return false;
-		}
-
-		/* Save Builder Tab */
-		if( isset( $request['_fxb_active'] ) ){
-			$new_data = $request['_fxb_active'] ? 1 : 0;
-			if( $new_data ){
-				update_post_meta( $post_id, '_fxb_active', 1 );
-			}
-			else{
-				delete_post_meta( $post_id, '_fxb_active' );
-			}
-		}
-		else{
-			delete_post_meta( $post_id, '_fxb_active' );
 		}
 	}
 

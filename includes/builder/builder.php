@@ -157,28 +157,35 @@ class Builder{
 		------------------------------------------ */
 		$request = stripslashes_deep( $_POST );
 		if ( ! isset( $request['fxb_nonce'] ) || ! wp_verify_nonce( $request['fxb_nonce'], __FILE__ ) ){
-			return false;
-		}
-		if( defined('DOING_AUTOSAVE' ) && DOING_AUTOSAVE ){
-			return false;
+			return $post_id;
 		}
 		$post_type = get_post_type_object( $post->post_type );
 		if ( !current_user_can( $post_type->cap->edit_post, $post_id ) ){
-			return false;
+			return $post_id;
+		}
+		$wp_preview = isset( $request['wp-preview'] ) ? esc_attr( $request['wp-preview'] ) : false;
+		if( $wp_preview ){
+			return $post_id;
 		}
 
 		/* Check Swicther
 		------------------------------------------ */
-		$active = get_post_meta( $post_id, '_fxb_active', true );
+		$active = isset( $request['_fxb_active'] ) ? $request['_fxb_active'] : false;
 
+		/* Page Builder Active */
+		if( $active ){
+			update_post_meta( $post_id, '_fxb_active', 1 );
+		}
 		/* Page Builder Not Selected: Delete Data and Bail. */
-		if( !$active ){
+		else{
+			delete_post_meta( $post_id, '_fxb_active' );
 			delete_post_meta( $post_id, '_fxb_db_version' );
 			delete_post_meta( $post_id, '_fxb_row_ids' );
 			delete_post_meta( $post_id, '_fxb_rows' );
 			delete_post_meta( $post_id, '_fxb_items' );
 			return false;
 		}
+
 
 		/* Page Builder Datas
 		------------------------------------------ */
@@ -255,6 +262,7 @@ class Builder{
 		wp_update_post( $this_post );
 		add_action( 'save_post', array( $this, __FUNCTION__ ) );
 	}
+
 
 	/**
 	 * Admin Scripts

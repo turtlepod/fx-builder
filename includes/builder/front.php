@@ -38,11 +38,28 @@ class Front{
 	 * This will format content with page builder data.
 	 */
 	public function content_filter( $content ){
-		$post_id      = get_the_ID();
-		$post_type    = get_post_type( $post_id );
-		$active       = get_post_meta( $post_id, '_fxb_active', true );
+
+		/* Check Post Support */
+		$post_id   = get_the_ID();
+		$post_type = get_post_type( $post_id );
+		if( ! post_type_supports( $post_type, 'fx_builder' ) ){
+			return $content;
+		}
+
+		if( isset( $_GET['preview_id'] ) && !empty( $_GET['preview_id'] ) ){
+			$autosave = wp_get_post_autosave( $_GET['preview_id'] );
+			if( $autosave && $autosave->post_parent == $post_id ) {
+				$post_id = (int) $autosave->ID;
+			}
+		}
+		elseif( isset( $_GET['p'] ) && isset( $_GET['preview'] ) ){
+			$revisions = wp_get_post_revisions( $post_id );
+			$post_id = array_shift( $revisions );
+		}
+
+		$active = get_post_meta( $post_id, '_fxb_active', true );
 		remove_filter( 'the_content', 'wpautop' );
-		if( post_type_supports( $post_type, 'fx_builder' ) && $active ){
+		if( $active ){
 			$content = Functions::content( $post_id ); // autop added in this function.
 		}
 		else{
