@@ -7,13 +7,11 @@
 	border: 1px solid #ccc;
 	color: #555;
 	font-weight: 400;
-	margin-right: -14px;
 	display: none;
 }
 .rtl .fxb-nav-css{
 	float: left;
 	margin-right: 0;
-	margin-left: -14px;
 }
 .fx_builder_active .fxb-nav-css{
 	display: block;

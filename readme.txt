@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Page Builder, Drag and Drop, Beta
 Requires at least: 4.5
 Tested up to: 4.7
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,13 @@ You can contribute to development at GitHub https://github.com/turtlepod/fx-buil
 6. Admin Color Scheme.
 
 == Changelog ==
+
+= 1.0.1 - 03 Jan 2017 =
+* Fix bug: wp preview remove page builder data https://github.com/turtlepod/fx-builder/issues/45
+* Fix CSS Bug: Tools & CSS button position.
+* Store _fxb_active in revisions.
+* Hide "Preview Changes" button in  "Publish" meta box when page builder active.
+* Fix "save_post" hook to fix fatal error bug. 
 
 = 1.0.0 - 09 Dec 2016 =
 * First Stable Release.
