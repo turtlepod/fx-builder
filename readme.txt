@@ -50,7 +50,7 @@ You can contribute to development at GitHub https://github.com/turtlepod/fx-buil
 
 == Changelog ==
 
-= 1.0.1 - 03 Jan 2017 =
+= 1.0.1 - 06 Jan 2017 =
 * Fix bug: wp preview remove page builder data https://github.com/turtlepod/fx-builder/issues/45
 * Fix CSS Bug: Tools & CSS button position.
 * Store _fxb_active in revisions.
