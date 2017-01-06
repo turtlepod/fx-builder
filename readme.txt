@@ -55,6 +55,7 @@ You can contribute to development at GitHub https://github.com/turtlepod/fx-buil
 * Fix CSS Bug: Tools & CSS button position.
 * Store _fxb_active in revisions.
 * Hide "Preview Changes" button in  "Publish" meta box when page builder active.
+* Fix "save_post" hook to fix fatal error bug. 
 
 = 1.0.0 - 09 Dec 2016 =
 * First Stable Release.
