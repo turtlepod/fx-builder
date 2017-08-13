@@ -3,8 +3,8 @@ Contributors: turtlepod
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TT23LVNKA3AU2
 Tags: Page Builder, Drag and Drop, Beta
 Requires at least: 4.5
-Tested up to: 4.7
-Stable tag: 1.0.1
+Tested up to: 4.8
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,10 @@ You can contribute to development at GitHub https://github.com/turtlepod/fx-buil
 6. Admin Color Scheme.
 
 == Changelog ==
+
+= 1.0.2 - 13 Ags 2017 =
+* Fix bug: WP 4.8 compat https://github.com/turtlepod/fx-builder/issues/48
+* Credit for reporting WP 4.8 bug: nick6352683 https://wordpress.org/support/users/nick6352683/
 
 = 1.0.1 - 06 Jan 2017 =
 * Fix bug: wp preview remove page builder data https://github.com/turtlepod/fx-builder/issues/45
