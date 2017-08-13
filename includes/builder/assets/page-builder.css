@@ -424,7 +424,7 @@
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	z-index: 100050;
+	z-index: 60050;
 	background: rgba(0,0,0,0.7);
 	overflow: hidden;
 }
@@ -442,7 +442,7 @@
 	max-height: 100%;
 	border: none;
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
-	z-index: 100100;
+	z-index: 60100;
 	overflow: visible;
 	background: #fff;
 	transform: translate(-50%, -50%);
@@ -555,6 +555,13 @@
 	}
 }
 
+
+/* MCE FullScreen
+------------------------------------------ */
+body.mce-fullscreen .fxb-editor.fxb-modal {
+	width: 100% !important;
+	height: 100% !important;
+}
 
 /* Media Queries
 ------------------------------------------ */
